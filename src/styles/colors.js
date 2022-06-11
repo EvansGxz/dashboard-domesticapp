@@ -1,11 +1,8 @@
-export const colors = {
-  ligthGray: "#F6F6F9",
-  DarkGray: "#9A9A9D",
-  black: "#333333",
-  gray: "#B8B8BB",
-  lightwhite: "#F6F6F9",
-  orange: "#FA4A0C",
-  highorange: "#fa1c0c",
-  white: "#FFFFFF",
-  yellow: "#EFB60E",
-};
+export const azul = "#0bbbef";
+export const azulF = "#0096c2";
+export const azulFace = "#2174ee";
+export const rojo = "#ec607e";
+export const gris = "#787b82";
+export const blanco = "#fbfbfb";
+export const verde = "#28d885";
+export const morado = "#4785ed";
