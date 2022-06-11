@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
+import NavBar from "../components/Navbar";
 import Admins from "../pages/admins";
 import Cupons from "../pages/cupons";
 import CreateEmployee from "../pages/Empleado/createEmployee";
@@ -16,6 +17,7 @@ function Authenticated() {
         <Route path="/*" element={<h2>Calendar</h2>} />
         <Route path="/calendar" element={<h2>Calendar</h2>} />
 
+        <Route path="/navbar" element={<NavBar />} />
         <Route path="/clientes" element={<h2>Clientes</h2>} />
         <Route path="/cupones" element={<Cupons/>} />
         <Route path="/reportes" element={<h2>Reportes y eventualidades</h2>} />
