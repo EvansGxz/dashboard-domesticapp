@@ -14,6 +14,10 @@ export async function createUser(newUser) {
   return user;
 }
 
+export async function createUser1(newUser) {
+  return await apiFetch('users', { body: newUser });
+}
+
 export async function updateUser(data) {
   const { _token, ...user } = await apiFetch("profile", {
     body: data,
@@ -22,7 +26,14 @@ export async function updateUser(data) {
   return user;
 }
 
-export async function deleteUser() {
-  await apiFetch("users", { method: "DELETE" });
-  sessionStorage.removeItem(tokenKey);
+export async function deleteUser(userId) {
+  return await apiFetch(`users/${userId}`, { method: "DELETE" });
+}
+
+export async function updateEmployee(data, userId) {
+  console.log(data);
+  return await apiFetch(`employees/${userId}`, {
+    body: data,
+    method: "PATCH",
+  });
 }
