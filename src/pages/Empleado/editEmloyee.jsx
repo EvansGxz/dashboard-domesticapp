@@ -12,7 +12,7 @@ const StyledForm = styled.form`
   min-width: 258px;
 `;
 
-export default function CrearEmpleado() {
+export default function EditarEmpleado() {
   const [form, setForm] = useState(null);
   const [form1, setForm1] = useState(null);
   const [employee, setEmployee] = useState(null);
