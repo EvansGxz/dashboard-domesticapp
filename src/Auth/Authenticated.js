@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import Clientes from "../pages/Clientes";
+import CrearCliente from "../pages/Clientes/createCliente";
+import EditarCliente from "../pages/Clientes/editCliente";
 import Cupons from "../pages/cupons";
 import CreateCupon from "../pages/Cupons/createCupon";
 import DeleteCupon from "../pages/Cupons/deleteCupon";
@@ -20,6 +22,8 @@ function Authenticated() {
 
         <Route path="/navbar" element={<h2>Calendar</h2>} />
         <Route path="/clientes" element={<Clientes/>} />
+        <Route path="/clientes/edit" element={<EditarCliente/>} />
+        <Route path="/clientes/create" element={<CrearCliente/>} />
         <Route path="/cupones" element={<Cupons/>} />
         <Route path="/cupones/create_cupon" element={<CreateCupon/>} />
         <Route path="/cupones/modify_cupon" element={<ModifyCupon/>} />
