@@ -1,81 +1,153 @@
-function EditEmployee(){
+import styled from "@emotion/styled";
+import { useEffect, useState } from "react";
+import { showEmployee } from "../../services/employee-service";
+import { updateEmployee } from "../../services/users-service";
+import { Input } from "../../styles/views/Login";
 
-  return(
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 258px;
+`;
+
+export default function CrearEmpleado() {
+  const [form, setForm] = useState(null);
+  const [form1, setForm1] = useState(null);
+  const [employee, setEmployee] = useState(null);
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("id");
+    showEmployee(id).then((user) => {
+      setEmployee(user);
+      setForm({
+        email: user.email,
+        phone: user.phone,
+        user_type: "employee",
+        });
+      setForm1({
+        full_name: user.full_name,
+        country: user.country,
+        region: user.region,
+        document_id: user.document_id,
+        contact: user.contact,
+        experience: user.experience,
+        biografy: user.biografy,
+        birth_date: user.birth_date,
+      });
+    });
+  }, []);
+  function handleSubmit(event) {
+    event.preventDefault();
+    
+    updateEmployee(form1, employee.user_id);
+  }
+
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  }
+
+  function handleFormChange1(event) {
+    const { name, value } = event.target;
+    setForm1({ ...form1, [name]: value });
+  }
+
+  return (
     <>
-    <link rel="stylesheet" type="text/css" href="css/main.css"/>
-      <div className="ml-auto mb-6 mt-6 lg:w-[100%] xl:w-[100%] 2xl:w-[100%]">
-  
-        <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
-            <div className="px-6 flex items-center justify-between space-x-4 2xl:container">
-                <a href="dEmpleados.html" aria-label="return" className="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 ml-1.5 mt-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                    </svg>
-                </a>
-                <h5 hidden className="text-2xl text-gray-600 font-left lg:block">Empleados</h5>
-            </div>
-        </div>
-    </div>
-   
-    <div className="max-w-2xl mx-auto bg-white p-8 lg:w-[100%]">
-        <form>
-            <div className="grid gap-6 mb-6 lg:grid-cols-2">
-                <div>
-                    <label htmlFor="e_nombre" className="block mb-2 text-sm font-medium text-gray-900">Nombre Completo</label>
-                    <input type="text" id="e_nombre" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_n_documento" className="block mb-2 text-sm font-medium text-gray-900">#Documento</label>
-                    <input type="text" id="e_n_documento" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_pais" className="block mb-2 text-sm font-medium text-gray-900">Pais</label>
-                    <input type="text" id="e_pais" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>  
-                <div>
-                    <label htmlFor="e_telefono" className="block mb-2 text-sm font-medium text-gray-900">Región</label>
-                    <input type="text" id="e_telefono" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_fecha_ingreso" className="block mb-2 text-sm font-medium text-gray-900">Fecha De Ingreso</label>
-                    <input type="text" id="e_fecha_ingreso" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_n_movil" className="block mb-2 text-sm font-medium text-gray-900">Numero Movil</label>
-                    <input type="number" id="e_n_movil" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
-                    <input type="email" id="e_email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div> 
-                <div>
-                    <label htmlFor="e_labores" className="block mb-2 text-sm font-medium text-gray-900">Labores Y Oficios</label>
-                    <input type="text" id="e_labores" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>  
-                <div>
-                    <label htmlFor="e_aptitudes" className="block mb-2 text-sm font-medium text-gray-900">Aptitudes</label>
-                    <input type="text" id="e_aptitudes" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-                <div>
-                    <label htmlFor="e_experiencia" className="block mb-2 text-sm font-medium text-gray-900">Experiencia (Años)</label>
-                    <input type="number" id="e_experiencia" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="" required/>
-                </div>
-            </div><br/>
-            <div className="grid gap-6 mb-6">
-                <div>
-                    <label htmlFor="myfile">Foto de perfil:</label>
-                    <input type="file" id="myfile" name="myfile"/>
-                </div>
-                <div>
-                    <label htmlFor="myfile">Contrato:</label>
-                    <input type="file" id="myfile" name="myfile"/>
-                </div>
-            </div>
-            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Editar</button>
-        </form>
-    </div><br></br>
-    </>
-  )
-}
+    {form ? (
+      <StyledForm onSubmit={handleSubmit}>
+      <Input
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="example@mail.com"
+          value={form.email}
+          onChange={handleFormChange}
+        />
+      <Input
+        id="full_name"
+        label="Nompre Personal/Empresa"
+        type="text"
+        placeholder="John Doe"
+        value={form1.full_name}
+        onChange={handleFormChange1}
+      />
 
-export default EditEmployee
+      <Input
+        id="region"
+        label="País"
+        type="text"
+        placeholder="Colombia"
+        value={form1.region}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="country"
+        label="Dirección"
+        type="text"
+        placeholder="Calle 53, Bogotá, Colombia"
+        value={form1.country}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="birth_date"
+        label="Fecha de nacimiento"
+        type="text"
+        placeholder="dd-mm-yyyy"
+        value={form1.birth_date}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="document_id"
+        label="Numero de documento"
+        type="text"
+        placeholder="xxxxxxxxxx"
+        value={form1.document_id}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="contact"
+        label="Numero de contrato"
+        type="text"
+        placeholder="xxxxxxxxxx"
+        value={form1.contact}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="biografy"
+        label="Mini biografia"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form1.biografy}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="experience"
+        label="Experiencia en años"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form1.experience}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="phone"
+        label="Celular (10 digitos)"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form.phone}
+        onChange={handleFormChange}
+      />
+
+      <button type="submit">
+        Actualizar
+      </button>
+    </StyledForm>) : (<div>Cargando....</div>)}
+    </>
+  );
+}
