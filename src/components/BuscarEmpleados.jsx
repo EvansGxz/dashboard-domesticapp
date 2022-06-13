@@ -48,7 +48,7 @@ export const BuscarEmpleados = () => {
           </svg>
         </button>
         {/* add empleado  */}
-        <Link to={'/crearEmpleado'}>
+        <Link to={'/empleados/create'}>
           <a
             href='/#'
             class='relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'

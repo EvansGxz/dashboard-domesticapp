@@ -2,23 +2,51 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
-import { deleteCategory, indexCategories } from '../services/categories-services'
+import { useAuth } from '../context/auth-context'
+import { deleteOrder, indexOrder } from '../services/order-details-services'
 
 export const Calendario = () => {
+  const { user } = useAuth();
   const [categories, setCategories] = useState(null);
   useEffect(() => {
-    indexCategories().then(setCategories)
+    indexOrder().then(setCategories)
   }, [setCategories])
 
   function handleDelete(id){
-    deleteCategory(id).then(() => {
+    deleteOrder(id).then(() => {
       window.location.reload();
      });}
   return (
     <>
       <Sidebar></Sidebar>
       <div class='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
-        <Navegador titulo='Calendario'></Navegador>
+        <Navegador titulo='Servicios dados'></Navegador>
+        <div class='px-6 2xl:container'>
+          <div class='grid gap-6'>
+            <div class='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
+              <div class=''>
+                <div class=''>
+                  <div class='ml-60 flex justify-center gap-4'>
+                    <h3 class='text-3xl font-bold text-gray-700'>Servicios</h3>
+                    {user.role === 'admin' ? (
+                      <>
+                          <Link to={'/calendar/create'}>
+                          <a
+                            href='/#'
+                            class='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'
+                          >
+                            Crear Servicio
+                          </a>
+                        </Link>
+                      </>
+                    ) : null}
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class='px-6 pt-6 2xl:container'>
           <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
           {
@@ -27,32 +55,33 @@ export const Calendario = () => {
               <table class='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
             <thead class='text-black'>
               <tr>
-                <th class='p-3 text-left'>Servicio</th>
-                <th class='p-3 text-left'>Precio</th>
-                <th class='p-3 text-left'>Region</th>
-                <th className='p-3 text-left'>Acción</th>
+                <th class='p-3 text-left'>Cliente</th>
+                <th class='p-3 text-left'>Empleado</th>
+                <th class='p-3 text-left'>Servcio</th>
+                <th className='p-3 text-left'>Fecha</th>
+                <th className='p-3 text-left'>Jornada</th>
+                <th className='p-3 text-left'>Activo</th>
+                <th className='p-3 text-left'>Action</th>
               </tr>
             </thead>
             <tbody>
                 {categories.map((category, index) => {
                 return (
                   <tr key={index} class='bg-gray-100'>
-                    <td class='p-3'>
-                      <div class='flex align-items-center'>
-                        <div class='ml-3'>
-                          <div class='text-black font-bold'>
-                            {category.category_name}
-                          </div>
-                      
-                        </div>
-                      </div>
-                    </td>
-                    <td class='p-3 text-black'>{category.price}</td>
-                    <td class='p-3 text-black'></td>
-                    <td className='p-3 flex flex-row'>
+                    <td class='p-3 text-black'>{category.customer.full_name}</td>
+                    <td class='p-3 text-black'>{category.employee.full_name}</td>
+                    <td class='p-3 text-black'>{category.category.category_name}</td>
+                    <td class='p-3 text-black'>{category.start_date}</td>
+                    <td class='p-3 text-black'>{category.workday}</td>
+                    {category.active ? (<td class='p-3 text-black'>Si</td>) : (
+                      <td class='p-3 text-black'>No</td>
+                    )}
+                    {user.role === 'admin' ? (
+                      <>
+                      <td className='p-3 flex flex-row'>
                       <Link 
                       className='text-gray-600 hover:text-cyan-300'
-                      to={`/servicios/edit?id=${category.id}`}>
+                      to={`/calendar/edit?id=${category.id}`}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -87,6 +116,9 @@ export const Calendario = () => {
                         </svg>
                       </div>
                     </td>
+                      </>
+                    ) : null}
+                    
                   </tr>
                 )
               })}

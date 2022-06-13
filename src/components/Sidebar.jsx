@@ -1,14 +1,10 @@
-import React from 'react'
-import { useState } from 'react'
 import { SidebarItems } from './SidebarItems'
 import User from '../img/User.png'
 import Logo2 from '../img/Logo2.png'
+import { useAuth } from '../context/auth-context'
 
 export const Sidebar = () => {
-  const [datos] = useState({
-    nombre: 'Aaron',
-    usuario: 'Administrador',
-  })
+  const {user} = useAuth();
   return (
     <>
       <aside className='ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-gradient-to-b from-blue-100 to-rose-100 transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]'>
@@ -32,9 +28,9 @@ export const Sidebar = () => {
               class='w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28'
             />
             <h5 class='hidden mt-4 text-xl font-semibold text-gray-600 lg:block'>
-              {datos.nombre}
+              {user.nickname}
             </h5>
-            <span class='hidden text-gray-400 lg:block'>{datos.usuario}</span>
+            <span class='hidden text-gray-400 lg:block'>{user.role}</span>
           </div>
         </div>
         {/* menu */}

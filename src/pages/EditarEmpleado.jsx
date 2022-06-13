@@ -1,7 +1,49 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { showEmployee } from '../services/employee-service';
+import { updateEmployee } from '../services/users-service';
 
 export const EditarEmpleado = () => {
+  const [form, setForm] = useState(null);
+  const [form1, setForm1] = useState(null);
+  const [employee, setEmployee] = useState(null);
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("id");
+    showEmployee(id).then((user) => {
+      setEmployee(user);
+      setForm({
+        email: user.email,
+        phone: user.phone,
+        user_type: "employee",
+        });
+      setForm1({
+        full_name: user.full_name,
+        country: user.country,
+        region: user.region,
+        document_id: user.document_id,
+        contact: user.contact,
+        experience: user.experience,
+        biografy: user.biografy,
+        birth_date: user.birth_date,
+      });
+    });
+  }, []);
+  function handleSubmit(event) {
+    event.preventDefault();
+    
+    updateEmployee(form1, employee.user_id);
+  }
+
+  function handleFormChange(event) {
+    const { name, value } = event.target;
+    setForm({ ...form, [name]: value });
+  }
+
+  function handleFormChange1(event) {
+    const { name, value } = event.target;
+    setForm1({ ...form1, [name]: value });
+  }
+
   return (
     <>
       <div class='ml-auto mb-6 mt-6 lg:w-[100%] xl:w-[100%] 2xl:w-[100%]'>

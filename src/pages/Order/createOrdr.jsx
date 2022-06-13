@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createCategory } from "../../services/categories-services";
+import { createOrder } from "../../services/order-details-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -24,18 +24,23 @@ const Container = styled.div`
   height: 100vh;
 `;
 
-export default function CrearServicio() {
+export default function CrearOrder() {
   const [form, setForm] = useState({
-    category_name: "",
-    price: "",
-    region: "",
+    category_id: "",
+    employee_id: "",
+    customer_id: "",
+    address: "",
+    start_date: "",
+    workday: "",
   });
+ const id = new URLSearchParams(window.location.search).get("id");
+ const navigate = useNavigate();
 
-  const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
-    createCategory(form).then(()=>{
-      navigate("/gestion")
+    createOrder(form, id).then(()=>{
+      navigate("/calendario")
     })
   }
 
@@ -50,31 +55,55 @@ export default function CrearServicio() {
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
       <Input
-        id="category_name"
-        label="Nombre de servicio"
-        type="text"
-        placeholder="Limpieza de hogar"
-        value={form.category_name}
+        id="category_id"
+        label="ID de servicio"
+        type="number"
+        placeholder="1"
+        value={form.category_id}
         onChange={handleFormChange}
       />
       <Input
-        id="price"
-        label="Precio de servicio"
-        type="text"
-        placeholder="3000"
-        value={form.price}
+        id="employee_id"
+        label="ID de empelado"
+        type="number"
+        placeholder="1"
+        value={form.employee_id}
         onChange={handleFormChange}
       />
       <Input
-        id="region"
-        label="Precio de servicio"
+        id="customer_id"
+        label="ID de cliente"
+        type="number"
+        placeholder="1"
+        value={form.customer_id}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="address"
+        label="Dircción"
         type="text"
-        placeholder="Colombia"
-        value={form.region}
+        placeholder="1"
+        value={form.address}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="start_date"
+        label="Fecha de inicio"
+        type="text"
+        placeholder="03-04-2022"
+        value={form.start_date}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="workday"
+        label="Tipo de jornada"
+        type="text"
+        placeholder="1"
+        value={form.workday}
         onChange={handleFormChange}
       />
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear
+        Actualizar
       </button>
     </StyledForm>) : (<div>Cargando....</div>)}
     </Container>

@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
-import { cupones } from '../data/CuponesData'
+import { useAuth } from '../context/auth-context'
+import { deleteCupon, indexCupon } from '../services/cupon-service'
+import { NewLink } from './cupons'
 
-export const Cupones = () => {
+ const Cupones = () => {
+  const { user} = useAuth();
+  const [cupons, setCupons] = useState(null);
+  useEffect(()=>{
+    indexCupon().then(setCupons)
+  },[])
+  function handleDelete(id){
+    deleteCupon(id).then(() => {
+      window.location.reload();
+     });
+  }
   return (
     <>
       <Sidebar></Sidebar>
@@ -11,24 +24,31 @@ export const Cupones = () => {
         <Navegador titulo='Cupones'></Navegador>
         <div class='px-6 pt-6 2xl:container'>
           <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-4'>
-            {cupones.map((cupon, index) => {
+          {
+            cupons ? (
+              <>
+                {cupons.map((cupon, index) => {
               return (
                 <div class='lg:h-full py-8 px-6 rounded-xl border border-gray-300 bg-white'>
                   <div class='mt-6'>
                     <h5 class='text-xl text-gray-700 text-center'>
-                      Tiempo restante:{cupon.tiempo}
+                      Fecha limite: {cupon.end_date}
                     </h5>
                     <div class='mt-2 flex justify-center gap-4'>
                       <h3 class='text-3xl font-bold text-gray-700'>
-                        {cupon.desc}
+                        {cupon.name}
                       </h3>
                     </div>
-                    <div class='mt-2 flex justify-center gap-4'>
+                    {user.role === 'admin' ? (
+                      <>
+<div class='mt-2 flex justify-center gap-4'>
+                    <NewLink to={`/cupones/modify_cupon/?id=${cupon.id}`}>
                       <button class='block text-center text-gray-500 hover:text-cyan-400'>
                         MODIFICAR
                       </button>
+                    </NewLink>
                       <br />
-                      <button class='block text-center text-gray-500 hover:text-cyan-400'>
+                      <button onClick={()=>handleDelete(cupon.id)} class='block text-center text-gray-500 hover:text-cyan-400'>
                         ELIMINAR
                       </button>
                       <br />
@@ -36,10 +56,17 @@ export const Cupones = () => {
                         NOTIFICAR
                       </button>
                     </div>
+                      </>
+                    ) : null}
+                    
                   </div>
                 </div>
               )
             })}
+              </>
+            ) : null
+          }
+            <Link to={'/cupones/create_cupon'}>
             <a href='/#'>
               <div class='lg:h-full py-11 px-6 text-gray-600 rounded-xl border border-gray-200 bg-gradient-to-r from-sky-600 to-cyan-400  hover:text-white'>
                 <div class='mt-6 mt-2 flex justify-center gap-4'>
@@ -59,10 +86,12 @@ export const Cupones = () => {
                   </svg>
                 </div>
               </div>
-            </a>
+            </a></Link>
           </div>
         </div>
       </div>
     </>
   )
 }
+
+export default Cupones;

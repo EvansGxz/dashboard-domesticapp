@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export const BuscarClientes = () => {
   return (
@@ -46,6 +47,14 @@ export const BuscarClientes = () => {
             ></path>
           </svg>
         </button>
+        <Link to={'/clientes/create'}>
+          <a
+            href='/#'
+            class='relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'
+          >
+            Crear Cliente
+          </a>
+        </Link>
       </div>
       <br></br>
     </>

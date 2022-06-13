@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom'
 import { BuscarClientes } from '../components/BuscarClientes'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
+import { useAuth } from '../context/auth-context'
 import { indexCustomer } from '../services/customer-services'
 import { deleteUser } from '../services/users-service'
 
 const Clientes = () => {
+  const {user}= useAuth();
   const [customers, setCustomers] = useState(null);
   useEffect(() => {
     indexCustomer().then(setCustomers)
@@ -24,6 +26,7 @@ const Clientes = () => {
         <Navegador titulo='Clientes'></Navegador>
         <div class='px-6 pt-6 2xl:container'>
           <BuscarClientes></BuscarClientes>
+          
           {/* tabla */}
           {
             customers ? (
@@ -72,7 +75,9 @@ const Clientes = () => {
                     {cliente.customer.encargado ? (
                       <td class='p-3 text-black'>{cliente.customer.encargado}</td>
                     ) : (<td class='p-3 text-black'>Nadie</td>)}
-                    <td className='p-3 flex flex-row'>
+                    {user.role === 'admin' ? (
+                      <>
+<td className='p-3 flex flex-row'>
                       <Link 
                       className='text-gray-600 hover:text-cyan-300'
                       to={`/clientes/edit?id=${cliente.customer.user_id}`}>
@@ -110,6 +115,9 @@ const Clientes = () => {
                         </svg>
                       </div>
                     </td>
+                      </>
+                    ) : null}
+                    
                   </tr>
                 )
               })}
