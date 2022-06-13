@@ -10,5 +10,4 @@ export async function showCuponUser(CuponUserID) {
 
 export async function createCuponUser(newCuponUser) {
   return await apiFetch('cupon_users/', { body: newCuponUser });
-   
 }
