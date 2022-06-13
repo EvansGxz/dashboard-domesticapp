@@ -18,6 +18,7 @@ import { Estadisticas } from "../pages/Estadisticas";
 import { GestionAvanzada } from "../pages/GestionAvanzada";
 import CrearOrder from "../pages/Order/createOrdr";
 import EditarOrder from "../pages/Order/editOrder";
+import { Reportes } from "../pages/Reportes";
 import CrearServicio from "../pages/Servicios/crearServicio";
 import EditarServicio from "../pages/Servicios/editarServicio";
 
@@ -40,7 +41,7 @@ function Authenticated() {
         <Route path="/cupones/create_cupon" element={<CreateCupon/>} />
         <Route path="/cupones/modify_cupon" element={<ModifyCupon/>} />
         <Route path="/cupones/delete_cupon" element={<DeleteCupon/>} />
-        <Route path="/reportes" element={<h2>Reportes y eventualidades</h2>} />
+        <Route path="/reportes" element={<Reportes/>} />
         <Route path="/empleados" element={<Empleados/>} />
         <Route path="/empleados/edit" element={<EditEmployee/>} />
         <Route path="/empleados/create" element={<CreateEmployee/>} />
