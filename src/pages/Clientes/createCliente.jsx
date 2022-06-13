@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
-import { showCustomer, updateCustomer } from "../../services/customer-services";
+import { useState } from "react";
+import { updateCustomer } from "../../services/customer-services";
 import { createUser1 } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
