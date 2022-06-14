@@ -2,20 +2,21 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createCupon } from "../../services/cupon-service";
-import { Form, Input, Title } from "../../styles/views/Login";
+import { Input } from "../../styles/views/Login";
 
-const Container = styled.div`
-  display: flex;
+const StyledForm = styled.form`
   flex-direction: column;
-  width: 480px;
-  background-color: $fff;
-  margin: 0 auto;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 100vh;
+  gap: 2rem;
+  min-width: 10vw;
 `;
 
+const Container = styled.div`
+  width: 25vw;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-content: center;
+  float: inline-start;
+`;
 function CreateCupon(){
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -35,9 +36,7 @@ function CreateCupon(){
   }
   return (
     <Container>
-      
-      <Title>Crear cupón</Title>
-      <Form onSubmit={handleSubmit}>
+      <StyledForm onSubmit={handleSubmit}>
         <Input
           id="name"
           label="Codigo"
@@ -65,9 +64,9 @@ function CreateCupon(){
         />
 
         <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-          Iniciar Sesión
+          Crear Cupón
         </button>
-      </Form>
+      </StyledForm>
     </Container>
   );
 }

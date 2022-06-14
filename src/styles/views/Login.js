@@ -32,7 +32,7 @@ const Error = styled.p`
 `;
 
 export const StyledInput = styled.input`
-  width: 100%;
+  width: 80%;
   padding: 1rem 1.5rem;
   border-radius: 0.5rem;
   border: 1px solid ${gris};

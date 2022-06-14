@@ -6,15 +6,23 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
 
+const Container = styled.div`
+  width: 300px;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-content: center;
+  float: inline-start;
+`;
+
 export default function CrearMod() {
   const [form, setForm] = useState({
     email: "",
+    role: "",
     user_type: "admin",
     password: "",
     password_confirmation: "",
@@ -45,6 +53,7 @@ export default function CrearMod() {
     <>
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
+      <Container>
       <Input
           id="email"
           label="Email"
@@ -54,6 +63,14 @@ export default function CrearMod() {
           onChange={handleFormChange}
         />
       <Input
+        id="role"
+        label="Rol"
+        type="text"
+        placeholder="admin"
+        value={form.role}
+        onChange={handleFormChange}
+      />
+      <Input
         id="password"
         label="Contraseña"
         type="password"
@@ -61,6 +78,9 @@ export default function CrearMod() {
         value={form.password}
         onChange={handleFormChange}
       />
+      </Container>
+      <Container>
+        
       <Input
         id="password_confirmation"
         label="Confirmar Contraseña"
@@ -78,10 +98,12 @@ export default function CrearMod() {
         onChange={handleFormChange1}
       />
 
-      <button type="submit">
-        Actualizar
+      <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Administrador
       </button>
+     </Container> 
     </StyledForm>) : (<div>Cargando....</div>)}
+    
     </>
   );
 }

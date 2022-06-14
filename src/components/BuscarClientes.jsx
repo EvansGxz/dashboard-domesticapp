@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom'
 export const BuscarClientes = () => {
   return (
     <>
-      <div class='flex space-x-4'>
+      <div className='flex space-x-4'>
         {/* search bar  */}
-        <div hidden class='md:block'>
-          <div class='relative flex items-center text-gray-400 focus-within:text-cyan-400'>
-            <span class='absolute left-4 h-6 flex items-center pr-3 border-r border-cyan-400'>
+        <div hidden className='md:block'>
+          <div className='relative flex items-center text-gray-400 focus-within:text-cyan-400'>
+            <span className='absolute left-4 h-6 flex items-center pr-3 border-r border-cyan-400'>
               <svg
                 xmlns='http://ww50w3.org/2000/svg'
-                class='w-4 fill-current'
+                className='w-4 fill-current'
                 viewBox='0 0 35.997 36.004'
               >
                 <path
@@ -26,18 +26,18 @@ export const BuscarClientes = () => {
               name='leadingIcon'
               id='leadingIcon'
               placeholder='Search here'
-              class='w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-cyan-400 focus:border-cyan-300 transition'
+              className='w-full pl-14 pr-4 py-2.5 rounded-xl text-sm text-gray-600 outline-none border border-cyan-400 focus:border-cyan-300 transition'
             />
           </div>
         </div>
         {/* search bar */}
         <button
           aria-label='search'
-          class='w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden'
+          className='w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200 md:hidden'
         >
           <svg
             xmlns='http://ww50w3.org/2000/svg'
-            class='w-4 mx-auto fill-current text-gray-600'
+            className='w-4 mx-auto fill-current text-gray-600'
             viewBox='0 0 35.997 36.004'
           >
             <path
@@ -50,7 +50,7 @@ export const BuscarClientes = () => {
         <Link to={'/clientes/create'}>
           <a
             href='/#'
-            class='relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'
+            className='relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'
           >
             Crear Cliente
           </a>

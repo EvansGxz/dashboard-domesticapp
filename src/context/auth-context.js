@@ -23,7 +23,7 @@ function AuthProvider({ children }) {
   function handleLogin(credentials) {
     return login(credentials).then((user) => {
       setUser(user);
-      navigate("/home");
+      navigate("/calendar");
     });
   }
 

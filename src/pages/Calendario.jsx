@@ -1,137 +1,164 @@
+import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
-import { useAuth } from '../context/auth-context'
 import { deleteOrder, indexOrder } from '../services/order-details-services'
+import CrearOrder from './Order/createOrdr'
+import $ from 'jquery'
+
+
 
 export const Calendario = () => {
-  const { user } = useAuth();
+  $.DataTable = require('datatables.net')
   const [categories, setCategories] = useState(null);
   useEffect(() => {
     indexOrder().then(setCategories)
   }, [setCategories])
-
+  
   function handleDelete(id){
     deleteOrder(id).then(() => {
       window.location.reload();
      });}
+     if (categories){
+      $('#dataTable').DataTable()
+     }
   return (
     <>
       <Sidebar></Sidebar>
-      <div class='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
+      <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Servicios dados'></Navegador>
-        <div class='px-6 2xl:container'>
-          <div class='grid gap-6'>
-            <div class='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
-              <div class=''>
-                <div class=''>
-                  <div class='ml-60 flex justify-center gap-4'>
-                    <h3 class='text-3xl font-bold text-gray-700'>Servicios</h3>
-                    {user.role === 'admin' ? (
-                      <>
-                          <Link to={'/calendar/create'}>
-                          <a
-                            href='/#'
-                            class='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'
-                          >
-                            Crear Servicio
-                          </a>
-                        </Link>
-                      </>
-                    ) : null}
-                    
+        <div className='px-6 2xl:container'>
+          <div className='grid gap-6'>
+            <div className='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
+              <div className=''>
+                <div className=''>
+                  <div className='ml-60 flex justify-center gap-4'>
+                    <h3 className='text-3xl font-bold text-gray-700'>Servicios</h3>                    
+                    <input type="checkbox" id="btn-modal"/>
+                    <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Order</label>
+                    <div class="modal">
+                      <div class="contenedor">
+                        <header>Crear Order</header>
+                        <label className="contenedor_label" htmlFor="btn-modal">X</label>
+                        <div className="contenido">
+                          <ContainerAll>
+                            <CrearOrder/>
+                          </ContainerAll>
+                        </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class='px-6 pt-6 2xl:container'>
-          <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
+        </div>      
+
           {
             categories ? (
               <>
-              <table class='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
-            <thead class='text-black'>
-              <tr>
-                <th class='p-3 text-left'>Cliente</th>
-                <th class='p-3 text-left'>Empleado</th>
-                <th class='p-3 text-left'>Servcio</th>
-                <th className='p-3 text-left'>Fecha</th>
-                <th className='p-3 text-left'>Jornada</th>
-                <th className='p-3 text-left'>Activo</th>
-                <th className='p-3 text-left'>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-                {categories.map((category, index) => {
-                return (
-                  <tr key={index} class='bg-gray-100'>
-                    <td class='p-3 text-black'>{category.customer.full_name}</td>
-                    <td class='p-3 text-black'>{category.employee.full_name}</td>
-                    <td class='p-3 text-black'>{category.category.category_name}</td>
-                    <td class='p-3 text-black'>{category.start_date}</td>
-                    <td class='p-3 text-black'>{category.workday}</td>
-                    {category.active ? (<td class='p-3 text-black'>Si</td>) : (
-                      <td class='p-3 text-black'>No</td>
-                    )}
-                    {user.role === 'admin' ? (
-                      <>
-                      <td className='p-3 flex flex-row'>
-                      <Link 
-                      className='text-gray-600 hover:text-cyan-300'
-                      to={`/calendar/edit?id=${category.id}`}>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-6 w-6'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                          stroke-width='2'
-                        >
-                          <path
-                            stroke-linecap='round'
-                            stroke-linejoin='round'
-                            d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
-                          />
-                        </svg>
-                      </Link>
-                      <div id={category.id} onClick={()=>handleDelete(category.id)}
-                        className='text-gray-600 hover:text-cyan-300 ml-4'
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-6 w-6'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                          stroke-width='2'
-                        >
-                          <path
-                            stroke-linecap='round'
-                            stroke-linejoin='round'
-                            d='M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16'
-                          />
-                        </svg>
+                <div class="container mx-auto">
+                  <div class="flex flex-col">
+                    <div class="w-full">
+                      <div class="p-4 border-b border-gray-200 shadow">
+                      
+                        <table id="dataTable" class="p-4">
+                          <thead class="bg-gray-50">
+                              <tr>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    ID
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Cliente
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Empleado
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Servcio
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Fecha
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Servcio
+                                  </th>
+                                  <th class="p-8 text-xs text-gray-500">
+                                    Activo
+                                  </th>
+                                  <th class="px-6 py-2 text-xs text-gray-500">
+                                      Edit
+                                  </th>
+                                  <th class="px-6 py-2 text-xs text-gray-500">
+                                      Delete
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody class="bg-white">
+                            {categories.map((category, index) => {
+                            return (
+                              <>
+                              <tr key={index} class="whitespace-nowrap">
+                                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                                {category.id}
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="text-sm text-gray-900">
+                                                    {category.customer.full_name}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div class="text-sm text-gray-500">{category.employee.full_name}</div>
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                                {category.category.category_name}
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                                {category.start_date}
+                                                </td>
+                                                <td class="px-6 py-4 text-sm text-center text-gray-500">
+                                                {category.workday}
+                                                </td>
+                                                {category.active ? (<td className="px-6 py-4 text-sm text-center text-gray-500">Si</td>) : (
+                                                <td className="px-6 py-4 text-sm text-center text-gray-500">No</td>
+                                                  )}
+                                                <td class="px-6 py-4 text-center">         
+                                                    <Link 
+                                                  className='px-4 py-1 text-sm text-white bg-blue-400 rounded'
+                                                  to={`/calendar/edit?id=${category.id}`}>Edit</Link>
+                                                </td>
+                                                <div id={category.id} onClick={()=>handleDelete(category.id)}>
+                                                <td class="px-6 py-4 text-center">
+                                                    <div href="#" class="px-4 py-1 text-sm text-white bg-red-400 rounded">Delete</div>
+                                                </td></div>
+                                            </tr>
+                                            </>)
+                          })}
+                          </tbody>
+                        </table>
                       </div>
-                    </td>
-                      </>
-                    ) : null}
-                    
-                  </tr>
-                )
-              })}
-              </tbody>
-          </table>
+                    </div>
+                  </div>
+                </div>
               </>
             ) : (
               <h2>No se encontraron Clientes</h2>
             )
-          }   
-          </div>
-        </div>
-      </div>
+          } </div>  
+    </div>
     </>
   )
 }
+
+export const ContainerAll = styled.div`
+  flex-direction: column;
+  width: 50vw;
+  background-color: $fff;
+  margin: 0 auto;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-content: center;
+  height: 50vh;
+  padding-left: 18rem;
+  padding-top: 5rem;
+`;

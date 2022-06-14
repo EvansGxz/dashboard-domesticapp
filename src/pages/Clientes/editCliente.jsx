@@ -81,7 +81,7 @@ export default function EditarCliente() {
         />
       <Input
         id="full_name"
-        label="Nompre Personal/Empresa"
+        label="Nombre Personal/Empresa"
         type="text"
         placeholder="John Doe"
         value={form1.full_name}

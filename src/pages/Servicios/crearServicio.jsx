@@ -6,22 +6,17 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-  background-color: $fff;
+  width: 300px;
   margin: 0 auto;
-  border-radius: 30px;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
+  float: inline-start;
 `;
 
 export default function CrearServicio() {
@@ -65,18 +60,26 @@ export default function CrearServicio() {
         value={form.price}
         onChange={handleFormChange}
       />
-      <Input
-        id="region"
-        label="Precio de servicio"
-        type="text"
-        placeholder="Colombia"
-        value={form.region}
-        onChange={handleFormChange}
-      />
-      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear
+      <StyleSelect id="region" name="region" onChange={handleFormChange}>
+          <option value="">Seleccione</option>
+          <option value="Colombia">Colombia</option>
+          <option value="España">España</option>
+          <option value="Canada">Canadá</option>
+        </StyleSelect>
+      <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Servicio
       </button>
     </StyledForm>) : (<div>Cargando....</div>)}
     </Container>
   );
 }
+
+export const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;

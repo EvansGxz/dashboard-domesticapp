@@ -82,7 +82,7 @@ export default function EditarEmpleado() {
         />
       <Input
         id="full_name"
-        label="Nompre Personal/Empresa"
+        label="Nombre Completo de Empleado"
         type="text"
         placeholder="John Doe"
         value={form1.full_name}

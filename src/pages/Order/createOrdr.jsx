@@ -6,22 +6,17 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-  background-color: $fff;
+  width: 300px;
   margin: 0 auto;
-  border-radius: 30px;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
+  float: inline-start;
 `;
 
 export default function CrearOrder() {
@@ -51,9 +46,11 @@ export default function CrearOrder() {
   }
 
   return (
-    <Container>
+    <>
     {form ? (
+      <>
       <StyledForm onSubmit={handleSubmit}>
+      <Container>
       <Input
         id="category_id"
         label="ID de servicio"
@@ -78,6 +75,8 @@ export default function CrearOrder() {
         value={form.customer_id}
         onChange={handleFormChange}
       />
+      </Container>
+      <Container>
       <Input
         id="address"
         label="Dircción"
@@ -103,9 +102,13 @@ export default function CrearOrder() {
         onChange={handleFormChange}
       />
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Actualizar
+        Crear
       </button>
-    </StyledForm>) : (<div>Cargando....</div>)}
-    </Container>
+      </Container>
+    </StyledForm>
+    </>
+    ) : (<div>Cargando....</div>)}
+    
+    </>
   );
 }

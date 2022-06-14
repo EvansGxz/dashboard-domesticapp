@@ -21,6 +21,7 @@ import EditarOrder from "../pages/Order/editOrder";
 import { Reportes } from "../pages/Reportes";
 import CrearServicio from "../pages/Servicios/crearServicio";
 import EditarServicio from "../pages/Servicios/editarServicio";
+import { TblFunc } from "../pages/table";
 
 
 function Authenticated() {
@@ -33,6 +34,7 @@ function Authenticated() {
         <Route path="/calendar/edit" element={<EditarOrder/>} />
         <Route path="/calendar/create" element={<CrearOrder/>} />
 
+        <Route path="/table" element={<TblFunc/>} />
         <Route path="/navbar" element={<Calendario/>} />
         <Route path="/clientes" element={<Clientes/>} />
         <Route path="/clientes/edit" element={<EditarCliente/>} />
