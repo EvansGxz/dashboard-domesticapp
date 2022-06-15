@@ -16,12 +16,16 @@ import EditEmployee from "../pages/Empleado/editEmloyee";
 import Empleados from "../pages/Empleados";
 import { Estadisticas } from "../pages/Estadisticas";
 import { GestionAvanzada } from "../pages/GestionAvanzada";
+import Habilidades from "../pages/Habilidades";
+import EditarHEabilidad from "../pages/Habilidades Empleados/editHE";
+import EditarHabilidad from "../pages/Habilidades/editHabilidad";
 import CrearOrder from "../pages/Order/createOrdr";
 import EditarOrder from "../pages/Order/editOrder";
 import { Reportes } from "../pages/Reportes";
 import CrearServicio from "../pages/Servicios/crearServicio";
 import EditarServicio from "../pages/Servicios/editarServicio";
-import { TblFunc } from "../pages/table";
+import Tareas from "../pages/Tareas";
+import EditarTarea from "../pages/Tareas/edtTarea";
 
 
 function Authenticated() {
@@ -34,7 +38,12 @@ function Authenticated() {
         <Route path="/calendar/edit" element={<EditarOrder/>} />
         <Route path="/calendar/create" element={<CrearOrder/>} />
 
-        <Route path="/table" element={<TblFunc/>} />
+        <Route path="/habilidades" element={<Habilidades/>} />
+        <Route path="/habilidades/edit" element={<EditarHabilidad/>} />
+        <Route path="/habilidades_he/edit" element={<EditarHEabilidad/>} />
+
+        <Route path="/tareas" element={<Tareas/>} />
+        <Route path="/tareas/edit" element={<EditarTarea/>} />
         <Route path="/navbar" element={<Calendario/>} />
         <Route path="/clientes" element={<Clientes/>} />
         <Route path="/clientes/edit" element={<EditarCliente/>} />

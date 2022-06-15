@@ -221,7 +221,20 @@ export const GestionAvanzada = () => {
                         </div>
                       </div>
                     </td>
-                    <td class='p-3 text-black'>{category.price}</td>
+                    {
+                      category.region === "Colombia" ? (
+                         <td class='p-3 text-black'>{category.price} COP</td>
+                      ) : (
+                        category.region === "España" ? (
+                          <td class='p-3 text-black'>{category.price} €</td>
+                        ) : (
+                          category.region === "Canada" ? (
+                            <td class='p-3 text-black'>$ {category.price}</td>
+                          ) : null
+                        )
+                      )
+                    }
+                   
                     <td class='p-3 text-black'>{category.region}</td>
                     <td className='p-3 flex flex-row'>
                       <Link 

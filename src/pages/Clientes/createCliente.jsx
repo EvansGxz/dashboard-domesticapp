@@ -59,7 +59,7 @@ export default function CrearCliente() {
   }
 
   return (
-    <>
+    <ContainerAll>
     
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
@@ -181,7 +181,7 @@ export default function CrearCliente() {
     </Container>  
     </StyledForm>) : (<div>Cargando....</div>)}
     
-    </>
+    </ContainerAll>
   );
 }
 export const StyleSelect = styled.select`
@@ -193,7 +193,16 @@ export const StyleSelect = styled.select`
   color: black;
   margin: 1rem 0;
 `;
-
+const ContainerAll = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 1080px;
+  margin: 6rem auto 0 12rem;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-content: center;
+  height: 55vh;
+`;
  const StyleSelect1 = styled.select`
   width: 25%;
   border: 1px solid #787b82;

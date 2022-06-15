@@ -4,26 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { showCustomer, updateCustomer } from "../../services/customer-services";
 import { Input } from "../../styles/views/Login";
 
-
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  min-width: 258px;
-`;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-  background-color: $fff;
-  margin: 0 auto;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 100vh;
-`;
-
 export default function EditarCliente() {
   const navigate = useNavigate();
   const [form, setForm] = useState(null);
@@ -35,6 +15,7 @@ export default function EditarCliente() {
       setEmployee(user);
       setForm({
         email: user.email,
+        lada: user.lada,
         phone: user.phone,
         user_type: "customer",
         });
@@ -68,9 +49,10 @@ export default function EditarCliente() {
   }
 
   return (
-    <Container>
+    <ContainerAll>
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
+      <Container>
       <Input
           id="email"
           label="Email"
@@ -92,28 +74,26 @@ export default function EditarCliente() {
         id="region"
         label="País"
         type="text"
-        placeholder="Colombia"
+        placeholder="Calle 53, Bogotá, Colombia"
         value={form1.region}
         onChange={handleFormChange1}
       />
-
-      <Input
-        id="country"
-        label="Dirección"
-        type="text"
-        placeholder="Calle 53, Bogotá, Colombia"
-        value={form1.country}
-        onChange={handleFormChange1}
-      />
+      <StyleSelect id="country" name="country" onChange={handleFormChange1}>
+        <option value="">{form1.country}</option>
+        <option value="Colombia">Colombia</option>
+        <option value="España">España</option>
+        <option value="Canada">Canadá</option>
+      </StyleSelect>
 
       <Input
         id="birth_date"
         label="Fecha de nacimiento"
-        type="text"
+        type="date"
         placeholder="dd-mm-yyyy"
         value={form1.birth_date}
         onChange={handleFormChange1}
-      />
+      /></Container>
+      <Container>
       <Input
         id="document_id"
         label="Numero de documento"
@@ -148,6 +128,12 @@ export default function EditarCliente() {
         value={form1.encargado}
         onChange={handleFormChange1}
       />
+      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange}>
+        <option value="">{form.lada}</option>
+        <option value="+57">+57</option>
+        <option value="+34">+34</option>
+        <option value="+1">+1</option>
+      </StyleSelect1>
 
       <Input
         id="phone"
@@ -161,7 +147,52 @@ export default function EditarCliente() {
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Actualizar
       </button>
+      </Container>
     </StyledForm>) : (<div>Cargando....</div>)}
-    </Container>
+    </ContainerAll>
   );
 }
+
+const StyledForm = styled.form`
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 258px;
+`;
+
+const Container = styled.div`
+  margin: 0 auto;
+  justify-content: space-between;
+  align-content: center;
+  float: inline-start;
+`;
+
+const ContainerAll = styled.div`
+   display: flex;
+  flex-direction: column;
+  width: 720px;
+  margin: 0 auto;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-content: center;
+  height: 100vh;
+`;
+
+const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;
+
+ const StyleSelect1 = styled.select`
+  width: 25%;
+  border: 1px solid #787b82;
+  padding: 1.225rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;

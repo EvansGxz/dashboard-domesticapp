@@ -7,22 +7,16 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-  background-color: $fff;
   margin: 0 auto;
-  border-radius: 30px;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
+  float: inline-start;
 `;
 
 export default function EditarEmpleado() {
@@ -36,6 +30,7 @@ export default function EditarEmpleado() {
       setEmployee(user);
       setForm({
         email: user.email,
+        lada: user.lada,
         phone: user.phone,
         user_type: "employee",
         });
@@ -69,9 +64,10 @@ export default function EditarEmpleado() {
   }
 
   return (
-    <Container>
+    <ContainerAll>
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
+      <Container>
       <Input
           id="email"
           label="Email"
@@ -114,7 +110,8 @@ export default function EditarEmpleado() {
         placeholder="dd-mm-yyyy"
         value={form1.birth_date}
         onChange={handleFormChange1}
-      />
+      /></Container>
+      <Container>
       <Input
         id="document_id"
         label="Numero de documento"
@@ -140,16 +137,25 @@ export default function EditarEmpleado() {
         value={form1.biografy}
         onChange={handleFormChange1}
       />
-
-      <Input
-        id="experience"
-        label="Experiencia en años"
-        type="text"
-        placeholder="xxxxxxx"
-        value={form1.experience}
-        onChange={handleFormChange1}
-      />
-
+      <StyleSelect2 id="experience" name="experience" onChange={handleFormChange1}>
+        <option value="">{form1.experience}</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </StyleSelect2>
+      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange}>
+        <option value="">{form.lada}</option>
+        <option value="+57">+57</option>
+        <option value="+34">+34</option>
+        <option value="+1">+1</option>
+      </StyleSelect1>
       <Input
         id="phone"
         label="Celular (10 digitos)"
@@ -161,8 +167,38 @@ export default function EditarEmpleado() {
 
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Actualizar
-      </button>
+      </button></Container>
     </StyledForm>) : (<div>Cargando....</div>)}
-    </Container>
+    </ContainerAll>
   );
 }
+
+const ContainerAll = styled.div`
+   display: flex;
+  flex-direction: column;
+  width: 720px;
+  margin: 0 auto;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-content: center;
+  height: 100vh;
+`;
+
+ const StyleSelect1 = styled.select`
+  width: 25%;
+  border: 1px solid #787b82;
+  padding: 1.225rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;
+const StyleSelect2 = styled.select`
+  width: 50%;
+  border: 1px solid #787b82;
+  padding: 1.225rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;

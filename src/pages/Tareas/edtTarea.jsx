@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createCategory } from "../../services/categories-services";
+import { createService, showService } from "../../services/services-services";
+import { indexCategories } from "../../services/categories-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -19,18 +20,26 @@ const Container = styled.div`
   float: inline-start;
 `;
 
-export default function CrearServicio() {
-  const [form, setForm] = useState({
-    category_name: "",
-    price: "",
-    region: "",
-  });
-
+export default function EditarTarea() {
+  const [categories, setCategories] = useState(null);
+  const [form, setForm] = useState(null);
+  const id = new URLSearchParams(window.location.search).get("id");
+useEffect(() => {
+  showService(id).then(service => {
+    setForm({
+      service_name: service.service_name,
+      category_id: service.category_id,
+      category_name: service.category_name,
+    })
+  })
+  indexCategories().then(setCategories)
+}, [id])
   const navigate = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
-    createCategory(form).then(()=>{
-      navigate("/gestion")
+    console.log(form);
+    createService({service_name: form.service_name, category_id: form.category_id}).then(()=>{
+      navigate("/tareas")
     })
   }
 
@@ -46,26 +55,25 @@ export default function CrearServicio() {
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
       <Input
-        id="category_name"
-        label="Nombre de servicio"
+        id="service_name"
+        label="Nombre de la tarea"
         type="text"
-        placeholder="Limpieza de hogar"
-        value={form.category_name}
+        placeholder="Barrer"
+        value={form.service_name}
         onChange={handleFormChange}
       />
-      <Input
-        id="price"
-        label="Precio de servicio"
-        type="text"
-        placeholder="3000"
-        value={form.price}
-        onChange={handleFormChange}
-      />
-      <StyleSelect id="region" name="region" onChange={handleFormChange}>
-          <option value="">Seleccione</option>
-          <option value="Colombia">Colombia</option>
-          <option value="España">España</option>
-          <option value="Canada">Canadá</option>
+
+      <StyleSelect id="category_id" name="category_id" onChange={handleFormChange}>
+          <option value="">{form.category_name}</option>
+          {categories ? (
+            categories.map((category) => (
+              <>
+              {console.log(category)}
+              <option value={category.id}>{category.category_name}</option></>
+            ))
+            
+          ) : null}
+          
         </StyleSelect>
       <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Crear Servicio

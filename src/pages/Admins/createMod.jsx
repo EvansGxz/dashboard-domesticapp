@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { updateAdmin } from "../../services/admin-services";
 import { createUser1 } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
@@ -13,7 +14,7 @@ const StyledForm = styled.form`
 
 const Container = styled.div`
   width: 300px;
-  margin: 0 auto;
+  margin: 6rem 2rem;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
@@ -22,21 +23,22 @@ const Container = styled.div`
 export default function CrearMod() {
   const [form, setForm] = useState({
     email: "",
-    role: "",
     user_type: "admin",
     password: "",
     password_confirmation: "",
   });
   const [form1, setForm1] = useState({
     nickname: "",
+    role: "",
   });
-
+  const navigate = useNavigate();
   function handleSubmit(event) {
-    event.preventDefault();
     event.preventDefault();
     createUser1(form).then((user) => {
       updateAdmin(form1, user.user_id);
+      navigate("/gestion");
     });
+    
   }
 
   function handleFormChange(event) {
@@ -62,14 +64,12 @@ export default function CrearMod() {
           value={form.email}
           onChange={handleFormChange}
         />
-      <Input
-        id="role"
-        label="Rol"
-        type="text"
-        placeholder="admin"
-        value={form.role}
-        onChange={handleFormChange}
-      />
+        <StyleSelect id="role" name="role" onChange={handleFormChange1}>
+          <option value="">--seleccionar rol--</option>
+          <option value="admin">Admnistrador</option>
+          <option value="mod">Miembro del Equipo</option>
+          <option value="spectator">Espectador</option>
+        </StyleSelect>
       <Input
         id="password"
         label="Contraseña"
@@ -107,3 +107,13 @@ export default function CrearMod() {
     </>
   );
 }
+
+const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;

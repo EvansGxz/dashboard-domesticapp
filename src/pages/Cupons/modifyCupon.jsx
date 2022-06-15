@@ -26,6 +26,7 @@ function ModifyCupon(){
       setForm({
         name: cupon.name,
         discount: cupon.discount,
+        end_date: cupon.end_date,
         cupon_title: cupon.cupon_title,
       });
     });
@@ -69,6 +70,14 @@ function ModifyCupon(){
             onChange={handleFormChange}
             error={errors.name}
           />
+          <Input
+          id="end_date"
+          label="Fecha limite"
+          type="date"
+          placeholder="dd-mm-yyyy"
+          value={form.end_date}
+          onChange={handleFormChange}
+        />
           <Input
             id="discount"
             label="Descuento"

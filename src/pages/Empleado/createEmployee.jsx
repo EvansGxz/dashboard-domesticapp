@@ -20,6 +20,7 @@ const Container = styled.div`
 export default function CrearEmpleado() {
   const [form, setForm] = useState({
     email: "",
+    lada: "",
     phone: "",
     user_type: "employee",
     password: "",
@@ -57,7 +58,7 @@ export default function CrearEmpleado() {
   }
 
   return (
-    <>
+    <ContainerAll>
     
     {form ? (
       <StyledForm onSubmit={handleSubmit}>
@@ -166,7 +167,7 @@ export default function CrearEmpleado() {
         <option value="9">9</option>
         <option value="10">10</option>
       </StyleSelect2>
-      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange1}>
+      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange}>
         <option value="">Seleccione</option>
         <option value="+57">+57</option>
         <option value="+34">+34</option>
@@ -185,9 +186,19 @@ export default function CrearEmpleado() {
       </Container>
     </StyledForm>) : (<div>Cargando....</div>)}
     
-    </>
+    </ContainerAll>
   );
 }
+const ContainerAll = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 1080px;
+  margin: 6rem auto 0 auto;
+  border-radius: 30px;
+  justify-content: space-between;
+  align-content: center;
+  height: 55vh;
+`;
 
 export const StyleSelect = styled.select`
   width: 80%;
