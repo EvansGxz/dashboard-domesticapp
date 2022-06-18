@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { updateAdmin } from "../../services/admin-services";
+import { BASE_URI } from "../../Config";
 import { createUser1 } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
@@ -31,15 +30,25 @@ export default function CrearMod() {
     nickname: "",
     role: "",
   });
-  const navigate = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
+    const data = new FormData();
+
+    data.append("role", event.target.role.value);
+    data.append("nickname", event.target.nickname.value);
+    data.append("cover", event.target.cover.files[0]);
+
     createUser1(form).then((user) => {
-      updateAdmin(form1, user.user_id);
-      navigate("/gestion");
+      submitAPI(data, user.user_id);
     });
     
   }
+  function submitAPI(data, id) {
+    fetch(BASE_URI+`admin/${id}`,{
+    method: "PATCH",
+    body: data
+  }).then(response => response.json()).catch((error)=>console.log(error.message));
+}
 
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -54,7 +63,7 @@ export default function CrearMod() {
   return (
     <>
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
       <Input
           id="email"
@@ -96,6 +105,12 @@ export default function CrearMod() {
         placeholder="Mike Perez"
         value={form1.nickname}
         onChange={handleFormChange1}
+      />
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
       />
 
       <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
