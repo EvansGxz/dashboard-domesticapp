@@ -11,12 +11,10 @@ const Empleados = () => {
   const [employess, setEmployees] = useState(null);
   useEffect(() => {
     indexEmployee().then(setEmployees)
-  }, [setEmployees])
+  }, [])
 
   function handleDelete(id){
-     deleteUser(id).then(() => {
-      window.location.reload();
-     });
+     deleteUser(id);
   }
   return (
     <>
@@ -56,6 +54,7 @@ const Empleados = () => {
                 <table className='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
             <thead className='text-black'>
               <tr>
+                <th className='p-3 text-left'>Imagen</th>
                 <th className='p-3 text-left'>Empleado</th>
                 <th className='p-3 text-left'>Pais</th>
                 <th className='p-3 text-left'>Region</th>
@@ -67,6 +66,11 @@ const Empleados = () => {
               {employess.map((empleado, index) => {
                 return (
                   <tr key={index} className='bg-gray-100'>
+                  <td className='p-3 text-black'><img
+                        src={empleado.employee.image_url}
+                        alt='category'
+                        class='h-14 w-14 rounded-full'
+                      /></td>
                     <td className='p-3'>
                       <div className='flex align-items-center'>
                         <div className='ml-3'>
