@@ -15,6 +15,7 @@ import ModifyCupon from "../pages/Cupons/modifyCupon";
 import { EditarEmpleado } from "../pages/EditarEmpleado";
 import CreateEmployee from "../pages/Empleado/createEmployee";
 import EditEmployee from "../pages/Empleado/editEmloyee";
+import { EmployeeCalendario } from "../pages/Empleado/employeeCalendar";
 import Empleados from "../pages/Empleados";
 import { Estadisticas } from "../pages/Estadisticas";
 import { GestionAvanzada } from "../pages/GestionAvanzada";
@@ -57,6 +58,7 @@ function Authenticated() {
         <Route path="/clientes/edit" element={<EditarCliente/>} />
         <Route path="/clientes/create" element={<CrearCliente/>} />
         <Route path="/clientes/calendar" element={<ClientCalendario/>} />
+        <Route path="/empleados/calendar" element={<EmployeeCalendario/>} />
 
         <Route path="/cupones" element={<Cupones/>} />
         <Route path="/cupones/create_cupon" element={<CreateCupon/>} />

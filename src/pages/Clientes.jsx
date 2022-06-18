@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
+import { PopAll } from '../components/popAll'
 import { Sidebar } from '../components/Sidebar'
 import { useAuth } from '../context/auth-context'
 import { indexCustomer } from '../services/customer-services'
@@ -10,6 +11,8 @@ import CrearCliente from "./Clientes/createCliente"
 
 const Clientes = () => {
   const {user}= useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const [show, setShow] = useState(true);
   const [customers, setCustomers] = useState(null);
   useEffect(() => {
     indexCustomer().then(setCustomers)
@@ -20,8 +23,27 @@ const Clientes = () => {
       indexCustomer().then(setCustomers)
      });
   }
+
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  const toggleEdit = () => {
+    setShow(!show);
+  }
+
   return (
     <>
+    {
+      isOpen && <PopAll
+      content={<>
+      <Box>
+      <Title>CREAR CLIENTE</Title></Box>
+      <CrearCliente/>
+      </>}
+      handleClose={togglePopup}
+    />
+    }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Clientes'></Navegador>
@@ -33,6 +55,7 @@ const Clientes = () => {
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Clientes</h3>                    
                     <input type="checkbox" id="btn-modal"/>
+                    <Button onClick={()=>togglePopup()}>Crear</Button>
       <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Cliente</label>
       <div class="modal">
         <div class="contenedor">
@@ -186,6 +209,47 @@ const Clientes = () => {
 export const ContainerAll = styled.div`
 
   padding-left: 1.225rem;
+`;
+
+export const Title = styled.p`
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 2rem;
+  
+`;
+export const P = styled.p`
+  margin: 0.225rem 0;
+  font-size: 1rem;
+`;
+
+const Button = styled.button`
+  display: flex;
+  width: "fit-content";
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #0BBBEF;
+  border-radius: 10px;
+  color: #FFF;
+  border: none;
+  margin: 1rem auto;
+`;
+
+export const Box = styled.div`
+  width: 100%;
+  color: #FFF;
+  background-color: #0BBBEF;
+`;
+export const Container = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+export const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 1rem auto;
+  padding: 20px;
 `;
 
 export default Clientes;

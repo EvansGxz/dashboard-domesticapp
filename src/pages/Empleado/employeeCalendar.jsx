@@ -14,7 +14,7 @@ import listPlugin from '@fullcalendar/list'; //For List View
 
 
 
-export const ClientCalendario = () => {
+export const EmployeeCalendario = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [show, setShow] = useState(true);
   const [cal, setCal] = useState({});

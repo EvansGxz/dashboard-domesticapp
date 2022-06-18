@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URI } from "../../Config";
 import { createUser1 } from "../../services/users-service";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
@@ -108,11 +108,6 @@ export default function CrearCliente() {
         value={form.password_confirmation}
         onChange={handleFormChange}
       />
-        <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear Cliente
-      </button>
-      </Container>
-      <Container>
       <Input
         id="full_name"
         label="Nombre Completo/Empresa"
@@ -121,12 +116,14 @@ export default function CrearCliente() {
         value={form1.full_name}
         onChange={handleFormChange1}
       />
-      <StyleSelect id="country" name="country" onChange={handleFormChange1}>
+      </Container>
+      <Container>
+      <Selected id="country" label="Pais" name="country" onChange={handleFormChange1}>
           <option value="">Seleccione</option>
           <option value="Colombia">Colombia</option>
           <option value="España">España</option>
           <option value="Canada">Canadá</option>
-        </StyleSelect>
+        </Selected>
 
       <Input
         id="region"
@@ -136,8 +133,6 @@ export default function CrearCliente() {
         value={form1.region}
         onChange={handleFormChange1}
       />
-      </Container>
-      <Container>
       <Input
         id="birth_date"
         label="Fecha de nacimiento"
@@ -154,15 +149,14 @@ export default function CrearCliente() {
         value={form1.document_id}
         onChange={handleFormChange1}
       />
-      <StyleSelect id="client_type" name="client_type" onChange={handleFormChange1}>
+      </Container>
+      <Container>
+      <Selected id="client_type" name="client_type"
+       onChange={handleFormChange1} label="Tipo de cliente">
           <option value="">--tipo de cliente</option>
           <option value="Colombia">Persona</option>
           <option value="España">Empresa</option>
-        </StyleSelect>
-
-</Container>
-<Container>
-  
+      </Selected>  
       <Input
         id="cod_refer"
         label="Codigo de referido"
@@ -180,12 +174,16 @@ export default function CrearCliente() {
         value={form1.encargado}
         onChange={handleFormChange1}
       />
-      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange1}>
-        <option value="">Seleccione</option>
-        <option value="+57">+57</option>
-        <option value="+34">+34</option>
-        <option value="+1">+1</option>
-      </StyleSelect1>
+      <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form1.lada}
+        onChange={handleFormChange1}
+      />
+      </Container>
+      <Container>
       <Input
         id="phone"
         label="Celular (10 digitos)"
@@ -201,13 +199,16 @@ export default function CrearCliente() {
         label="Imagen"
         type="file"
       />
-      
+      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Cliente
+      </button>
     </Container>  
     </StyledForm>) : (<div>Cargando....</div>)}
     
     </ContainerAll>
   );
 }
+
 export const StyleSelect = styled.select`
   width: 80%;
   border: 1px solid #787b82;
@@ -217,22 +218,7 @@ export const StyleSelect = styled.select`
   color: black;
   margin: 1rem 0;
 `;
+
 const ContainerAll = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  margin: 6rem auto 0 12rem;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 55vh;
-`;
- const StyleSelect1 = styled.select`
-  width: 25%;
-  border: 1px solid #787b82;
-  padding: 1.225rem;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  color: black;
-  margin: 1rem 0;
+  margin: 0 6%;
 `;

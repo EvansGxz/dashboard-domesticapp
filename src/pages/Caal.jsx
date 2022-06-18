@@ -8,7 +8,7 @@ import { deleteOrder, indexOrder } from '../services/order-details-services';
 import { Popdiv } from './pop';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
-import EditarOrder from './Order/editOrder';
+
 
 
 export default function Cal() {

@@ -66,6 +66,42 @@ export const Input = ({
   );
 };
 
+export const Selected = ({
+  id,
+  name,
+  type = "text",
+  placeholder,
+  label,
+  error,
+  innerRef,
+  ...rest
+}) => {
+  name ||= id;
+  return (
+    <ContainerInput>
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <StyleSelect
+        id={id}
+        name={name}
+        type={type}
+        ref={innerRef}
+        placeholder={placeholder}
+        {...rest}
+      />
+      {error && <Error size="sm">{error}</Error>}
+    </ContainerInput>
+  );
+};
+
+const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+`;
+
 export const ContainerInputImg = styled.div`
   position: relative;
   width: 60%;
