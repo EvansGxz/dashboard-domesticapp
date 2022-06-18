@@ -20,7 +20,7 @@ export const GestionAvanzada = () => {
 
   function handleDelete(id){
     deleteCategory(id).then(() => {
-      window.location.reload();
+      indexCategories().then(setCategories)
      });}
   useEffect(() => {
     indexAdmin().then(setMod)
@@ -101,8 +101,12 @@ export const GestionAvanzada = () => {
                     {
                       empleado.admin.role === 'admin' ? (
                         <td className='p-3 text-black'>Administrador</td>
-                      ) : (
+                      ) : ( empleado.admin.role === 'mod' ? (
                         <td className='p-3 text-black'>Miembro del Equipo</td>
+                      ) : (
+                        <td className='p-3 text-black'>Espectador</td>
+                      )
+                       
                       )
                     }
                     
@@ -193,7 +197,8 @@ export const GestionAvanzada = () => {
               <table class='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
             <thead class='text-black'>
               <tr>
-              <th className='p-3 text-left'>Imagen</th>
+                <th className='p-3 text-left'>Imagen</th>
+                <th class='p-3 text-left'>Categoria</th>
                 <th class='p-3 text-left'>Servicio</th>
                 <th class='p-3 text-left'>Precio</th>
                 <th class='p-3 text-left'>Region</th>
@@ -211,6 +216,7 @@ export const GestionAvanzada = () => {
                         class='h-14 w-14 rounded-full'
                       />
                     </td>
+                    <td class='p-3 text-black'>{category.sector}</td>
                     <td class='p-3'>
                       <div class='flex align-items-center'>
                         <div class='ml-3'>
