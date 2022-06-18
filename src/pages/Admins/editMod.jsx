@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showAdmin, updateAdmin } from "../../services/admin-services";
+import { BASE_URI } from "../../Config";
+import { showAdmin } from "../../services/admin-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -28,7 +29,6 @@ export default function EditMod() {
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("id");
     showAdmin(id).then((user) => {
-      console.log(user);
       setAdmin(user);
       setForm({
         email: user.email,
@@ -43,10 +43,24 @@ export default function EditMod() {
   const navigate = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
-    
-    updateAdmin(form1, seeadmin.user_id).then(navigate("/gestion"));
+    console.log(event.target.role.value);
+    console.log(event.target.nickname.value);
+    const data = new FormData();
+    data.append("role", event.target.role.value);
+    data.append("nickname", event.target.nickname.value);
+    data.append("cover", event.target.cover.files[0]);
+    submitAPI(data, seeadmin.user_id)
   }
 
+  function submitAPI(data, id) {
+    fetch(BASE_URI+`admin/${id}`,{
+    method: "PATCH",
+    body: data
+  }).then(response =>{
+    response.json()
+    navigate("/gestion")
+  } ).catch((error)=>console.log(error.message));
+}
   function handleFormChange(event) {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
@@ -60,7 +74,7 @@ export default function EditMod() {
   return (
     <ContainerAll>
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Input
           id="email"
           label="Email"
@@ -77,8 +91,14 @@ export default function EditMod() {
         value={form1.nickname}
         onChange={handleFormChange1}
       />
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
+      />
       <StyleSelect id="role" name="role" onChange={handleFormChange1}>
-          <option value="">{form1.role}</option>
+          <option value={form1.role}>{form1.role}</option>
           <option value="admin">Admnistrador</option>
           <option value="mod">Miembro del Equipo</option>
           <option value="spectator">Espectador</option>
