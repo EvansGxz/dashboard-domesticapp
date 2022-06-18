@@ -8,6 +8,13 @@ export async function showOrderDetail(OrderDetailID) {
   return await apiFetch(`order/${OrderDetailID}`);
 }
 
+export async function showOrderCustomer(OrderDetailID) {
+  return await apiFetch(`order_customer/${OrderDetailID}`);
+}
+
+export async function showOrderEmployee(OrderDetailID) {
+  return await apiFetch(`order_employee/${OrderDetailID}`);
+}
 
 export async function indexOrder() {
   return await apiFetch(`orders/`);

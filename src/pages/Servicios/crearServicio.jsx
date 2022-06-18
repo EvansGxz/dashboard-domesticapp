@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createCategory } from "../../services/categories-services";
+import { useEffect, useState } from "react";
+import { BASE_URI } from "../../Config";
+import { indexsector } from "../../services/categories-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -20,22 +20,38 @@ const Container = styled.div`
 `;
 
 export default function CrearServicio() {
+  const [sectores, setSectores] = useState()
   const [form, setForm] = useState({
     category_name: "",
     price: "",
     region: "",
+    body: "",
+    sector_id: ""
   });
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    indexsector().then(setSectores)
+  }, [])
   function handleSubmit(event) {
     event.preventDefault();
-    createCategory(form).then(()=>{
-      navigate("/gestion")
-    })
+    const data = new FormData();
+
+    data.append("category_name", event.target.category_name.value);
+    data.append("price", event.target.price.value);
+    data.append("body", event.target.body.value);
+    data.append("region", event.target.region.value);
+    data.append("image", event.target.image.files[0]);
+    data.append("sector_id", event.target.sector_id.value);
+    submitAPI(data);
+    
+  }
+  function submitAPI(data) {
+    fetch(BASE_URI+"categories",{
+      method: "POST",
+      body: data
+    }).then(response => response.json())
   }
 
   function handleFormChange(event) {
-   
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   }
@@ -44,7 +60,7 @@ export default function CrearServicio() {
     <ContainerAll>
     <Container>
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e => handleSubmit(e)}>
       <Input
         id="category_name"
         label="Nombre de servicio"
@@ -61,12 +77,40 @@ export default function CrearServicio() {
         value={form.price}
         onChange={handleFormChange}
       />
+      <Input
+        id="body"
+        label="Descripción"
+        type="text"
+        placeholder="Cuida tus servicios..."
+        value={form.body}
+        onChange={handleFormChange}
+      />
       <StyleSelect id="region" name="region" onChange={handleFormChange}>
-          <option value="">Seleccione</option>
-          <option value="Colombia">Colombia</option>
-          <option value="España">España</option>
-          <option value="Canada">Canadá</option>
-        </StyleSelect>
+        <option value="">Seleccione</option>
+        <option value="Colombia">Colombia</option>
+        <option value="España">España</option>
+        <option value="Canada">Canadá</option>
+      </StyleSelect>
+
+      <StyleSelect id="sector_id" name="sector_id" onChange={handleFormChange}>
+        <option value="">Seleccione</option>
+        {
+          sectores ? (
+            sectores.map((sector) =>(
+              <option value={sector.id}>{sector.name}</option>
+            ))
+            
+          ) : null
+        }
+        
+      </StyleSelect>
+
+        <Input
+        id="image"
+        name="image"
+        label="Imagen"
+        type="file"
+      />
       <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Crear Servicio
       </button>

@@ -1,6 +1,8 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { indexCategories } from "../../services/categories-services";
+import { indexEmployee } from "../../services/employee-service";
+import { indexCustomer } from "../../services/customer-services";
 import { createOrder } from "../../services/order-details-services";
 import { Input } from "../../styles/views/Login";
 
@@ -20,6 +22,9 @@ const Container = styled.div`
 `;
 
 export default function CrearOrder() {
+  const [categories, setCategories] = useState(null);
+  const [employess, setEmployees] = useState(null);
+  const [customer, setCustomers] = useState(null);
   const [form, setForm] = useState({
     category_id: "",
     employee_id: "",
@@ -27,20 +32,24 @@ export default function CrearOrder() {
     address: "",
     start_date: "",
     workday: "",
+    discount: "",
+    supply_food: "",
   });
- const id = new URLSearchParams(window.location.search).get("id");
- const navigate = useNavigate();
 
+  useEffect(() => {
+  indexCategories().then(setCategories)
+  indexEmployee().then(setEmployees)
+  indexCustomer().then(setCustomers)
+  }, [])
 
   function handleSubmit(event) {
     event.preventDefault();
-    createOrder(form, id).then(()=>{
-      navigate("/calendario")
-    })
+    createOrder({category_id: form.category_id, employee_id: form.employee_id, customer_id: form.customer_id,
+                 address: form.address, start_date: event.target.start_date.value, work_date: form.workday, discount: form.discount,
+                supply_food: form.supply_food})
   }
 
   function handleFormChange(event) {
-   
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   }
@@ -49,32 +58,34 @@ export default function CrearOrder() {
     <>
     {form ? (
       <>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
-      <Input
-        id="category_id"
-        label="ID de servicio"
-        type="number"
-        placeholder="1"
-        value={form.category_id}
-        onChange={handleFormChange}
-      />
-      <Input
-        id="employee_id"
-        label="ID de empelado"
-        type="number"
-        placeholder="1"
-        value={form.employee_id}
-        onChange={handleFormChange}
-      />
-      <Input
-        id="customer_id"
-        label="ID de cliente"
-        type="number"
-        placeholder="1"
-        value={form.customer_id}
-        onChange={handleFormChange}
-      />
+        <StyleSelect id="category_id" name="category_id" onChange={handleFormChange}>
+          <option value="">--selecciona servicio--</option>
+          {categories ? (
+            categories.map((category) => (
+              <>
+              <option value={category.id}>{category.category_name}</option></>
+            ))) : null}
+        </StyleSelect>
+
+        <StyleSelect id="employee_id" name="employee_id" onChange={handleFormChange}>
+          <option value="">--selecciona empleado--</option>
+          {employess ? (
+            employess.map((category) => (
+              <>
+              <option value={category.employee.id}>{category.employee.full_name}</option></>
+            ))) : null}
+        </StyleSelect>
+
+        <StyleSelect id="customer_id" name="customer_id" onChange={handleFormChange}>
+          <option value="">--selecciona cliente--</option>
+          {customer ? (
+            customer.map((category) => (
+              <>
+              <option value={category.customer.id}>{category.customer.full_name}</option></>
+            ))) : null}
+        </StyleSelect>
       </Container>
       <Container>
       <Input
@@ -88,19 +99,30 @@ export default function CrearOrder() {
       <Input
         id="start_date"
         label="Fecha de inicio"
-        type="text"
+        type="date"
         placeholder="03-04-2022"
         value={form.start_date}
         onChange={handleFormChange}
       />
-      <Input
-        id="workday"
-        label="Tipo de jornada"
-        type="text"
-        placeholder="1"
-        value={form.workday}
+      <StyleSelect id="workday" name="workday" onChange={handleFormChange}>
+          <option value="">--tipo de jornada--</option>
+          <option value="Completa">Completa | COL</option>
+          <option value="Media">Media | COL</option>
+          <option value="Hora">Hora | EU</option>
+      </StyleSelect>
+       <Input
+        id="discount"
+        label="Descento"
+        type="number"
+        placeholder="10"
+        value={form.discount}
         onChange={handleFormChange}
       />
+       <StyleSelect id="supply_food" name="supply_food" onChange={handleFormChange}>
+          <option value="">--suministrar alimento--</option>
+          <option value="Si">Si</option>
+          <option value="No">No</option>
+        </StyleSelect>
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Crear
       </button>
@@ -112,3 +134,13 @@ export default function CrearOrder() {
     </>
   );
 }
+
+export const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;
