@@ -2,8 +2,10 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import CrearMod from "../pages/Admins/createMod";
 import EditMod from "../pages/Admins/editMod";
+import Cal from "../pages/Caal";
 import { Calendario } from "../pages/Calendario";
 import Clientes from "../pages/Clientes";
+import { ClientCalendario } from "../pages/Clientes/clientCalendar";
 import CrearCliente from "../pages/Clientes/createCliente";
 import EditarCliente from "../pages/Clientes/editCliente";
 import Cupones from "../pages/Cupones";
@@ -19,6 +21,8 @@ import { GestionAvanzada } from "../pages/GestionAvanzada";
 import Habilidades from "../pages/Habilidades";
 import EditarHEabilidad from "../pages/Habilidades Empleados/editHE";
 import EditarHabilidad from "../pages/Habilidades/editHabilidad";
+import News from "../pages/Newslatter";
+import EditNew from "../pages/NewsLatter/editNews";
 import CrearOrder from "../pages/Order/createOrdr";
 import EditarOrder from "../pages/Order/editOrder";
 import { Reportes } from "../pages/Reportes";
@@ -42,12 +46,18 @@ function Authenticated() {
         <Route path="/habilidades/edit" element={<EditarHabilidad/>} />
         <Route path="/habilidades_he/edit" element={<EditarHEabilidad/>} />
 
+        <Route path="/news" element={<News/>} />
+        <Route path="/news/edit" element={<EditNew/>} />
+
         <Route path="/tareas" element={<Tareas/>} />
         <Route path="/tareas/edit" element={<EditarTarea/>} />
-        <Route path="/navbar" element={<Calendario/>} />
+        <Route path="/cal" element={<Cal/>} />
+
         <Route path="/clientes" element={<Clientes/>} />
         <Route path="/clientes/edit" element={<EditarCliente/>} />
         <Route path="/clientes/create" element={<CrearCliente/>} />
+        <Route path="/clientes/calendar" element={<ClientCalendario/>} />
+
         <Route path="/cupones" element={<Cupones/>} />
         <Route path="/cupones/create_cupon" element={<CreateCupon/>} />
         <Route path="/cupones/modify_cupon" element={<ModifyCupon/>} />
