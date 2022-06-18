@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URI } from "../../Config";
 import { showEmployee } from "../../services/employee-service";
-import { updateEmployee } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
 
@@ -48,10 +48,28 @@ export default function EditarEmpleado() {
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
-    updateEmployee(form1, employee.user_id).then(()=> {
-      navigate("/empleados")
-    });
+    const data = new FormData();
+    data.append("full_name", event.target.full_name.value);
+    data.append("country", event.target.country.value);
+    data.append("document_id", event.target.document_id.value);
+    data.append("contact", event.target.contact.value);
+    data.append("region", event.target.region.value);
+    data.append("experience", event.target.experience.value);
+    data.append("biografy", event.target.biografy.value);
+    data.append("birth_date", event.target.birth_date.value);
+    data.append("cover", event.target.cover.files[0]);
+    submitAPI(form1, employee.user_id)
   }
+
+  function submitAPI(data, id) {
+    console.log(id);
+    fetch(BASE_URI+`employees/${id}`,{
+    method: "PATCH",
+    body: data
+  }).then(response => {
+    navigate("/empleados")
+    response.json()}).catch((error)=>console.log(error.message));
+}
 
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -163,6 +181,12 @@ export default function EditarEmpleado() {
         placeholder="xxxxxxx"
         value={form.phone}
         onChange={handleFormChange}
+      />
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
       />
 
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
