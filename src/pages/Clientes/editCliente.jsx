@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { showCustomer, updateCustomer } from "../../services/customer-services";
+import { BASE_URI } from "../../Config";
+import { showCustomer } from "../../services/customer-services";
 import { Input } from "../../styles/views/Login";
 
 export default function EditarCliente() {
@@ -33,10 +34,28 @@ export default function EditarCliente() {
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
-    updateCustomer(form1, employee.user_id).then(()=> {
-      navigate("/clientes")
-    });
+    const data = new FormData();
+    data.append("full_name", event.target.full_name.value);
+    data.append("country", event.target.country.value);
+    data.append("document_id", event.target.document_id.value);
+    data.append("client_type", event.target.client_type.value);
+    data.append("region", event.target.region.value);
+    data.append("cod_refer", event.target.cod_refer.value);
+    data.append("encargado", event.target.encargado.value);
+    data.append("birth_date", event.target.birth_date.value);
+    data.append("cover", event.target.cover.files[0]);
+    submitAPI(data, employee.user_id)
   }
+
+  function submitAPI(data, id) {
+    fetch(BASE_URI+`customers/${id}`,{
+    method: "PATCH",
+    body: data
+  }).then(response =>{
+    response.json()
+    navigate("/clientes")
+  } ).catch((error)=>console.log(error.message));
+}
 
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -142,6 +161,13 @@ export default function EditarCliente() {
         placeholder="xxxxxxx"
         value={form.phone}
         onChange={handleFormChange}
+      />
+
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
       />
 
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
