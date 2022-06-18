@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { updateCustomer } from "../../services/customer-services";
+import { BASE_URI } from "../../Config";
 import { createUser1 } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
@@ -40,13 +40,33 @@ export default function CrearCliente() {
     birth_date: "",
   });
   const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
+
+    const data = new FormData();
+    data.append("full_name", event.target.full_name.value);
+    data.append("country", event.target.country.value);
+    data.append("document_id", event.target.document_id.value);
+    data.append("client_type", event.target.client_type.value);
+    data.append("region", event.target.region.value);
+    data.append("cod_refer", event.target.cod_refer.value);
+    data.append("encargado", event.target.encargado.value);
+    data.append("birth_date", event.target.birth_date.value);
+    data.append("cover", event.target.cover.files[0]);
+
     createUser1(form).then((user) => {
-      updateCustomer(form1, user.user_id);
+      submitAPI(data, user.user_id);
       navigate("/clientes")
     });
   }
+
+  function submitAPI(data, id) {
+    fetch(BASE_URI+`customers/${id}`,{
+    method: "PATCH",
+    body: data
+  }).then(response => response.json()).catch((error)=>console.log(error.message));
+}
 
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -62,7 +82,7 @@ export default function CrearCliente() {
     <ContainerAll>
     
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
       <Input
           id="email"
@@ -121,7 +141,7 @@ export default function CrearCliente() {
       <Input
         id="birth_date"
         label="Fecha de nacimiento"
-        type="text"
+        type="date"
         placeholder="dd-mm-yyyy"
         value={form1.birth_date}
         onChange={handleFormChange1}
@@ -134,14 +154,12 @@ export default function CrearCliente() {
         value={form1.document_id}
         onChange={handleFormChange1}
       />
-      <Input
-        id="client_type"
-        label="Tipo de cliente"
-        type="text"
-        placeholder="Persona/Empresa"
-        value={form1.client_type}
-        onChange={handleFormChange1}
-      />
+      <StyleSelect id="client_type" name="client_type" onChange={handleFormChange1}>
+          <option value="">--tipo de cliente</option>
+          <option value="Colombia">Persona</option>
+          <option value="España">Empresa</option>
+        </StyleSelect>
+
 </Container>
 <Container>
   
@@ -177,6 +195,12 @@ export default function CrearCliente() {
         onChange={handleFormChange}
       />
 
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
+      />
       
     </Container>  
     </StyledForm>) : (<div>Cargando....</div>)}
