@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createUser1, updateEmployee } from "../../services/users-service";
+import { useEffect, useState } from "react";
+import { BASE_URI } from "../../Config";
+import { createECategory, indexCategories } from "../../services/categories-services";
+import { createUser1 } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
 
@@ -17,7 +18,9 @@ const Container = styled.div`
   align-content: center;
   float: inline-start;
 `;
+let checkCat=[]
 export default function CrearEmpleado() {
+  const [categories, setCategories] = useState()
   const [form, setForm] = useState({
     email: "",
     lada: "",
@@ -26,42 +29,76 @@ export default function CrearEmpleado() {
     password: "",
     password_confirmation: "",
   });
-  const navigate = useNavigate();
   const [form1, setForm1] = useState({
     full_name: "",
     country: "",
     region: "",
     document_id: "",
-    contact: "",
+    contrato: "",
     experience: "",
     biografy: "",
     birth_date: "",
   });
-
+  useEffect(() => {
+    indexCategories().then(setCategories)
+  }, [])
   function handleSubmit(event) {
     event.preventDefault();
-    createUser1(form).then((user) => {
-      updateEmployee(form1, user.user_id);
-      navigate("/empleados")
-    });
-  }
+    
+    const data = new FormData();
+    data.append("full_name", event.target.full_name.value);
+    data.append("country", event.target.country.value);
+    data.append("document_id", event.target.document_id.value);
+    data.append("contrato", event.target.contrato.files[0]);
+    data.append("region", event.target.region.value);
+    data.append("experience", event.target.experience.value);
+    data.append("biografy", event.target.biografy.value);
+    data.append("birth_date", event.target.birth_date.value);
+    data.append("cover", event.target.cover.files[0]);
 
+    let id = null;
+    createUser1(form).then((user) => {
+      id = user.user_id
+      submitAPI(data, id);
+
+      checkCat.forEach((cat)=>{
+        createECategory({employee_id: id, category_id: cat})
+      })
+    });
+    
+    
+  }
+  
+  function cheked(event){
+    
+    if(event.target.checked) {
+      checkCat.push(event.target.name)
+    }
+    console.log(checkCat);
+  }
+  
   function handleFormChange(event) {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   }
 
   function handleFormChange1(event) {
-    console.log(event.target);
     const { name, value } = event.target;
     setForm1({ ...form1, [name]: value });
+  }
+  function submitAPI(data, id) {
+      console.log(id);
+      fetch(BASE_URI+`employees/${id}`,{
+      method: "PATCH",
+      body: data
+    }).then(response => response.json()).catch((error)=>console.log(error.message));
   }
 
   return (
     <ContainerAll>
     
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
       <Input
           id="email"
@@ -136,13 +173,27 @@ export default function CrearEmpleado() {
         onChange={handleFormChange1}
       />
       <Input
-        id="contact"
+        id="contrato"
         label="Numero de contrato"
-        type="text"
+        type="file"
         placeholder="xxxxxxxxxx"
-        value={form1.contact}
+        value={form1.contrato}
         onChange={handleFormChange1}
       />
+      {
+        categories ? (
+          categories.map((category)=>(
+            <Input
+              id={category.id}
+              label={category.category_name}
+              type="checkbox"
+              value={form1.contrato}
+              onChange={cheked}
+            />
+          ))
+        ) : null
+      }
+      
   
 </Container>
 <Container>
@@ -182,7 +233,12 @@ export default function CrearEmpleado() {
         onChange={handleFormChange}
       />
 
-      
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
+      />
       </Container>
     </StyledForm>) : (<div>Cargando....</div>)}
     
