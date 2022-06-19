@@ -14,8 +14,8 @@ export const Sidebar = () => {
             <ul className='space-y-1 tracking-wide mt-8'>
               <li>
                 <div className='relative px py flex items-center space-x-4 rounded-xl text-black'>
-                  <img src={Logo2} className='w-16' alt='tailus logo' />
-                  <span className='-mr-1 font-medium text-xl'>DOMESTICAPP</span>
+                  <img src={Logo2} className='w-14' alt='tailus logo' />
+                  <span className='text-md'>DOMESTICAPP</span>
                 </div>
               </li>
             </ul>
@@ -24,7 +24,7 @@ export const Sidebar = () => {
             <img
               src={user.image_url}
               alt=''
-              className='w-10 h-10 m-auto rounded-full object-cover lg:w-28 lg:h-28'
+              className='w-10 h-10 m-auto rounded-full object-cover w-20 h-20'
             />
             <h5 className='hidden mt-4 text-xl font-semibold text-gray-600 lg:block'>
               {user.nickname}
@@ -58,3 +58,4 @@ export const Sidebar = () => {
     </>
   )
 }
+

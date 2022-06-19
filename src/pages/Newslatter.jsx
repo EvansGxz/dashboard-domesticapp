@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { Navegador } from "../components/Navegador";
 import { Sidebar } from "../components/Sidebar";
+import { useAuth } from "../context/auth-context";
 import { deleteNews, indexNews } from "../services/newslatters-services";
 import CrearNew from "./NewsLatter/createNews";
 import EditNew from "./NewsLatter/editNews";
@@ -12,6 +13,7 @@ const News = () => {
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(false);
   const [news, setNews] = useState(null);
+  const { user } =useAuth();
   useEffect(() => {
     indexNews().then(setNews);
   }, []);
@@ -71,8 +73,9 @@ const News = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Newslatter
                     </h3>
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear NewsLatter</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -105,6 +108,7 @@ const News = () => {
                         </td>
                         <td className="p-3 text-black">{empleado.title}</td>
                         <td className="p-3 text-black">{empleado.body}</td>
+                        {user.role === 'spectator' ? null : (<>
                         <td className="p-3 flex flex-row">
                           <div
                             className="text-gray-600 hover:text-cyan-300"
@@ -145,7 +149,7 @@ const News = () => {
                               />
                             </svg>
                           </div>
-                        </td>
+                        </td></>)}
                       </tr>
                     );
                   })}

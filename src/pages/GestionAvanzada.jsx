@@ -30,6 +30,7 @@ export const GestionAvanzada = () => {
     indexCategories().then(setCategories);
   }, [setCategories]);
 
+ 
   function handleDelete(id) {
     deleteCategory(id).then(() => {
       indexCategories().then(setCategories);
@@ -136,7 +137,9 @@ export const GestionAvanzada = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Administradores
                     </h3>
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear Administrador</Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -249,8 +252,9 @@ export const GestionAvanzada = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Servicios
                     </h3>
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>toggleServi()}>Crear Servicio</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -301,6 +305,7 @@ export const GestionAvanzada = () => {
                        
 
                         <td class="p-3 text-black">{category.region}</td>
+                        {user.role === 'spectator' ? null : (<>
                         <td className="p-3 flex flex-row">
                           <div
                             className="text-gray-600 hover:text-cyan-300"
@@ -341,7 +346,7 @@ export const GestionAvanzada = () => {
                               />
                             </svg>
                           </div>
-                        </td>
+                        </td></>)}
                       </tr>
                     );
                   })}

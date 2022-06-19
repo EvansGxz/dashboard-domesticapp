@@ -2,6 +2,7 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
+import { useAuth } from '../context/auth-context'
 import { deleteService, indexServices } from '../services/services-services'
 import { Popdiv } from './pop'
 import CrearTarea from './Tareas/createTarea'
@@ -12,6 +13,7 @@ const Tareas = () => {
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState(null);
+  const { user }= useAuth();
   useEffect(() => {
     indexServices().then(setTasks)
   }, [setTasks])
@@ -70,8 +72,9 @@ const Tareas = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Tareas</h3>                    
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear Tareas</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -97,6 +100,7 @@ const Tareas = () => {
                     <td className='p-3 text-black'>{empleado.id}</td>
                     <td className='p-3 text-black'>{empleado.service_name}</td>
                     <td className='p-3 text-black'>{empleado.category_name}</td>
+                    {user.role === 'spectator' ? null : (<>
                     <td className='p-3 flex flex-row'>
                       <div 
                       className='text-gray-600 hover:text-cyan-300'
@@ -134,7 +138,7 @@ const Tareas = () => {
                           />
                         </svg>
                       </div>
-                    </td>
+                    </td></>)}
                   </tr>
                   
                 )

@@ -12,6 +12,7 @@ import interactionPlugin from "@fullcalendar/interaction"; // needed
 import listPlugin from '@fullcalendar/list'; //For List View
 import { PopAll } from '../components/popAll'
 import EditarOrder from './Order/editOrder'
+import { useAuth } from '../context/auth-context'
 
 
 
@@ -20,6 +21,7 @@ export const Calendario = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(true);
+  const { user } =useAuth();
   const [createCalendar, setCreateCalendar] = useState(false);
   const [cal, setCal] = useState({});
 
@@ -110,8 +112,9 @@ export const Calendario = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Servicios</h3>                    
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopCreate()}>Crear Servicio</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -133,10 +136,11 @@ export const Calendario = () => {
         <P><b>Fecha del servicio: </b>{cal._def.extendedProps.start_date}</P>
         <P><b>Suplir alimentos: </b>{cal._def.extendedProps.supply_food}</P>
         <P><b>Tipo de jornada: </b>{cal._def.extendedProps.workday}</P>
+        {user.role === 'spectator' ? null : (
         <ButtonContainer>
         <Button onClick={()=>other(cal._def.publicId)}>Editar Servicio</Button>
         <Button onClick={()=>handleDelete(cal._def.publicId)}>Cancelar Servicio</Button>
-        </ButtonContainer>
+        </ButtonContainer>)}
         </Container>
       </>}
       handleClose={togglePopup}

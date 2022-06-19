@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { Navegador } from "../components/Navegador";
 import { Sidebar } from "../components/Sidebar";
+import { useAuth } from "../context/auth-context";
 import { deleteHability, indexHability } from "../services/habilities-services";
 import {
   deleteHEmployee,
@@ -19,6 +20,7 @@ const Habilidades = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(false);
+  const { user } =useAuth();
   const [habilidades, setHabilidades] = useState(null);
   const [servId, setservId] = useState(null);
 
@@ -130,8 +132,9 @@ const Habilidades = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Habilidades de Empleados
                     </h3>
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear Habilidad de empleado</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -168,6 +171,7 @@ const Habilidades = () => {
                         </td>
                         <td className="p-3 text-black">{empleado.hability}</td>
                         <td className="p-3 text-black">{empleado.body}</td>
+                        {user.role === 'spectator' ? null : (<>
                         <td className="p-3 flex flex-row">
                           <div
                             className="text-gray-600 hover:text-cyan-300"
@@ -208,7 +212,7 @@ const Habilidades = () => {
                               />
                             </svg>
                           </div>
-                        </td>
+                        </td></>)}
                       </tr>
                     );
                   })}
@@ -227,8 +231,9 @@ const Habilidades = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Habilidades
                     </h3>
+                    {user.role === 'spectator' ? null : (
                     <Button onClick={()=>toggleServi()}>Crear Habilidad</Button>
-                  </div>
+                    )}</div>
                 </div>
               </div>
             </div>
@@ -259,6 +264,7 @@ const Habilidades = () => {
                         </td>
                         <td className="p-3 text-black">{empleado.hability}</td>
                         <td className="p-3 text-black">{empleado.body}</td>
+                        {user.role === 'spectator' ? null : (<>
                         <td className="p-3 flex flex-row">
                           <div
                             className="text-gray-600 hover:text-cyan-300"
@@ -299,7 +305,7 @@ const Habilidades = () => {
                               />
                             </svg>
                           </div>
-                        </td>
+                        </td></>)}
                       </tr>
                     );
                   })}

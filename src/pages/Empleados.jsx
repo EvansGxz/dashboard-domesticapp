@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { PopAll } from '../components/popAll'
 import { Sidebar } from '../components/Sidebar'
+import { useAuth } from '../context/auth-context'
 import { indexEmployee } from '../services/employee-service'
 import { deleteUser } from '../services/users-service'
 import CrearEmpleado from "./Empleado/createEmployee"
@@ -14,6 +15,7 @@ const Empleados = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(false);
+  const {user} = useAuth();
   useEffect(() => {
     indexEmployee().then(setEmployees)
   }, [])
@@ -71,8 +73,10 @@ const Empleados = () => {
               <div className=''>
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
-                    <h3 className='text-3xl font-bold text-gray-700'>Empleados</h3>                    
+                    <h3 className='text-3xl font-bold text-gray-700'>Empleados</h3> 
+                    {user.role === 'spectator' ? null : (                   
                     <Button onClick={()=>togglePopup()}>Crear</Button>
+                    )}
                   </div>
                 </div>
               </div>
@@ -115,6 +119,8 @@ const Empleados = () => {
                     </td>
                     <td className='p-3 text-black'>{empleado.employee.country}</td>
                     <td className='p-3 text-black'>{empleado.employee.region}</td>
+                    {user.role === 'spectator' ? null : (
+                      <>
                     <td className='p-3 text-black'>{empleado.employee.document_id}</td>
                     <td className='p-3 flex flex-row'>
                       <div onClick={()=>onEdit(empleado.employee.user_id)}
@@ -172,6 +178,8 @@ const Empleados = () => {
                         </svg>
                       </Link>
                     </td>
+                    </>
+                    )}
                   </tr>
                   
                 )
