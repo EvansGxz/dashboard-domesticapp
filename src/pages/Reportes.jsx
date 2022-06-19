@@ -82,16 +82,6 @@ const Box = styled.div`
   color: #FFF;
   background-color: #0BBBEF;
 `;
-const Container = styled.div`
-  width: 100%;
-  padding: 20px;
-`;
-const ButtonContainer = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 1rem auto;
-  padding: 20px;
-`;
 
 const Title = styled.p`
   text-align: center;

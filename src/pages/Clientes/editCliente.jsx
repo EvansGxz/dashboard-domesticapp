@@ -31,7 +31,7 @@ export default function EditarCliente(ide) {
         birth_date: user.birth_date,
       });
     });
-  }, []);
+  }, [ide]);
   function handleSubmit(event) {
     event.preventDefault();
 
