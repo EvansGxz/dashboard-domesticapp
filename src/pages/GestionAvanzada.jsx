@@ -264,7 +264,9 @@ export const GestionAvanzada = () => {
                     <th className="p-3 text-left">Imagen</th>
                     <th class="p-3 text-left">Categoria</th>
                     <th class="p-3 text-left">Servicio</th>
-                    <th class="p-3 text-left">Precio</th>
+                    <th class="p-3 text-left">Jornada Completa</th>
+                    <th class="p-3 text-left">Jornada Media</th>
+                    <th class="p-3 text-left">Jornada Por Hora</th>
                     <th class="p-3 text-left">Region</th>
                     <th className="p-3 text-left">Acción</th>
                   </tr>
@@ -290,13 +292,13 @@ export const GestionAvanzada = () => {
                             </div>
                           </div>
                         </td>
-                        {category.region === "Colombia" ? (
-                          <td class="p-3 text-black">{category.price} COP</td>
-                        ) : category.region === "España" ? (
-                          <td class="p-3 text-black">{category.price} €</td>
-                        ) : category.region === "Canada" ? (
-                          <td class="p-3 text-black">$ {category.price}</td>
-                        ) : null}
+                        
+                          <td class="p-3 text-black">{category.price_col_complete} COP</td>
+                        
+                          <td class="p-3 text-black">{category.price_col_half} COP</td>
+                        
+                          <td class="p-3 text-black">{category.price_spain} €</td>
+                       
 
                         <td class="p-3 text-black">{category.region}</td>
                         <td className="p-3 flex flex-row">

@@ -24,7 +24,9 @@ export default function CrearServicio() {
   const [sectores, setSectores] = useState();
   const [form, setForm] = useState({
     category_name: "",
-    price: "",
+    price_col_complete: "",
+    price_col_half: "",
+    price_spain: "",
     region: "",
     body: "",
     sector_id: "",
@@ -37,7 +39,9 @@ export default function CrearServicio() {
     const data = new FormData();
 
     data.append("category_name", event.target.category_name.value);
-    data.append("price", event.target.price.value);
+    data.append("price_col_complete", event.target.price_col_complete.value);
+    data.append("price_col_half", event.target.price_col_half.value);
+    data.append("price_spain", event.target.price_spain.value);
     data.append("body", event.target.body.value);
     data.append("image", event.target.image.files[0]);
     data.append("sector_id", event.target.sector_id.value);
@@ -128,23 +132,30 @@ export default function CrearServicio() {
           <Container>
             
                 <Input
-                  id="price1"
-                  name="Colombia"
-                  label="Precio de servicio Colombia"
+                  id="price_col_complete"
+
+                  label="Precio Jornada Completa"
                   type="text"
                   placeholder="3000"
-                  value={""}
-                  onChange={""}
+                  value={form.price_col_complete}
+                  onChange={handleFormChange}
+                />
+                <Input
+                  id="price_col_half"
+                  label="Precio Jornada Media"
+                  type="text"
+                  placeholder="3000"
+                  value={form.price_col_half}
+                  onChange={handleFormChange}
                 />
               
                 <Input
-                  id="price2"
-                  name="Europa"
-                  label="Precio de servicio Europa"
+                  id="price_spain"
+                  label="Precio Jornada por Hora"
                   type="text"
                   placeholder="3000"
-                  value={""}
-                  onChange={""}
+                  value={form.price_spain}
+                  onChange={handleFormChange}
                 />
             <Input id="image" name="image" label="Imagen" type="file" />
             <button
