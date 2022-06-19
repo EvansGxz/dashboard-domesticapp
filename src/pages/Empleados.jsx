@@ -2,13 +2,18 @@ import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
+import { PopAll } from '../components/popAll'
 import { Sidebar } from '../components/Sidebar'
 import { indexEmployee } from '../services/employee-service'
 import { deleteUser } from '../services/users-service'
 import CrearEmpleado from "./Empleado/createEmployee"
+import EditarEmpleado from './Empleado/editEmloyee'
 
 const Empleados = () => {
   const [employess, setEmployees] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [cusId, setCusId] = useState(null);
+  const [show, setShow] = useState(false);
   useEffect(() => {
     indexEmployee().then(setEmployees)
   }, [])
@@ -16,8 +21,47 @@ const Empleados = () => {
   function handleDelete(id){
      deleteUser(id);
   }
+
+    const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  function toggleEdit(id){
+    setShow(!show);
+  }
+
+  function onEdit(id){
+    setCusId(id);
+    toggleEdit();
+  }
+  
   return (
     <>
+     {
+      isOpen && <PopAll
+      content={<>
+      <Box>
+      <Title>CREAR EMPLEADO</Title></Box>
+      <CrearEmpleado/>
+      </>}
+      handleClose={togglePopup}
+    />
+    }
+    {
+      show && <PopAll
+      content={<>
+      <Box>
+      <Title>EDITAR EMPLEADO</Title></Box>
+      {
+        cusId ? (<>
+          <EditarEmpleado id={cusId}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />
+    }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Empleados'></Navegador>
@@ -28,19 +72,7 @@ const Empleados = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Empleados</h3>                    
-                    <input type="checkbox" id="btn-modal"/>
-      <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Empleado</label>
-      <div class="modal">
-        <div class="contenedor">
-          <header>Crear Empleado</header>
-          <label className="contenedor_label" htmlFor="btn-modal">X</label>
-          <div className="contenido">
-            <ContainerAll>
-            <CrearEmpleado />
-            </ContainerAll>
-          </div>
-        </div>
-      </div>
+                    <Button onClick={()=>togglePopup()}>Crear</Button>
                   </div>
                 </div>
               </div>
@@ -85,9 +117,9 @@ const Empleados = () => {
                     <td className='p-3 text-black'>{empleado.employee.region}</td>
                     <td className='p-3 text-black'>{empleado.employee.document_id}</td>
                     <td className='p-3 flex flex-row'>
-                      <Link 
+                      <div onClick={()=>onEdit(empleado.employee.user_id)}
                       className='text-gray-600 hover:text-cyan-300'
-                      to={`/empleados/edit?id=${empleado.employee.user_id}`}>
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -102,7 +134,7 @@ const Empleados = () => {
                             d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
                           />
                         </svg>
-                      </Link>
+                      </div>
                       <div id={empleado.employee.user_id} onClick={()=>handleDelete(empleado.employee.user_id)}
                         className='text-gray-600 hover:text-cyan-300 ml-4'
                       >
@@ -135,7 +167,7 @@ const Empleados = () => {
                           <path
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                           />
                         </svg>
                       </Link>
@@ -158,7 +190,45 @@ const Empleados = () => {
     </>
   )
 }
-const ContainerAll = styled.div`
-  padding-left: 1.225rem;
+
+const Button = styled.button`
+  display: flex;
+  width: "fit-content";
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #0BBBEF;
+  border-radius: 10px;
+  color: #FFF;
+  border: none;
+  margin: 1rem auto;
+`;
+
+export const Box = styled.div`
+  width: 100%;
+  color: #FFF;
+  background-color: #0BBBEF;
+`;
+export const Container = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+export const ButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  margin: 1rem auto;
+  padding: 20px;
+`;
+
+export const Title = styled.p`
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 2rem;
+  
+`;
+export const P = styled.p`
+  margin: 0.225rem 0;
+  font-size: 1rem;
 `;
 export default Empleados;

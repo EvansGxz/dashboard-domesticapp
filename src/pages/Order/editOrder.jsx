@@ -5,31 +5,26 @@ import { indexCategories } from "../../services/categories-services";
 import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
 import { showOrderDetail, updateOrder } from "../../services/order-details-services";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 480px;
-  background-color: $fff;
-  margin: 0 auto;
-  border-radius: 30px;
+  margin: 2% 5%;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
+  float: inline-start;
+  width: 30%;
 `;
 
-export default function EditarOrder() {
+export default function EditarOrder(ide) {
   const [form, setForm] = useState(null);
-  const id = new URLSearchParams(window.location.search).get("id");
+  const id = ide.id
   const navigate = useNavigate();
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
@@ -77,35 +72,33 @@ export default function EditarOrder() {
       <>
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
-        <StyleSelect id="category_id" name="category_id" onChange={handleFormChange}>
-          <option value="">{form.category_name}</option>
+        <Selected id="category_id" label="Servicios" name="category_id" onChange={handleFormChange}>
+          <option value="">--selecciona servicio--</option>
           {categories ? (
             categories.map((category) => (
               <>
               <option value={category.id}>{category.category_name}</option></>
             ))) : null}
-        </StyleSelect>
+        </Selected>
 
-        <StyleSelect id="employee_id" name="employee_id" onChange={handleFormChange}>
-          <option value="">{form.employee_name}</option>
+        <Selected id="employee_id" label="Empleados" name="employee_id" onChange={handleFormChange}>
+          <option value="">--selecciona empleado--</option>
           {employess ? (
             employess.map((category) => (
               <>
               <option value={category.employee.id}>{category.employee.full_name}</option></>
             ))) : null}
-        </StyleSelect>
+        </Selected>
 
-        <StyleSelect id="customer_id" name="customer_id" onChange={handleFormChange}>
-          <option value="">{form.customer_name}</option>
+        <Selected id="customer_id" label="Clientes" name="customer_id" onChange={handleFormChange}>
+          <option value="">--selecciona cliente--</option>
           {customer ? (
             customer.map((category) => (
               <>
               <option value={category.customer.id}>{category.customer.full_name}</option></>
             ))) : null}
-        </StyleSelect>
-      </Container>
-      <Container>
-      <Input
+        </Selected>
+        <Input
         id="address"
         label="Dircción"
         type="text"
@@ -113,6 +106,9 @@ export default function EditarOrder() {
         value={form.address}
         onChange={handleFormChange}
       />
+      </Container>
+      <Container>
+      
       <Input
         id="start_date"
         label="Fecha de inicio"
@@ -121,12 +117,12 @@ export default function EditarOrder() {
         value={form.start_date}
         onChange={handleFormChange}
       />
-      <StyleSelect id="workday" name="workday" onChange={handleFormChange}>
+      <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
           <option value="">--tipo de jornada--</option>
           <option value="Completa">Completa | COL</option>
           <option value="Media">Media | COL</option>
           <option value="Hora">Hora | EU</option>
-      </StyleSelect>
+      </Selected>
        <Input
         id="discount"
         label="Descento"
@@ -135,13 +131,14 @@ export default function EditarOrder() {
         value={form.discount}
         onChange={handleFormChange}
       />
-       <StyleSelect id="supply_food" name="supply_food" onChange={handleFormChange}>
+       <Selected id="supply_food" label="Suministrar Alimentos" name="supply_food" onChange={handleFormChange}>
           <option value="">--suministrar alimento--</option>
           <option value="Si">Si</option>
           <option value="No">No</option>
-        </StyleSelect>
-      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Actualizar
+        </Selected>
+        
+      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Servicio
       </button>
       </Container>
     </StyledForm>

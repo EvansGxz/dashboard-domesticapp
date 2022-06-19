@@ -13,17 +13,17 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 300px;
-  margin: 4rem 18rem 0 18rem;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 80%;
 `;
 
-export default function EditarTarea() {
+export default function EditarTarea(ide) {
   const [categories, setCategories] = useState(null);
   const [form, setForm] = useState(null);
-  const id = new URLSearchParams(window.location.search).get("id");
+  const id = ide.id
 useEffect(() => {
   showService(id).then(service => {
     setForm({
@@ -95,11 +95,5 @@ export const StyleSelect = styled.select`
 `;
 
 const ContainerAll = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 55vh;
+  margin: 0 24%;
 `;

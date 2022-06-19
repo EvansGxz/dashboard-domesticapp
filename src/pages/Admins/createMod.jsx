@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { BASE_URI } from "../../Config";
 import { createUser1 } from "../../services/users-service";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
@@ -12,11 +12,11 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 300px;
-  margin: 6rem 2rem;
+  margin: 5% auto;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 50%;
 `;
 
 export default function CrearMod() {
@@ -61,7 +61,7 @@ export default function CrearMod() {
   }
 
   return (
-    <>
+    <ContainerAll>
     {form ? (
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
@@ -73,12 +73,12 @@ export default function CrearMod() {
           value={form.email}
           onChange={handleFormChange}
         />
-        <StyleSelect id="role" name="role" onChange={handleFormChange1}>
+        <Selected id="role" label="Rol" name="role" onChange={handleFormChange1}>
           <option value="">--seleccionar rol--</option>
           <option value="admin">Admnistrador</option>
           <option value="mod">Miembro del Equipo</option>
           <option value="spectator">Espectador</option>
-        </StyleSelect>
+        </Selected>
       <Input
         id="password"
         label="Contraseña"
@@ -119,16 +119,11 @@ export default function CrearMod() {
      </Container> 
     </StyledForm>) : (<div>Cargando....</div>)}
     
-    </>
+    </ContainerAll>
   );
 }
 
-const StyleSelect = styled.select`
-  width: 80%;
-  border: 1px solid #787b82;
-  padding: 1.225rem 2rem;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  color: black;
-  margin: 1rem 0;
+const ContainerAll = styled.div`
+  margin: 0 6%;
 `;
+

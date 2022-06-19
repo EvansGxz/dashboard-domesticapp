@@ -1,12 +1,16 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
 import { deleteService, indexServices } from '../services/services-services'
+import { Popdiv } from './pop'
 import CrearTarea from './Tareas/createTarea'
+import EditarTarea from './Tareas/edtTarea'
 
 const Tareas = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [cusId, setCusId] = useState(null);
+  const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState(null);
   useEffect(() => {
     indexServices().then(setTasks)
@@ -17,8 +21,45 @@ const Tareas = () => {
       indexServices().then(setTasks)
      });
   }
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
+
+  function toggleEdit(id){
+    setShow(!show);
+  }
+
+  function onEdit(id){
+    setCusId(id);
+    toggleEdit();
+  }
   return (
     <>
+     {
+      isOpen && <Popdiv
+      content={<>
+      <Box>
+      <Title>CREAR TAREAS</Title></Box>
+      <CrearTarea/>
+      </>}
+      handleClose={togglePopup}
+    />
+    }
+    {
+      show && <Popdiv
+      content={<>
+      <Box>
+      <Title>EDITAR TAREAS</Title></Box>
+      {
+        cusId ? (<>
+          <EditarTarea id={cusId}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />
+    }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Tareas'></Navegador>
@@ -29,19 +70,7 @@ const Tareas = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Tareas</h3>                    
-                    <input type="checkbox" id="btn-modal"/>
-                    <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Tarea</label>
-                    <div class="modal">
-                      <div class="contenedor">
-                        <header>Crear Tarea</header>
-                        <label className="contenedor_label" htmlFor="btn-modal">X</label>
-                        <div className="contenido">
-                          <ContainerAll>
-                          <CrearTarea />
-                          </ContainerAll>
-                        </div>
-                      </div>
-                    </div>
+                    <Button onClick={()=>togglePopup()}>Crear Tareas</Button>
                   </div>
                 </div>
               </div>
@@ -69,9 +98,9 @@ const Tareas = () => {
                     <td className='p-3 text-black'>{empleado.service_name}</td>
                     <td className='p-3 text-black'>{empleado.category_name}</td>
                     <td className='p-3 flex flex-row'>
-                      <Link 
+                      <div 
                       className='text-gray-600 hover:text-cyan-300'
-                      to={`/tareas/edit?id=${empleado.id}`}>
+                      onClick={()=>onEdit(empleado.id)}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -86,7 +115,7 @@ const Tareas = () => {
                             d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
                           />
                         </svg>
-                      </Link>
+                      </div>
                       <div id={empleado.id} onClick={()=>handleDelete(empleado.id)}
                         className='text-gray-600 hover:text-cyan-300 ml-4'
                       >
@@ -124,7 +153,32 @@ const Tareas = () => {
     </>
   )
 }
-const ContainerAll = styled.div`
-  padding-left: 1.225rem;
+
+const Button = styled.button`
+  display: flex;
+  width: "fit-content";
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background-color: #0BBBEF;
+  border-radius: 10px;
+  color: #FFF;
+  border: none;
+  margin: 1rem auto;
 `;
+
+const Box = styled.div`
+  width: 100%;
+  color: #FFF;
+  background-color: #0BBBEF;
+`;
+
+const Title = styled.p`
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 2rem;
+  
+`;
+
 export default Tareas;

@@ -4,7 +4,7 @@ import { indexCategories } from "../../services/categories-services";
 import { indexEmployee } from "../../services/employee-service";
 import { indexCustomer } from "../../services/customer-services";
 import { createOrder } from "../../services/order-details-services";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
@@ -14,11 +14,11 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 300px;
-  margin: 0 auto;
+  margin: 2% 5%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 30%;
 `;
 
 export default function CrearOrder() {
@@ -60,35 +60,33 @@ export default function CrearOrder() {
       <>
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
-        <StyleSelect id="category_id" name="category_id" onChange={handleFormChange}>
+        <Selected id="category_id" label="Servicios" name="category_id" onChange={handleFormChange}>
           <option value="">--selecciona servicio--</option>
           {categories ? (
             categories.map((category) => (
               <>
               <option value={category.id}>{category.category_name}</option></>
             ))) : null}
-        </StyleSelect>
+        </Selected>
 
-        <StyleSelect id="employee_id" name="employee_id" onChange={handleFormChange}>
+        <Selected id="employee_id" label="Empleados" name="employee_id" onChange={handleFormChange}>
           <option value="">--selecciona empleado--</option>
           {employess ? (
             employess.map((category) => (
               <>
               <option value={category.employee.id}>{category.employee.full_name}</option></>
             ))) : null}
-        </StyleSelect>
+        </Selected>
 
-        <StyleSelect id="customer_id" name="customer_id" onChange={handleFormChange}>
+        <Selected id="customer_id" label="Clientes" name="customer_id" onChange={handleFormChange}>
           <option value="">--selecciona cliente--</option>
           {customer ? (
             customer.map((category) => (
               <>
               <option value={category.customer.id}>{category.customer.full_name}</option></>
             ))) : null}
-        </StyleSelect>
-      </Container>
-      <Container>
-      <Input
+        </Selected>
+        <Input
         id="address"
         label="Dircción"
         type="text"
@@ -96,6 +94,9 @@ export default function CrearOrder() {
         value={form.address}
         onChange={handleFormChange}
       />
+      </Container>
+      <Container>
+      
       <Input
         id="start_date"
         label="Fecha de inicio"
@@ -104,12 +105,12 @@ export default function CrearOrder() {
         value={form.start_date}
         onChange={handleFormChange}
       />
-      <StyleSelect id="workday" name="workday" onChange={handleFormChange}>
+      <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
           <option value="">--tipo de jornada--</option>
           <option value="Completa">Completa | COL</option>
           <option value="Media">Media | COL</option>
           <option value="Hora">Hora | EU</option>
-      </StyleSelect>
+      </Selected>
        <Input
         id="discount"
         label="Descento"
@@ -118,13 +119,14 @@ export default function CrearOrder() {
         value={form.discount}
         onChange={handleFormChange}
       />
-       <StyleSelect id="supply_food" name="supply_food" onChange={handleFormChange}>
+       <Selected id="supply_food" label="Suministrar Alimentos" name="supply_food" onChange={handleFormChange}>
           <option value="">--suministrar alimento--</option>
           <option value="Si">Si</option>
           <option value="No">No</option>
-        </StyleSelect>
-      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear
+        </Selected>
+        
+      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Servicio
       </button>
       </Container>
     </StyledForm>

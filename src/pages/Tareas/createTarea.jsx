@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createService } from "../../services/services-services";
 import { indexCategories } from "../../services/categories-services";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
@@ -13,11 +13,11 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 300px;
-  margin: 4rem 18rem 0 18rem;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 80%;
 `;
 
 export default function CrearTarea() {
@@ -58,7 +58,7 @@ useEffect(() => {
         onChange={handleFormChange}
       />
 
-      <StyleSelect id="category_id" name="category_id" onChange={handleFormChange}>
+      <Selected id="category_id" label="Servicio" name="category_id" onChange={handleFormChange}>
           <option value="">Seleccione</option>
           {categories ? (
             categories.map((category) => (
@@ -69,7 +69,7 @@ useEffect(() => {
             
           ) : null}
           
-        </StyleSelect>
+        </Selected>
       <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Crear Servicio
       </button>
@@ -90,11 +90,5 @@ export const StyleSelect = styled.select`
 `;
 
 const ContainerAll = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 55vh;
+  margin: 0 24%;
 `;

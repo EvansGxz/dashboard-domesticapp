@@ -10,11 +10,12 @@ const StyledForm = styled.form`
   gap: 2rem;
   min-width: 258px;
 `;
-export default function EditarHEabilidad() {
+export default function EditarHEabilidad(ide) {
   const [form, setForm] = useState(null);
   const [hab, setHab] = useState(null);
   const [employees, setEmployees] = useState(null);
-  const id = new URLSearchParams(window.location.search).get("id");
+  const id = ide.id
+  console.log(id)
   useEffect(() => {
     showHEmployee(id).then((hability)=>{
       setForm({
@@ -76,13 +77,11 @@ export default function EditarHEabilidad() {
   );
 }
 const ContainerAll = styled.div`
-  display: flex;
-  width: 1080px;
-  margin: 8rem 40rem;
-  border-radius: 30px;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
-  height: 55vh;
+  float: inline-start;
+  width: 100%;
 `;
 
 export const StyleSelect = styled.select`

@@ -8,11 +8,13 @@ import { useAuth } from '../context/auth-context'
 import { indexCustomer } from '../services/customer-services'
 import { deleteUser } from '../services/users-service'
 import CrearCliente from "./Clientes/createCliente"
+import EditarCliente from './Clientes/editCliente'
 
 const Clientes = () => {
   const {user}= useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const [show, setShow] = useState(true);
+  const [cusId, setCusId] = useState(null);
+  const [show, setShow] = useState(false);
   const [customers, setCustomers] = useState(null);
   useEffect(() => {
     indexCustomer().then(setCustomers)
@@ -28,9 +30,15 @@ const Clientes = () => {
     setIsOpen(!isOpen);
   }
 
-  const toggleEdit = () => {
+  function toggleEdit(id){
     setShow(!show);
   }
+
+  function onEdit(id){
+    setCusId(id);
+    toggleEdit();
+  }
+  
 
   return (
     <>
@@ -44,6 +52,21 @@ const Clientes = () => {
       handleClose={togglePopup}
     />
     }
+    {
+      show && <PopAll
+      content={<>
+      <Box>
+      <Title>EDITAR CLIENTE</Title></Box>
+      {
+        cusId ? (<>
+          <EditarCliente id={cusId}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />
+    }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Clientes'></Navegador>
@@ -54,20 +77,7 @@ const Clientes = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Clientes</h3>                    
-                    <input type="checkbox" id="btn-modal"/>
                     <Button onClick={()=>togglePopup()}>Crear</Button>
-      <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Cliente</label>
-      <div class="modal">
-        <div class="contenedor">
-          <header>Crear Cliente</header>
-          <label className="contenedor_label" htmlFor="btn-modal">X</label>
-          <div className="contenido">
-            <ContainerAll>
-            <CrearCliente/>
-            </ContainerAll>
-          </div>
-        </div>
-      </div>
                   </div>
                 </div>
               </div>
@@ -131,9 +141,9 @@ const Clientes = () => {
                     {user.role === 'spectator' ? null : (
                     <>
                     <td className='p-3 flex flex-row'>
-                      <Link 
-                      className='text-gray-600 hover:text-cyan-300'
-                      to={`/clientes/edit?id=${cliente.customer.user_id}`}>
+                    <div id={cliente.customer.user_id} onClick={()=>onEdit(cliente.customer.user_id)}
+                        className='text-gray-600 hover:text-cyan-300'
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -148,7 +158,7 @@ const Clientes = () => {
                             d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
                           />
                         </svg>
-                      </Link>
+                      </div>
                       <div id={cliente.customer.user_id} onClick={()=>handleDelete(cliente.customer.user_id)}
                         className='text-gray-600 hover:text-cyan-300'
                       >
@@ -182,7 +192,7 @@ const Clientes = () => {
                           <path
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            d='M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z'
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                           />
                         </svg>
                       </Link>

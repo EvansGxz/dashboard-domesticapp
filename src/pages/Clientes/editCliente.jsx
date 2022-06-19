@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URI } from "../../Config";
 import { showCustomer } from "../../services/customer-services";
-import { Input } from "../../styles/views/Login";
+import { Input, Selected } from "../../styles/views/Login";
 
-export default function EditarCliente() {
+export default function EditarCliente(ide) {
   const navigate = useNavigate();
   const [form, setForm] = useState(null);
   const [form1, setForm1] = useState(null);
   const [employee, setEmployee] = useState(null);
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("id");
+    const id = ide.id
     showCustomer(id).then((user) => {
       setEmployee(user);
       setForm({
@@ -34,6 +34,7 @@ export default function EditarCliente() {
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
+
     const data = new FormData();
     data.append("full_name", event.target.full_name.value);
     data.append("country", event.target.country.value);
@@ -69,8 +70,9 @@ export default function EditarCliente() {
 
   return (
     <ContainerAll>
+    
     {form ? (
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
       <Input
           id="email"
@@ -82,28 +84,29 @@ export default function EditarCliente() {
         />
       <Input
         id="full_name"
-        label="Nombre Personal/Empresa"
+        label="Nombre Completo/Empresa"
         type="text"
         placeholder="John Doe"
         value={form1.full_name}
         onChange={handleFormChange1}
       />
-
+      
+      <Selected id="country" label="Pais" name="country" onChange={handleFormChange1}>
+          <option value="">Seleccione</option>
+          <option value="Colombia">Colombia</option>
+          <option value="España">España</option>
+          <option value="Canada">Canadá</option>
+        </Selected>
+</Container>
+      <Container>
       <Input
         id="region"
-        label="País"
+        label="Dirección"
         type="text"
         placeholder="Calle 53, Bogotá, Colombia"
         value={form1.region}
         onChange={handleFormChange1}
       />
-      <StyleSelect id="country" name="country" onChange={handleFormChange1}>
-        <option value="">{form1.country}</option>
-        <option value="Colombia">Colombia</option>
-        <option value="España">España</option>
-        <option value="Canada">Canadá</option>
-      </StyleSelect>
-
       <Input
         id="birth_date"
         label="Fecha de nacimiento"
@@ -111,8 +114,7 @@ export default function EditarCliente() {
         placeholder="dd-mm-yyyy"
         value={form1.birth_date}
         onChange={handleFormChange1}
-      /></Container>
-      <Container>
+      />
       <Input
         id="document_id"
         label="Numero de documento"
@@ -121,15 +123,14 @@ export default function EditarCliente() {
         value={form1.document_id}
         onChange={handleFormChange1}
       />
-      <Input
-        id="client_type"
-        label="Tipo de cliente"
-        type="text"
-        placeholder="Persona/Empresa"
-        value={form1.client_type}
-        onChange={handleFormChange1}
-      />
-
+      </Container>
+      <Container>
+      <Selected id="client_type" name="client_type"
+       onChange={handleFormChange1} label="Tipo de cliente">
+          <option value="">--tipo de cliente</option>
+          <option value="Colombia">Persona</option>
+          <option value="España">Empresa</option>
+      </Selected>  
       <Input
         id="cod_refer"
         label="Codigo de referido"
@@ -146,14 +147,17 @@ export default function EditarCliente() {
         placeholder="John"
         value={form1.encargado}
         onChange={handleFormChange1}
+      /></Container>
+      <Container>
+      <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form1.lada}
+        onChange={handleFormChange1}
       />
-      <StyleSelect1 id="lada" name="lada" onChange={handleFormChange}>
-        <option value="">{form.lada}</option>
-        <option value="+57">+57</option>
-        <option value="+34">+34</option>
-        <option value="+1">+1</option>
-      </StyleSelect1>
-
+      
       <Input
         id="phone"
         label="Celular (10 digitos)"
@@ -169,15 +173,29 @@ export default function EditarCliente() {
         label="Imagen"
         type="file"
       />
-
-      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Actualizar
+      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
+        Actualizar Cliente
       </button>
-      </Container>
+    </Container>  
     </StyledForm>) : (<div>Cargando....</div>)}
+    
     </ContainerAll>
   );
 }
+
+export const StyleSelect = styled.select`
+  width: 80%;
+  border: 1px solid #787b82;
+  padding: 1.225rem 2rem;
+  background-color: transparent;
+  border-radius: 0.5rem;
+  color: black;
+  margin: 1rem 0;
+`;
+
+const ContainerAll = styled.div`
+  margin: 0 6%;
+`;
 
 const StyledForm = styled.form`
   flex-direction: column;
@@ -192,33 +210,3 @@ const Container = styled.div`
   float: inline-start;
 `;
 
-const ContainerAll = styled.div`
-   display: flex;
-  flex-direction: column;
-  width: 720px;
-  margin: 0 auto;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
-  height: 100vh;
-`;
-
-const StyleSelect = styled.select`
-  width: 80%;
-  border: 1px solid #787b82;
-  padding: 1.225rem 2rem;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  color: black;
-  margin: 1rem 0;
-`;
-
- const StyleSelect1 = styled.select`
-  width: 25%;
-  border: 1px solid #787b82;
-  padding: 1.225rem;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  color: black;
-  margin: 1rem 0;
-`;

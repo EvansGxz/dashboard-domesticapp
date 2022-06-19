@@ -7,10 +7,11 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  min-width: 258px;
+  width: 50%;
+  margin: 0 20%;
+  justify-content: space-between;
+  align-content: center;
+  float: inline-start;
 `;
 const ContainerAll = styled.div`
    display: flex;
@@ -22,12 +23,12 @@ const ContainerAll = styled.div`
   align-content: center;
   height: 100vh;
 `;
-export default function EditMod() {
+export default function EditMod(ide) {
   const [seeadmin, setAdmin] = useState(null);
   const [form, setForm] = useState(null);
   const [form1, setForm1] = useState(null);
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("id");
+    const id = ide.id
     showAdmin(id).then((user) => {
       setAdmin(user);
       setForm({
@@ -39,7 +40,7 @@ export default function EditMod() {
         role: user.role,
       });
     });
-  }, []);
+  }, [ide]);
   const navigate = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();

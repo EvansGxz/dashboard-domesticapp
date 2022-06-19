@@ -12,17 +12,17 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 300px;
-  margin: 6rem 2rem;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 80%;
 `;
 
-export default function EditNew() {
+export default function EditNew(ide) {
   const navigate = useNavigate();
   const [form, setForm] = useState(null);
-  const id = new URLSearchParams(window.location.search).get("id");
+  const id = ide.id
   useEffect(() => {
     showNews(id).then((news)=>
       setForm({

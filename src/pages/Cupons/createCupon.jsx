@@ -13,11 +13,11 @@ const StyledForm = styled.form`
 `;
 
 const Container = styled.div`
-  width: 25vw;
-  margin: 0 auto;
+  margin: 5%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
+  width: 30%
 `;
 function CreateCupon(){
   const [users, setUsers] = useState();
@@ -51,14 +51,15 @@ function CreateCupon(){
       
       
   }
-  console.log(customer)
-  return (
 
-    <Container>
+  return (
+<>
+    
     {
       users ? (
         <>
   <StyledForm onSubmit={handleSubmit}>
+  <Container>
         <Input
           id="name"
           label="Codigo"
@@ -84,6 +85,10 @@ function CreateCupon(){
           value={form.count}
           onChange={handleFormChange}
         />
+
+        </Container>
+        <Container>
+
         <Input
           id="end_date"
           label="Fecha limite"
@@ -123,12 +128,14 @@ function CreateCupon(){
         <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
           Crear Cupón
         </button>
+      </Container>  
       </StyledForm>
         </>
       ) : null
     }
     
-    </Container>
+    
+    </>
   );
 }
 

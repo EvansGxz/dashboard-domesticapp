@@ -15,18 +15,17 @@ const StyledForm = styled.form`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 480px;
+  width: 80%;
   background-color: $fff;
-  margin: 0 auto;
+  margin: 5% 15%;
   border-radius: 30px;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
 `;
 
-export default function EditarServicio() {
+export default function EditarServicio(ide) {
   const [form, setForm] = useState(null);
- const id = new URLSearchParams(window.location.search).get("id");
+ const id = ide.id
  const navigate = useNavigate();
   useEffect(() =>{
    
@@ -81,7 +80,7 @@ export default function EditarServicio() {
         onChange={handleFormChange}
       />
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear
+        Actualizar Servicio
       </button>
     </StyledForm>) : (<div>Cargando....</div>)}
     </Container>

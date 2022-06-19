@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
 import { deleteOrder, indexOrder } from '../services/order-details-services'
@@ -11,14 +10,19 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction"; // needed
 import listPlugin from '@fullcalendar/list'; //For List View
+import { PopAll } from '../components/popAll'
+import EditarOrder from './Order/editOrder'
 
 
 
 export const Calendario = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(true);
+  const [createCalendar, setCreateCalendar] = useState(false);
   const [cal, setCal] = useState({});
-  const navigate = useNavigate();
+
  useEffect(() => {
     indexOrder().then(setCategories)
   }, [])
@@ -27,6 +31,22 @@ export const Calendario = () => {
     setShow(!show);
   }
 
+  const togglePopCreate = () => {
+    setCreateCalendar(!createCalendar);
+    setShow(!show);
+  }
+  function toggleEdit(){
+    setIsEdit(!isEdit);
+    setShow(!show);
+  }
+  function onEdit(id){
+    setCusId(id);
+    setIsEdit(!isEdit);
+  }
+  function other(id){
+    onEdit(id);
+    setIsOpen(!isOpen);
+  }
   function handleDelete(id){
     deleteOrder(id).then(() => {
       indexOrder().then(setCategories)
@@ -55,6 +75,31 @@ export const Calendario = () => {
   
   return (
     <>
+    {
+      createCalendar && <PopAll
+      content={<>
+      <Box>
+      <Title>CREAR SERVICIO</Title></Box>
+      <CrearOrder/>
+      </>}
+      handleClose={togglePopCreate}
+    />
+    }
+    {
+      isEdit && <PopAll
+      content={<>
+      <Box>
+      <Title>EDITAR SERVICIO</Title></Box>
+      {
+        cusId ? (<>
+          <EditarOrder id={cusId}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />
+    }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Servicios dados'></Navegador>
@@ -65,18 +110,7 @@ export const Calendario = () => {
                 <div className=''>
                   <div className='ml-60 flex justify-center gap-4'>
                     <h3 className='text-3xl font-bold text-gray-700'>Servicios</h3>                    
-                    <input type="checkbox" id="btn-modal"/>
-                    <label htmlFor="btn-modal" className='ml-24 relative px-4 py-3 flex items-center space-x-4 rounded-xl text-white bg-sky-500 hover:bg-sky-700'>Crear Order</label>
-                    <div class="modal">
-                      <div class="contenedor">
-                        <header>Crear Order</header>
-                        <label className="contenedor_label" htmlFor="btn-modal">X</label>
-                        <div className="contenido">
-                          <ContainerAll>
-                            <CrearOrder/>
-                          </ContainerAll>
-                        </div>
-                    </div>
+                    <Button onClick={()=>togglePopCreate()}>Crear Servicio</Button>
                   </div>
                 </div>
               </div>
@@ -100,7 +134,7 @@ export const Calendario = () => {
         <P><b>Suplir alimentos: </b>{cal._def.extendedProps.supply_food}</P>
         <P><b>Tipo de jornada: </b>{cal._def.extendedProps.workday}</P>
         <ButtonContainer>
-        <Button onClick={()=>navigate(`/calendar/edit/?id=${cal._def.publicId}`)}>Editar Servicio</Button>
+        <Button onClick={()=>other(cal._def.publicId)}>Editar Servicio</Button>
         <Button onClick={()=>handleDelete(cal._def.publicId)}>Cancelar Servicio</Button>
         </ButtonContainer>
         </Container>
@@ -141,7 +175,6 @@ export const Calendario = () => {
       
     </>
           </div>  
-    </div>
     </>
   )
 }

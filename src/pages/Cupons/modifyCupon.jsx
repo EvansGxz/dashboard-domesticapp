@@ -9,18 +9,17 @@ const Container = styled.div`
   flex-direction: column;
   width: 480px;
   background-color: $fff;
-  margin: 0 auto;
+  margin: 5% auto;
   border-radius: 30px;
   justify-content: space-between;
   align-content: center;
-  height: 100vh;
 `;
 
-function ModifyCupon(){
+function ModifyCupon(ide){
   
   const [form, setForm] = useState(null);
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("id");
+    const id = ide.id
     
     showCupon(id).then((cupon) => {
       setForm({
@@ -30,7 +29,7 @@ function ModifyCupon(){
         cupon_title: cupon.cupon_title,
       });
     });
-  }, []);
+  }, [ide]);
 
   const [errors, setErrors] = useState({
     name: "",

@@ -77,7 +77,7 @@ export default function CrearHabilidad() {
         />
        
           <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear Habilidad
+        Crear Habilidad de Empleado
       </button>
         
     </StyledForm>) : (<div>Cargando....</div>)}
@@ -85,14 +85,11 @@ export default function CrearHabilidad() {
   );
 }
 const ContainerAll = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  margin: 5rem 3rem 0 auto;
-  border-radius: 30px;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
-  height: 55vh;
+  float: inline-start;
+  width: 100%;
 `;
 
 export const StyleSelect = styled.select`

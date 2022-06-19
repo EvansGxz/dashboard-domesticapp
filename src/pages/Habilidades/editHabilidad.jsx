@@ -11,9 +11,9 @@ const StyledForm = styled.form`
   min-width: 258px;
 `;
 
-export default function EditarHabilidad() {
+export default function EditarHabilidad(ide) {
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get("id");
+    const id = ide.id
     showHability(id).then((hability)=>{
     setForm({
       hability: hability.hability,
@@ -68,14 +68,11 @@ export default function EditarHabilidad() {
   );
 }
 const ContainerAll = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 1080px;
-  margin: 5rem auto 0 auto;
-  border-radius: 30px;
+  margin: 5% 6%;
   justify-content: space-between;
   align-content: center;
-  height: 55vh;
+  float: inline-start;
+  width: 100%;
 `;
 
 export const StyleSelect = styled.select`
