@@ -22,6 +22,7 @@ import { GestionAvanzada } from "../pages/GestionAvanzada";
 import Habilidades from "../pages/Habilidades";
 import EditarHEabilidad from "../pages/Habilidades Empleados/editHE";
 import EditarHabilidad from "../pages/Habilidades/editHabilidad";
+import Login from "../pages/login";
 import News from "../pages/Newslatter";
 import EditNew from "../pages/NewsLatter/editNews";
 import CrearOrder from "../pages/Order/createOrdr";
@@ -78,6 +79,9 @@ function Authenticated() {
 
         <Route path="/gestion/create" element={<CrearMod/>} />
         <Route path="/gestion/edit" element={<EditMod/>} />
+
+        <Route path="/login" element={<Login />} />
+
       </Routes>
     </>
   );
