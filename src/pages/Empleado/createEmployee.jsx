@@ -5,6 +5,7 @@ import {
   createECategory,
   indexCategories,
 } from "../../services/categories-services";
+import { indexEmployee } from "../../services/employee-service";
 import { createUser1 } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
 
@@ -22,7 +23,7 @@ const Container = styled.div`
   width: 30%
 `;
 let checkCat = [];
-export default function CrearEmpleado() {
+export default function CrearEmpleado({onInputChange, onStateChange}) {
   const [categories, setCategories] = useState();
   const [form, setForm] = useState({
     email: "",
@@ -58,16 +59,10 @@ export default function CrearEmpleado() {
     data.append("biografy", event.target.biografy.value);
     data.append("birth_date", event.target.birth_date.value);
     data.append("cover", event.target.cover.files[0]);
+    onInputChange(false)
+    createUser1(form)
+      .then((user) => {submitAPI(data, user)})
 
-    let id = null;
-    createUser1(form).then((user) => {
-      id = user.user_id;
-      submitAPI(data, id);
-
-      checkCat.forEach((cat) => {
-        createECategory({ employee_id: id, category_id: cat });
-      });
-    });
   }
 
   function cheked(event) {
@@ -86,14 +81,18 @@ export default function CrearEmpleado() {
     const { name, value } = event.target;
     setForm1({ ...form1, [name]: value });
   }
-  function submitAPI(data, id) {
-    console.log(id);
-    fetch(BASE_URI + `employees/${id}`, {
+  function submitAPI(data, user) {
+    fetch(BASE_URI + `employees/${user.user_id}`, {
       method: "PATCH",
       body: data,
     })
-      .then((response) => response.json())
+      .then((response) => {response.json()})
+      .then(indexEmployee().then(onStateChange))
       .catch((error) => console.log(error.message));
+
+    checkCat.forEach((cat) => {
+        createECategory({ employee_id: user.id, category_id: cat });
+    });
   }
 
   return (
