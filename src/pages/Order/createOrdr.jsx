@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { indexCategories } from "../../services/categories-services";
 import { indexEmployee } from "../../services/employee-service";
 import { indexCustomer } from "../../services/customer-services";
-import { createOrder } from "../../services/order-details-services";
+import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected } from "../../styles/views/Login";
 
 
@@ -21,7 +21,7 @@ const Container = styled.div`
   width: 30%;
 `;
 
-export default function CrearOrder() {
+export default function CrearOrder({onInputChange, onStateChange}) {
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
   const [customer, setCustomers] = useState(null);
@@ -46,7 +46,10 @@ export default function CrearOrder() {
     event.preventDefault();
     createOrder({category_id: form.category_id, employee_id: form.employee_id, customer_id: form.customer_id,
                  address: form.address, start_date: event.target.start_date.value, work_date: form.workday, discount: form.discount,
-                supply_food: form.supply_food})
+                supply_food: form.supply_food}).then(()=>{
+                  onInputChange(false)
+                  indexOrder().then(onStateChange)
+                })
   }
 
   function handleFormChange(event) {
