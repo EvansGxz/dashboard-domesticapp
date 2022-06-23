@@ -35,6 +35,23 @@ const Tareas = () => {
     setCusId(id);
     toggleEdit();
   }
+
+  function handleModalCreateChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('TaskID');
+  }
+
+  function handleEmployeesEditChange(newCustomer) {
+    setTasks(newCustomer)
+  }
+
+  if(cusId){
+    localStorage.setItem("TaskID", cusId);
+  }
   return (
     <>
      {
@@ -42,7 +59,7 @@ const Tareas = () => {
       content={<>
       <Box>
       <Title>CREAR TAREAS</Title></Box>
-      <CrearTarea/>
+      <CrearTarea onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopup}
     />
@@ -54,7 +71,7 @@ const Tareas = () => {
       <Title>EDITAR TAREAS</Title></Box>
       {
         cusId ? (<>
-          <EditarTarea id={cusId}/>
+          <EditarTarea onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
         </>) : null
       }
       

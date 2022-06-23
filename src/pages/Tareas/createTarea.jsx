@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createService } from "../../services/services-services";
+import { createService, indexServices } from "../../services/services-services";
 import { indexCategories } from "../../services/categories-services";
 import { Input, Selected } from "../../styles/views/Login";
 
@@ -20,7 +19,7 @@ const Container = styled.div`
   width: 80%;
 `;
 
-export default function CrearTarea() {
+export default function CrearTarea({onInputChange, onStateChange}) {
   const [categories, setCategories] = useState(null);
   const [form, setForm] = useState({
     service_name: "",
@@ -29,12 +28,13 @@ export default function CrearTarea() {
 useEffect(() => {
   indexCategories().then(setCategories)
 }, [])
-  const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
     console.log(form);
     createService(form).then(()=>{
-      navigate("/tareas")
+      onInputChange(false)
+      indexServices().then(onStateChange)
     })
   }
 

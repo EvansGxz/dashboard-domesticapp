@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createService, showService } from "../../services/services-services";
+import { indexServices, showService, updateService } from "../../services/services-services";
 import { indexCategories } from "../../services/categories-services";
 import { Input } from "../../styles/views/Login";
 
@@ -20,10 +19,10 @@ const Container = styled.div`
   width: 80%;
 `;
 
-export default function EditarTarea(ide) {
+export default function EditarTarea({onStateChange, onInputChange}) {
   const [categories, setCategories] = useState(null);
   const [form, setForm] = useState(null);
-  const id = ide.id
+  const id = localStorage.getItem("TaskID");
 useEffect(() => {
   showService(id).then(service => {
     setForm({
@@ -34,12 +33,13 @@ useEffect(() => {
   })
   indexCategories().then(setCategories)
 }, [id])
-  const navigate = useNavigate();
+
   function handleSubmit(event) {
     event.preventDefault();
     console.log(form);
-    createService({service_name: form.service_name, category_id: form.category_id}).then(()=>{
-      navigate("/tareas")
+    updateService({service_name: form.service_name, category_id: form.category_id}, id).then(() =>{
+      onInputChange(false);
+      indexServices().then(onStateChange)
     })
   }
 

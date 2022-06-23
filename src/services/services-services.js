@@ -13,7 +13,7 @@ export async function createService(newHability) {
 }
 
 export async function updateService(data, ServiceID) {
-  return await apiFetch("services/", {
+  return await apiFetch(`services/${ServiceID}`, {
     body: data,
     method: "PATCH",
   });
