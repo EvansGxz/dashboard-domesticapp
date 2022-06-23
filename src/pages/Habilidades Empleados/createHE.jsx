@@ -1,16 +1,15 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { indexEmployee } from "../../services/employee-service";
 import { indexHability } from "../../services/habilities-services";
-import { createHEmployee } from "../../services/hability-employee-services";
+import { createHEmployee, indexHEmployee } from "../../services/hability-employee-services";
 
 const StyledForm = styled.form`
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
-export default function CrearHEabilidad() {
+export default function CrearHEabilidad({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     hability_id: "",
     employee_id: "",
@@ -21,14 +20,14 @@ export default function CrearHEabilidad() {
     indexEmployee().then(setEmployees);
     indexHability().then(setHab);
   }, [])
-  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
+
     createHEmployee(form).then(() => {
-      navigate("/habilidades")
-    });
+      onInputChange(false)
+      indexHEmployee().then(onStateChange)
+    })
   }
 
   function handleFormChange(event) {
