@@ -13,8 +13,8 @@ export async function createCupon(newCupon) {
    
 }
 
-export async function updateCupon(data) {
-  return await apiFetch("cupons/", {
+export async function updateCupon(data, CuponUserID) {
+  return await apiFetch(`cupons/${CuponUserID}`, {
     body: data,
     method: "PATCH",
   });
