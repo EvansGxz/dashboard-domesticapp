@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BASE_URI } from "../../Config";
-import { showEmployee } from "../../services/employee-service";
+import { indexEmployee, showEmployee } from "../../services/employee-service";
+import { updateEmployee } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
 
 
@@ -20,22 +20,15 @@ const Container = styled.div`
   width: 30%
 `;
 
-export default function EditarEmpleado(ide) {
-  const [form, setForm] = useState(null);
+export default function EditarEmpleado({onStateChange, onInputChange}) {
+
   const [form1, setForm1] = useState(null);
   const [employee, setEmployee] = useState(null);
-  const navigate = useNavigate();
   useEffect(() => {
-    const id = ide.id
-    console.log(id)
+    const id = localStorage.getItem("EID");
+
     showEmployee(id).then((user) => {
       setEmployee(user);
-      setForm({
-        email: user.email,
-        lada: user.lada,
-        phone: user.phone,
-        user_type: "employee",
-        });
       setForm1({
         full_name: user.full_name,
         country: user.country,
@@ -45,37 +38,27 @@ export default function EditarEmpleado(ide) {
         experience: user.experience,
         biografy: user.biografy,
         birth_date: user.birth_date,
+        cover: user.cover,
       });
     });
-  }, [ide]);
+  }, []);
   function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData();
-    data.append("full_name", event.target.full_name.value);
-    data.append("country", event.target.country.value);
-    data.append("document_id", event.target.document_id.value);
-    data.append("contact", event.target.contact.value);
-    data.append("region", event.target.region.value);
-    data.append("experience", event.target.experience.value);
-    data.append("biografy", event.target.biografy.value);
-    data.append("birth_date", event.target.birth_date.value);
     data.append("cover", event.target.cover.files[0]);
-    submitAPI(form1, employee.user_id)
+    
+    updateEmployee(form1, employee.user_id).then(submitAPI(data, employee.user_id))
+    onInputChange(false);
   }
 
   function submitAPI(data, id) {
-    console.log(id);
-    fetch(BASE_URI+`employees/${id}`,{
-    method: "PATCH",
-    body: data
-  }).then(response => {
-    navigate("/empleados")
-    response.json()}).catch((error)=>console.log(error.message));
-}
-
-  function handleFormChange(event) {
-    const { name, value } = event.target;
-    setForm({ ...form, [name]: value });
+    fetch(BASE_URI + `employees/${id}`, {
+      method: "PATCH",
+      body: data,
+    })
+      .then((response) => response.json())
+      .then(indexEmployee().then(onStateChange))
+      .catch((error) => console.log(error.message));
   }
 
   function handleFormChange1(event) {
@@ -85,17 +68,9 @@ export default function EditarEmpleado(ide) {
 
   return (
     <ContainerAll>
-    {form ? (
+    {form1 ? (
       <StyledForm onSubmit={(e) => handleSubmit(e)}>
         <Container>
-          <Input
-            id="email"
-            label="Email"
-            type="email"
-            placeholder="example@mail.com"
-            value={form.email}
-            onChange={handleFormChange}
-          />
           <Input
             id="full_name"
             label="Nombre Completo de Empleado"
@@ -104,14 +79,14 @@ export default function EditarEmpleado(ide) {
             value={form1.full_name}
             onChange={handleFormChange1}
           />
-          <Input id="cover" name="cover" label="Imagen" type="file" />
+          <Input id="cover" name="cover" value={form1.cover.files} label="Imagen" type="file" />
           <Input
-            id="phone"
-            label="Celular (10 digitos)"
-            type="number"
-            placeholder="xxxxxxx"
-            value={form.phone}
-            onChange={handleFormChange}
+            id="document_id"
+            label="Numero de documento"
+            type="text"
+            placeholder="xxxxxxxxxx"
+            value={form1.document_id}
+            onChange={handleFormChange1}
           />
         </Container>
         <Container>
@@ -121,7 +96,7 @@ export default function EditarEmpleado(ide) {
             name="country"
             onChange={handleFormChange1}
           >
-            <option value="">Seleccione</option>
+            <option value={form1.country}>{form1.country}</option>
             <option value="Colombia">Colombia</option>
             <option value="España">España</option>
             <option value="Canada">Canadá</option>
@@ -139,28 +114,12 @@ export default function EditarEmpleado(ide) {
             label="Fecha de nacimiento"
             type="date"
             value={form1.birth_date}
-            placeholder="dd-mm-yyyy"
+            placeholder={form1.birth_date}
             onChange={handleFormChange1}
           />
-          <Input
-            id="document_id"
-            label="Numero de documento"
-            type="text"
-            placeholder="xxxxxxxxxx"
-            value={form1.document_id}
-            onChange={handleFormChange1}
-          />
+          
         </Container>
         <Container>
-          <Input
-            id="contrato"
-            label="Numero de contrato"
-            type="file"
-            placeholder="xxxxxxxxxx"
-            value={form1.contrato}
-            onChange={handleFormChange1}
-          />
-
           <Input
             id="biografy"
             label="Conóceme"
@@ -187,15 +146,6 @@ export default function EditarEmpleado(ide) {
             <option value="9">9</option>
             <option value="10">10</option>
           </Selected>
-
-          <Input
-            id="lada"
-            label="Lada"
-            type="text"
-            placeholder="+1"
-            value={form.lada}
-            onChange={handleFormChange}
-          />
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type="submit"
@@ -203,9 +153,6 @@ export default function EditarEmpleado(ide) {
           Actualizar Empleado
           </button>
         </Container>
-      
-
-       
       </StyledForm>
     ) : (
       <div>Cargando....</div>
