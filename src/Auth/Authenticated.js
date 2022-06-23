@@ -2,7 +2,6 @@ import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 import CrearMod from "../pages/Admins/createMod";
 import EditMod from "../pages/Admins/editMod";
-import Cal from "../pages/Caal";
 import { Calendario } from "../pages/Calendario";
 import Clientes from "../pages/Clientes";
 import { ClientCalendario } from "../pages/Clientes/clientCalendar";
@@ -12,7 +11,6 @@ import Cupones from "../pages/Cupones";
 import CreateCupon from "../pages/Cupons/createCupon";
 import DeleteCupon from "../pages/Cupons/deleteCupon";
 import ModifyCupon from "../pages/Cupons/modifyCupon";
-import { EditarEmpleado } from "../pages/EditarEmpleado";
 import CreateEmployee from "../pages/Empleado/createEmployee";
 import EditEmployee from "../pages/Empleado/editEmloyee";
 import { EmployeeCalendario } from "../pages/Empleado/employeeCalendar";
@@ -38,6 +36,7 @@ function Authenticated() {
   return (
     <>
       <Routes>
+        <Route index element={<Calendario to="calendar" />} />
         <Route path="/" element={<Calendario/>} />
         <Route path="/*" element={<Calendario/>} />
         <Route path="/calendar" element={<Calendario/>} />
@@ -53,7 +52,6 @@ function Authenticated() {
 
         <Route path="/tareas" element={<Tareas/>} />
         <Route path="/tareas/edit" element={<EditarTarea/>} />
-        <Route path="/cal" element={<Cal/>} />
 
         <Route path="/clientes" element={<Clientes/>} />
         <Route path="/clientes/edit" element={<EditarCliente/>} />
@@ -71,7 +69,6 @@ function Authenticated() {
         <Route path="/empleados/create" element={<CreateEmployee/>} />
         <Route path="/soporte" element={<h2>Chat de Soporte</h2>} />
         <Route path="/estadisica" element={<Estadisticas/>} />
-        <Route path="/capacitaciones" element={<EditarEmpleado/>} />
         <Route path="/gestion" element={<GestionAvanzada/>} />
         <Route path="/servicios" element={<Calendario/>} />
         <Route path="/servicios/create" element={<CrearServicio/>} />
