@@ -17,8 +17,8 @@ const Cupones = () => {
   }, []);
   function handleDelete(id) {
     deleteCupon(id).then(() => {
-      window.location.reload();
-    });
+      indexCupon().then(setCupons)
+    }).catch(() =>  console.log("No se puede borrar"));
   }
 
   const togglePopup = () => {
@@ -33,6 +33,23 @@ const Cupones = () => {
     setCusId(id);
     toggleEdit();
   }
+
+  function handleModalCreateChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('CupID');
+  }
+
+  function handleEmployeesEditChange(newCustomer) {
+    setCupons(newCustomer)
+  }
+
+  if(cusId){
+    localStorage.setItem("CupID", cusId);
+  }
   return (
     <>
       {isOpen && (
@@ -42,7 +59,7 @@ const Cupones = () => {
               <Box>
                 <Title>CREAR CUPON</Title>
               </Box>
-              <CreateCupon />
+              <CreateCupon onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
             </>
           }
           handleClose={togglePopup}
@@ -57,7 +74,7 @@ const Cupones = () => {
               </Box>
               {cusId ? (
                 <>
-                  <ModifyCupon id={cusId} />
+                  <ModifyCupon onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange} />
                 </>
               ) : null}
             </>
