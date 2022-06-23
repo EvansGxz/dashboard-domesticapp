@@ -64,6 +64,42 @@ const Habilidades = () => {
       indexHEmployee().then(setHe);
     });
   }
+
+  function handleModalCreateUserChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditUserChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('HeID');
+  }
+
+  function handleFetchUser(newCustomer) {
+    setHe(newCustomer)
+  }
+
+  if(cusId){
+    localStorage.setItem("HeID", cusId);
+  }
+
+  //Services Handled
+
+  function handleModalCreateServiceChange(newValue) {
+    setCreateServce(newValue)
+  }
+
+  function handleModalEditServiceChange(newShow) {
+    setEditService(newShow)
+    localStorage.removeItem('HaID');
+  }
+
+  function handleFetchService(newCustomer) {
+    setHabilidades(newCustomer)
+  }
+
+  if(servId){
+    localStorage.setItem("HaID", servId);
+  }
   return (
     <>
      {
@@ -71,7 +107,7 @@ const Habilidades = () => {
       content={<>
       <Box>
       <Title>Crear Habilidades de Empleado</Title></Box>
-      <CrearHEabilidad/>
+      <CrearHEabilidad onInputChange={handleModalCreateUserChange} onStateChange={handleFetchUser}/>
       </>}
       handleClose={togglePopup}
     />
@@ -83,7 +119,7 @@ const Habilidades = () => {
       <Title>Editar Habilidades de Empleado</Title></Box>
       {
         cusId ? (<>
-          <EditarHEabilidad id={cusId}/>
+          <EditarHEabilidad onStateChange={handleFetchUser} onInputChange={handleModalEditUserChange}/>
         </>) : null
       }
       
@@ -99,7 +135,7 @@ const Habilidades = () => {
       content={<>
       <Box>
       <Title>CREAR SERVICIO</Title></Box>
-      <CrearHabilidad/>
+      <CrearHabilidad onInputChange={handleModalCreateServiceChange} onStateChange={handleFetchService}/>
       </>}
       handleClose={toggleServi}
     />
@@ -111,7 +147,7 @@ const Habilidades = () => {
       <Title>EDITAR SERVICIO</Title></Box>
       {
         servId ? (<>
-          <EditarHabilidad id={servId}/>
+          <EditarHabilidad onStateChange={handleFetchService} onInputChange={handleModalEditServiceChange}/>
         </>) : null
       }
       

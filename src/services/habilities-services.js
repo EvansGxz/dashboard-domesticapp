@@ -12,8 +12,8 @@ export async function createHability(newHability) {
   return await apiFetch('hability/', { body: newHability });
 }
 
-export async function updateHability(data) {
-  return await apiFetch("hability/", {
+export async function updateHability(data, HabilityID) {
+  return await apiFetch(`hability/${HabilityID}`, {
     body: data,
     method: "PATCH",
   });
