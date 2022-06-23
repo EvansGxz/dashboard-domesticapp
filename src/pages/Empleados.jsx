@@ -73,7 +73,7 @@ const Empleados = () => {
       <Title>EDITAR EMPLEADO</Title></Box>
       {
         cusId ? (<>
-          <EditarEmpleado onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange} id={cusId}/>
+          <EditarEmpleado onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
         </>) : null
       }
       
