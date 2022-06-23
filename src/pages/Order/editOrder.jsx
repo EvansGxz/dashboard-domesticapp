@@ -138,7 +138,7 @@ export default function EditarOrder(ide) {
         </Selected>
         
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear Servicio
+        Actualizar Servicio
       </button>
       </Container>
     </StyledForm>
