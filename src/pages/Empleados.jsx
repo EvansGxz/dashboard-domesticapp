@@ -21,22 +21,39 @@ const Empleados = () => {
   }, [])
 
   function handleDelete(id){
-     deleteUser(id);
+     deleteUser(id).then(() => {
+      indexEmployee().then(setEmployees)
+     });
   }
 
     const togglePopup = () => {
     setIsOpen(!isOpen);
   }
 
-  function toggleEdit(id){
+  function toggleEdit(){
     setShow(!show);
+  }
+
+  function handleModalCreateChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('EID');
+  }
+
+  function handleEmployeesEditChange(newEmployee) {
+    setEmployees(newEmployee)
   }
 
   function onEdit(id){
     setCusId(id);
     toggleEdit();
   }
-  
+  if(cusId){
+    localStorage.setItem("EID", cusId);
+  }
   return (
     <>
      {
@@ -44,7 +61,7 @@ const Empleados = () => {
       content={<>
       <Box>
       <Title>CREAR EMPLEADO</Title></Box>
-      <CrearEmpleado/>
+      <CrearEmpleado onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopup}
     />
@@ -56,7 +73,7 @@ const Empleados = () => {
       <Title>EDITAR EMPLEADO</Title></Box>
       {
         cusId ? (<>
-          <EditarEmpleado id={cusId}/>
+          <EditarEmpleado onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange} id={cusId}/>
         </>) : null
       }
       
@@ -105,7 +122,7 @@ const Empleados = () => {
                   <td className='p-3 text-black'><img
                         src={empleado.employee.image_url}
                         alt='category'
-                        class='h-14 w-14 rounded-full'
+                        className='h-14 w-14 rounded-full'
                       /></td>
                     <td className='p-3'>
                       <div className='flex align-items-center'>
