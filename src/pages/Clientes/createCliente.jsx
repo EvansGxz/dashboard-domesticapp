@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BASE_URI } from "../../Config";
+import { indexCustomer } from "../../services/customer-services";
 import { createUser1 } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
 
@@ -20,7 +20,7 @@ const Container = styled.div`
   float: inline-start;
 `;
 
-export default function CrearCliente() {
+export default function CrearCliente({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     email: "",
     phone: "",
@@ -39,7 +39,6 @@ export default function CrearCliente() {
     encargado: "",
     birth_date: "",
   });
-  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -57,7 +56,7 @@ export default function CrearCliente() {
 
     createUser1(form).then((user) => {
       submitAPI(data, user.user_id);
-      navigate("/clientes")
+      onInputChange(false)
     });
   }
 
@@ -65,7 +64,9 @@ export default function CrearCliente() {
     fetch(BASE_URI+`customers/${id}`,{
     method: "PATCH",
     body: data
-  }).then(response => response.json()).catch((error)=>console.log(error.message));
+  }).then(response => response.json())
+    .then(indexCustomer().then(onStateChange))
+    .catch((error)=>console.log(error.message));
 }
 
   function handleFormChange(event) {
