@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BASE_URI } from "../../Config";
 import { indexHability } from "../../services/habilities-services";
 import { Input } from "../../styles/views/Login";
@@ -9,12 +9,9 @@ const StyledForm = styled.form`
   gap: 2rem;
   min-width: 258px;
 `;
-export let hab;
-export default function CrearHabilidad() {
-  const [habs, setHabilidades] = useState(null);
-  useEffect(() => {
-    indexHability().then(setHabilidades);
-  }, [])
+
+export default function CrearHabilidad({onInputChange, onStateChange}) {
+
   const [form, setForm] = useState({
     hability: "",
     body: "",
@@ -37,7 +34,10 @@ export default function CrearHabilidad() {
     fetch(BASE_URI+`hability`,{
     method: "POST",
     body: data
-  }).then(response => response.json())
+  }).then(response => response.json()).then(() => {
+    onInputChange(false)
+    indexHability().then(onStateChange)
+  })
 }
 
 
@@ -45,7 +45,7 @@ export default function CrearHabilidad() {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   }
-  hab = habs;
+
   return (
     <ContainerAll>
     
