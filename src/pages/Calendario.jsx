@@ -74,7 +74,25 @@ export const Calendario = () => {
       })
       console.log(details)
     }
+    function handleModalCreateChange(newValue) {
+      setCreateCalendar(newValue);  
+      setShow(true);
+    }
   
+    function handleModalEditChange(newShow) {
+      setIsEdit(newShow);
+      setIsOpen(newShow);
+      setShow(true);
+      localStorage.setItem("OrderID", cusId);
+    }
+  
+    function handleEmployeesEditChange(newCustomer) {
+      setCategories(newCustomer)
+    }
+  
+    if(cusId){
+      localStorage.setItem("OrderID", cusId);
+    }
   return (
     <>
     {
@@ -82,7 +100,7 @@ export const Calendario = () => {
       content={<>
       <Box>
       <Title>CREAR SERVICIO</Title></Box>
-      <CrearOrder/>
+      <CrearOrder onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopCreate}
     />
@@ -94,7 +112,7 @@ export const Calendario = () => {
       <Title>EDITAR SERVICIO</Title></Box>
       {
         cusId ? (<>
-          <EditarOrder id={cusId}/>
+          <EditarOrder onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
         </>) : null
       }
       

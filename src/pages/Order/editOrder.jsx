@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { indexCategories } from "../../services/categories-services";
 import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
-import { showOrderDetail, updateOrder } from "../../services/order-details-services";
+import { indexOrder, showOrderDetail, updateOrder } from "../../services/order-details-services";
 import { Input, Selected } from "../../styles/views/Login";
 
 
@@ -22,10 +21,10 @@ const Container = styled.div`
   width: 30%;
 `;
 
-export default function EditarOrder(ide) {
+export default function EditarOrder({onStateChange, onInputChange}) {
   const [form, setForm] = useState(null);
-  const id = ide.id
-  const navigate = useNavigate();
+  const id = localStorage.getItem("OrderID");
+
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
   const [customer, setCustomers] = useState(null);
@@ -56,7 +55,8 @@ export default function EditarOrder(ide) {
   function handleSubmit(event) {
     event.preventDefault();
     updateOrder(form, id).then(()=>{
-      navigate("/calendario")
+      onInputChange(false);
+      indexOrder().then(onStateChange)
     })
   }
 
@@ -73,7 +73,7 @@ export default function EditarOrder(ide) {
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
         <Selected id="category_id" label="Servicios" name="category_id" onChange={handleFormChange}>
-          <option value="">--selecciona servicio--</option>
+          <option value="">{form.category_name}</option>
           {categories ? (
             categories.map((category) => (
               <>
@@ -82,7 +82,7 @@ export default function EditarOrder(ide) {
         </Selected>
 
         <Selected id="employee_id" label="Empleados" name="employee_id" onChange={handleFormChange}>
-          <option value="">--selecciona empleado--</option>
+          <option value="">{form.employee_name}</option>
           {employess ? (
             employess.map((category) => (
               <>
@@ -91,7 +91,7 @@ export default function EditarOrder(ide) {
         </Selected>
 
         <Selected id="customer_id" label="Clientes" name="customer_id" onChange={handleFormChange}>
-          <option value="">--selecciona cliente--</option>
+          <option value="">{form.customer_name}</option>
           {customer ? (
             customer.map((category) => (
               <>
@@ -118,7 +118,7 @@ export default function EditarOrder(ide) {
         onChange={handleFormChange}
       />
       <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
-          <option value="">--tipo de jornada--</option>
+          <option value="">{form.workday}</option>
           <option value="Completa">Completa | COL</option>
           <option value="Media">Media | COL</option>
           <option value="Hora">Hora | EU</option>
@@ -132,7 +132,7 @@ export default function EditarOrder(ide) {
         onChange={handleFormChange}
       />
        <Selected id="supply_food" label="Suministrar Alimentos" name="supply_food" onChange={handleFormChange}>
-          <option value="">--suministrar alimento--</option>
+          <option value="">{form.supply_food}</option>
           <option value="Si">Si</option>
           <option value="No">No</option>
         </Selected>

@@ -45,7 +45,7 @@ export default function CrearOrder({onInputChange, onStateChange}) {
   function handleSubmit(event) {
     event.preventDefault();
     createOrder({category_id: form.category_id, employee_id: form.employee_id, customer_id: form.customer_id,
-                 address: form.address, start_date: event.target.start_date.value, work_date: form.workday, discount: form.discount,
+                 address: form.address, start_date: event.target.start_date.value, workday: event.target.workday.value, discount: form.discount,
                 supply_food: form.supply_food}).then(()=>{
                   onInputChange(false)
                   indexOrder().then(onStateChange)
