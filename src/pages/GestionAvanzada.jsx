@@ -70,6 +70,41 @@ export const GestionAvanzada = () => {
       toggleEdit();
     }
   
+    function handleModalCreateUserChange(newValue) {
+      setIsOpen(newValue)
+    }
+  
+    function handleModalEditUserChange(newShow) {
+      setShow(newShow)
+      localStorage.removeItem('AdminID');
+    }
+  
+    function handleFetchUser(newCustomer) {
+      setMod(newCustomer)
+    }
+  
+    if(cusId){
+      localStorage.setItem("AdminID", cusId);
+    }
+
+    //Services Handled
+
+    function handleModalCreateServiceChange(newValue) {
+      setCreateServce(newValue)
+    }
+  
+    function handleModalEditServiceChange(newShow) {
+      setEditService(newShow)
+      localStorage.removeItem('AdminID');
+    }
+  
+    function handleFetchService(newCustomer) {
+      setCategories(newCustomer)
+    }
+  
+    if(servId){
+      localStorage.setItem("ServID", servId);
+    }
   return (
      <>
      {
@@ -77,7 +112,7 @@ export const GestionAvanzada = () => {
       content={<>
       <Box>
       <Title>CREAR ADMINISTRADOR</Title></Box>
-      <CrearMod/>
+      <CrearMod onInputChange={handleModalCreateUserChange} onStateChange={handleFetchUser}/>
       </>}
       handleClose={togglePopup}
     />
@@ -89,7 +124,7 @@ export const GestionAvanzada = () => {
       <Title>EDITAR ADMINISTRADOR</Title></Box>
       {
         cusId ? (<>
-          <EditMod id={cusId}/>
+          <EditMod onStateChange={handleFetchUser} onInputChange={handleModalEditUserChange}/>
         </>) : null
       }
       
@@ -105,7 +140,7 @@ export const GestionAvanzada = () => {
       content={<>
       <Box>
       <Title>CREAR SERVICIO</Title></Box>
-      <CrearServicio/>
+      <CrearServicio onInputChange={handleModalCreateServiceChange} onStateChange={handleFetchService}/>
       </>}
       handleClose={toggleServi}
     />
@@ -117,7 +152,7 @@ export const GestionAvanzada = () => {
       <Title>EDITAR SERVICIO</Title></Box>
       {
         servId ? (<>
-          <EditarServicio id={servId}/>
+          <EditarServicio onStateChange={handleFetchService} onInputChange={handleModalEditServiceChange}/>
         </>) : null
       }
       

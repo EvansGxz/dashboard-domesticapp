@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { BASE_URI } from "../../Config";
-import { indexsector } from "../../services/categories-services";
+import { indexCategories, indexsector } from "../../services/categories-services";
 import { Input, Selected } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
@@ -20,7 +20,7 @@ const Container = styled.div`
 
 let checkCat = [];
 
-export default function CrearServicio() {
+export default function CrearServicio({onInputChange, onStateChange}) {
   const [sectores, setSectores] = useState();
   const [form, setForm] = useState({
     category_name: "",
@@ -49,7 +49,6 @@ export default function CrearServicio() {
       data.append("region", cat);
       submitAPI(data);
     });
-    //submitAPI(data);
   }
 
   function cheked(event) {
@@ -62,7 +61,11 @@ export default function CrearServicio() {
     fetch(BASE_URI + "categories", {
       method: "POST",
       body: data,
-    }).then((response) => response.json());
+    }).then((response) => response.json())
+      .then(()=>{
+        onInputChange(false)
+        indexCategories().then(onStateChange)
+      });
   }
 
   function handleFormChange(event) {

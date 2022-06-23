@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { showCategory, updateCategory } from "../../services/categories-services";
+import { indexCategories, showCategory, updateCategory } from "../../services/categories-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -23,27 +22,27 @@ const Container = styled.div`
   align-content: center;
 `;
 
-export default function EditarServicio(ide) {
+export default function EditarServicio({onStateChange, onInputChange}) {
   const [form, setForm] = useState(null);
- const id = ide.id
- const navigate = useNavigate();
+  const id = localStorage.getItem("ServID");
   useEffect(() =>{
-   
+  
     showCategory(id).then((category) =>{
       setForm({
         category_name: category.category_name,
         price_col_complete: category.price_col_complete,
         price_col_half: category.price_col_half,
         price_spain: category.price_spain,
-        region: category.region,
       })
     })
   }, [id])
 
   function handleSubmit(event) {
     event.preventDefault();
+
     updateCategory(form, id).then(()=>{
-      navigate("/gestion")
+      onInputChange(false);
+      indexCategories().then(onStateChange)
     })
   }
 
@@ -66,39 +65,28 @@ export default function EditarServicio(ide) {
         onChange={handleFormChange}
       />
       <Input
-                  id="price_col_complete"
-                  name="Colombia"
-                  label="Precio de servicio Colombia"
-                  type="text"
-                  placeholder="3000"
-                  value={form.price_col_complete}
-                  onChange={handleFormChange}
-                />
-                <Input
-                  id="price_col_half"
-                  name="Colombia"
-                  label="Precio de servicio Colombia"
-                  type="text"
-                  placeholder="3000"
-                  value={form.price_col_half}
-                  onChange={handleFormChange}
-                />
-              
-                <Input
-                  id="price_spain"
-                  name="Europa"
-                  label="Precio de servicio Europa"
-                  type="text"
-                  placeholder="3000"
-                  value={form.price_spain}
-                  onChange={handleFormChange}
-                />
-      <Input
-        id="region"
-        label="Precio de servicio"
+        id="price_col_complete"
+        label="Precio de servicio Colombia"
         type="text"
-        placeholder="Colombia"
-        value={form.region}
+        placeholder="3000"
+        value={form.price_col_complete}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="price_col_half"
+        label="Precio de servicio Colombia"
+        type="text"
+        placeholder="3000"
+        value={form.price_col_half}
+        onChange={handleFormChange}
+      />
+    
+      <Input
+        id="price_spain"
+        label="Precio de servicio Europa"
+        type="text"
+        placeholder="3000"
+        value={form.price_spain}
         onChange={handleFormChange}
       />
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
