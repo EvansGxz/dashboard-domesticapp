@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { showCupon, updateCupon } from "../../services/cupon-service";
+import { indexCupon, showCupon, updateCupon } from "../../services/cupon-service";
 import { Form, Input } from "../../styles/views/Login";
 
 const Container = styled.div`
@@ -15,13 +14,15 @@ const Container = styled.div`
   align-content: center;
 `;
 
-function ModifyCupon(ide){
+function ModifyCupon({onStateChange, onInputChange}){
   
   const [form, setForm] = useState(null);
+  const [cuponId, setCuponId] = useState(null);
   useEffect(() => {
-    const id = ide.id
+    const id = localStorage.getItem("CupID");
     
     showCupon(id).then((cupon) => {
+      setCuponId(cupon.id);
       setForm({
         name: cupon.name,
         discount: cupon.discount,
@@ -29,19 +30,19 @@ function ModifyCupon(ide){
         cupon_title: cupon.cupon_title,
       });
     });
-  }, [ide]);
+  }, []);
 
   const [errors, setErrors] = useState({
     name: "",
     discount: "",
     cupon_title: "",
   });
-  const navigate = useNavigate();
   function handleSubmit(event) {
     event.preventDefault();
 
-    updateCupon(form).then(() =>{
-      navigate("/cupones")
+    updateCupon(form, cuponId).then(() =>{
+      onInputChange(false);
+      indexCupon().then(onStateChange)
     }).catch((error) => {
       console.log(error);
       const newErrors = JSON.parse(error.message);
