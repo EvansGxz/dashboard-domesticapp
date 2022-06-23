@@ -39,9 +39,12 @@ export default function EditarCliente({onStateChange, onInputChange}) {
     data.append("client_type", event.target.client_type.value);
     data.append("birth_date", event.target.birth_date.value);
     data.append("cover", event.target.cover.files[0]);
-    updateCustomer(form1, employee.user_id).then(submitAPI(data, employee.user_id))
+    updateCustomer(form1, employee.user_id)
+      .then(submitAPI(data, employee.user_id))
+      .then(indexCustomer().then(onStateChange))
+      .then(onInputChange(false))
 
-    onInputChange(false);
+    
   }
 
   function submitAPI(data, id) {

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { BASE_URI } from "../../Config";
-import { showAdmin } from "../../services/admin-services";
+import { indexAdmin, showAdmin, updateAdmin } from "../../services/admin-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -23,12 +23,12 @@ const ContainerAll = styled.div`
   align-content: center;
   height: 100vh;
 `;
-export default function EditMod(ide) {
+export default function EditMod({onStateChange, onInputChange}) {
   const [seeadmin, setAdmin] = useState(null);
   const [form, setForm] = useState(null);
   const [form1, setForm1] = useState(null);
   useEffect(() => {
-    const id = ide.id
+    const id = localStorage.getItem("AdminID");
     showAdmin(id).then((user) => {
       setAdmin(user);
       setForm({
@@ -38,19 +38,22 @@ export default function EditMod(ide) {
       setForm1({
         nickname: user.nickname,
         role: user.role,
+        cover: user.cover,
       });
     });
-  }, [ide]);
-  const navigate = useNavigate();
+  }, []);
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(event.target.role.value);
-    console.log(event.target.nickname.value);
+
     const data = new FormData();
     data.append("role", event.target.role.value);
-    data.append("nickname", event.target.nickname.value);
     data.append("cover", event.target.cover.files[0]);
-    submitAPI(data, seeadmin.user_id)
+    updateAdmin(form1, seeadmin.user_id)
+      .then(submitAPI(data, seeadmin.user_id))
+      .then(indexAdmin().then(onStateChange))
+    
+    onInputChange(false);
   }
 
   function submitAPI(data, id) {
@@ -59,8 +62,9 @@ export default function EditMod(ide) {
     body: data
   }).then(response =>{
     response.json()
-    navigate("/gestion")
-  } ).catch((error)=>console.log(error.message));
+  } )
+    .then(indexAdmin().then(onStateChange))
+    .catch((error)=>console.log(error.message));
 }
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -92,13 +96,8 @@ export default function EditMod(ide) {
         value={form1.nickname}
         onChange={handleFormChange1}
       />
-      <Input
-        id="cover"
-        name="cover"
-        label="Imagen"
-        type="file"
-      />
-      <StyleSelect id="role" name="role" onChange={handleFormChange1}>
+      <Input id="cover" name="cover" value={form1.cover.files} label="Imagen" type="file" />
+      <StyleSelect id="role" name="role">
           <option value={form1.role}>{form1.role}</option>
           <option value="admin">Admnistrador</option>
           <option value="mod">Miembro del Equipo</option>
