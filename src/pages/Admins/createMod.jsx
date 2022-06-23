@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
 import { BASE_URI } from "../../Config";
+import { indexAdmin } from "../../services/admin-services";
 import { createUser1 } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
 
@@ -19,7 +20,7 @@ const Container = styled.div`
   width: 50%;
 `;
 
-export default function CrearMod() {
+export default function CrearMod({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     email: "",
     user_type: "admin",
@@ -40,6 +41,7 @@ export default function CrearMod() {
 
     createUser1(form).then((user) => {
       submitAPI(data, user.user_id);
+      onInputChange(false)
     });
     
   }
@@ -47,7 +49,9 @@ export default function CrearMod() {
     fetch(BASE_URI+`admin/${id}`,{
     method: "PATCH",
     body: data
-  }).then(response => response.json()).catch((error)=>console.log(error.message));
+  }).then(response => response.json())
+    .then(indexAdmin().then(onStateChange))
+    .catch((error)=>console.log(error.message));
 }
 
   function handleFormChange(event) {
