@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createCupon } from "../../services/cupon-service";
+import { createCupon, indexCupon } from "../../services/cupon-service";
 import { createCuponUser } from "../../services/cupons-services";
 import { indexCustomer } from "../../services/customer-services";
 import { Input } from "../../styles/views/Login";
@@ -19,10 +18,9 @@ const Container = styled.div`
   float: inline-start;
   width: 30%
 `;
-function CreateCupon(){
+function CreateCupon({onInputChange, onStateChange}){
   const [users, setUsers] = useState();
   const [customer, setCustomer] = useState()
-  const navigate = useNavigate();
   const [type, setType] = useState(null);
   const [form, setForm] = useState({
     name: "",
@@ -43,12 +41,13 @@ function CreateCupon(){
 
   function handleSubmit(event) {
     event.preventDefault();
-    createCupon(form).then((cupon)=>
-      type === 'Individual' ? (
+    createCupon(form).then((cupon)=>{
+      if(type === 'Individual'){
         createCuponUser({cupon_id: cupon.id, customer_id: customer})
-      ) : (navigate("/cupones")))
-        
-      
+      }
+      onInputChange(false)
+      indexCupon().then(onStateChange)
+    })
       
   }
 
