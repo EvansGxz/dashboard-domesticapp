@@ -1,17 +1,15 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BASE_URI } from "../../Config";
-import { showCustomer } from "../../services/customer-services";
+import { indexCustomer, showCustomer, updateCustomer } from "../../services/customer-services";
 import { Input, Selected } from "../../styles/views/Login";
 
-export default function EditarCliente(ide) {
-  const navigate = useNavigate();
+export default function EditarCliente({onStateChange, onInputChange}) {
   const [form, setForm] = useState(null);
   const [form1, setForm1] = useState(null);
   const [employee, setEmployee] = useState(null);
   useEffect(() => {
-    const id = ide.id
+    const id = localStorage.getItem("CID");
     showCustomer(id).then((user) => {
       setEmployee(user);
       setForm({
@@ -31,31 +29,29 @@ export default function EditarCliente(ide) {
         birth_date: user.birth_date,
       });
     });
-  }, [ide]);
+  }, []);
   function handleSubmit(event) {
     event.preventDefault();
 
     const data = new FormData();
-    data.append("full_name", event.target.full_name.value);
+
     data.append("country", event.target.country.value);
-    data.append("document_id", event.target.document_id.value);
     data.append("client_type", event.target.client_type.value);
-    data.append("region", event.target.region.value);
-    data.append("cod_refer", event.target.cod_refer.value);
-    data.append("encargado", event.target.encargado.value);
     data.append("birth_date", event.target.birth_date.value);
     data.append("cover", event.target.cover.files[0]);
-    submitAPI(data, employee.user_id)
+    updateCustomer(form1, employee.user_id).then(submitAPI(data, employee.user_id))
+
+    onInputChange(false);
   }
 
   function submitAPI(data, id) {
     fetch(BASE_URI+`customers/${id}`,{
     method: "PATCH",
     body: data
-  }).then(response =>{
-    response.json()
-    navigate("/clientes")
-  } ).catch((error)=>console.log(error.message));
+  })
+    .then((response) => response.json())
+    .then(indexCustomer().then(onStateChange))
+    .catch((error)=>console.log(error.message));
 }
 
   function handleFormChange(event) {
