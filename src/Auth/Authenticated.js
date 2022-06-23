@@ -9,7 +9,6 @@ import CrearCliente from "../pages/Clientes/createCliente";
 import EditarCliente from "../pages/Clientes/editCliente";
 import Cupones from "../pages/Cupones";
 import CreateCupon from "../pages/Cupons/createCupon";
-import DeleteCupon from "../pages/Cupons/deleteCupon";
 import ModifyCupon from "../pages/Cupons/modifyCupon";
 import CreateEmployee from "../pages/Empleado/createEmployee";
 import EditEmployee from "../pages/Empleado/editEmloyee";
@@ -62,7 +61,6 @@ function Authenticated() {
         <Route path="/cupones" element={<Cupones/>} />
         <Route path="/cupones/create_cupon" element={<CreateCupon/>} />
         <Route path="/cupones/modify_cupon" element={<ModifyCupon/>} />
-        <Route path="/cupones/delete_cupon" element={<DeleteCupon/>} />
         <Route path="/reportes" element={<Reportes/>} />
         <Route path="/empleados" element={<Empleados/>} />
         <Route path="/empleados/edit" element={<EditEmployee/>} />

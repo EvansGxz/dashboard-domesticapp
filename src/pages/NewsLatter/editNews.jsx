@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { showNews, updateNews } from "../../services/newslatters-services";
+import { indexNews, showNews, updateNews } from "../../services/newslatters-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -19,10 +18,10 @@ const Container = styled.div`
   width: 80%;
 `;
 
-export default function EditNew(ide) {
-  const navigate = useNavigate();
+export default function EditNew({onStateChange, onInputChange}) {
+
   const [form, setForm] = useState(null);
-  const id = ide.id
+  const id = localStorage.getItem("NewsID");
   useEffect(() => {
     showNews(id).then((news)=>
       setForm({
@@ -34,7 +33,10 @@ export default function EditNew(ide) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    updateNews(form, id).then(navigate("/news"))
+    updateNews(form, id).then(() =>{
+      onInputChange(false);
+      indexNews().then(onStateChange)
+    })
   }
 
   function handleFormChange(event) {

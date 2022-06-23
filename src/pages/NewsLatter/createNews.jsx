@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { useState } from "react";
-import { createNews } from "../../services/newslatters-services";
+import { createNews, indexNews } from "../../services/newslatters-services";
 import { Input } from "../../styles/views/Login";
 
 
@@ -18,7 +18,7 @@ const Container = styled.div`
   width: 80%;
 `;
 
-export default function CrearNew() {
+export default function CrearNew({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     title: "",
     body: "",
@@ -26,7 +26,10 @@ export default function CrearNew() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    createNews(form)
+    createNews(form).then(()=>{
+      onInputChange(false)
+      indexNews().then(onStateChange)
+    })
   }
 
   function handleFormChange(event) {

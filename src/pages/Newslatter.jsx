@@ -34,6 +34,22 @@ const News = () => {
     setCusId(id);
     toggleEdit();
   }
+  function handleModalCreateChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('NewsID');
+  }
+
+  function handleEmployeesEditChange(newCustomer) {
+    setNews(newCustomer)
+  }
+
+  if(cusId){
+    localStorage.setItem("NewsID", cusId);
+  }
   return (
     <>
      {
@@ -41,7 +57,7 @@ const News = () => {
       content={<>
       <Box>
       <Title>CREAR NEWSLATTER</Title></Box>
-      <CrearNew/>
+      <CrearNew onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopup}
     />
@@ -53,7 +69,7 @@ const News = () => {
       <Title>EDITAR NEWSLATTER</Title></Box>
       {
         cusId ? (<>
-          <EditNew id={cusId}/>
+          <EditNew onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
         </>) : null
       }
       
