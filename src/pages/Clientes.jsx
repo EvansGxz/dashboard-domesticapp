@@ -39,6 +39,22 @@ const Clientes = () => {
     toggleEdit();
   }
   
+  function handleModalCreateChange(newValue) {
+    setIsOpen(newValue)
+  }
+
+  function handleModalEditChange(newShow) {
+    setShow(newShow)
+    localStorage.removeItem('CID');
+  }
+
+  function handleEmployeesEditChange(newCustomer) {
+    setCustomers(newCustomer)
+  }
+
+  if(cusId){
+    localStorage.setItem("CID", cusId);
+  }
 
   return (
     <>
@@ -47,7 +63,7 @@ const Clientes = () => {
       content={<>
       <Box>
       <Title>CREAR CLIENTE</Title></Box>
-      <CrearCliente/>
+      <CrearCliente onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopup}
     />
@@ -59,7 +75,7 @@ const Clientes = () => {
       <Title>EDITAR CLIENTE</Title></Box>
       {
         cusId ? (<>
-          <EditarCliente id={cusId}/>
+          <EditarCliente onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
         </>) : null
       }
       
@@ -88,56 +104,56 @@ const Clientes = () => {
           {
             customers ? (
               <>
-              <table class='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
-            <thead class='text-black'>
+              <table className='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
+            <thead className='text-black'>
               <tr>
                 <th className='p-3 text-left'>Imagen</th>
-                <th class='p-3 text-left'>Cliente</th>
-                <th class='p-3 text-left'>Pais</th>
-                <th class='p-3 text-left'>Region</th>
-                <th class='p-3 text-left'>Tipo De Cliente</th>
-                <th class='p-3 text-left'>Documento</th>
-                <th class='p-3 text-left'>Celular</th>
-                <th class='p-3 text-left'>Fecha de Nacimiento</th>
-                <th class='p-3 text-left'>Encargado</th>
+                <th className='p-3 text-left'>Cliente</th>
+                <th className='p-3 text-left'>Pais</th>
+                <th className='p-3 text-left'>Region</th>
+                <th className='p-3 text-left'>Tipo De Cliente</th>
+                <th className='p-3 text-left'>Documento</th>
+                <th className='p-3 text-left'>Celular</th>
+                <th className='p-3 text-left'>Fecha de Nacimiento</th>
+                <th className='p-3 text-left'>Encargado</th>
                 <th className='p-3 text-left'>Acción</th>
               </tr>
             </thead>
             <tbody>
                 {customers.map((cliente, index) => {
                 return (
-                  <tr key={index} class='bg-gray-100'>
+                  <tr key={index} className='bg-gray-100'>
                   <td className='p-3 text-black'><img
                         src={cliente.customer.image_url}
                         alt='category'
-                        class='h-14 w-14 rounded-full'
+                        className='h-14 w-14 rounded-full'
                       /></td>
-                    <td class='p-3'>
-                      <div class='flex align-items-center'>
-                        <div class='ml-3'>
-                          <div class='text-black font-bold'>
+                    <td className='p-3'>
+                      <div className='flex align-items-center'>
+                        <div className='ml-3'>
+                          <div className='text-black font-bold'>
                             {cliente.customer.full_name}
                           </div>
                       
                         </div>
                       </div>
                     </td>
-                    <td class='p-3 text-black'>{cliente.customer.country}</td>
-                    <td class='p-3 text-black'>{cliente.customer.region}</td>
-                    <td class='p-3 text-black'>{cliente.customer.client_type}</td>
-                    <td class='p-3'>
-                      <div class='flex align-items-center'>
-                        <div class='ml-3'>
-                          <div class='text-black'>{cliente.customer.document_type}</div>
-                          <div class='text-black'>{cliente.customer.document_id}</div>
+                    <td className='p-3 text-black'>{cliente.customer.country}</td>
+                    <td className='p-3 text-black'>{cliente.customer.region}</td>
+                    <td className='p-3 text-black'>{cliente.customer.client_type}</td>
+                    <td className='p-3'>
+                      <div className='flex align-items-center'>
+                        <div className='ml-3'>
+                          <div className='text-black'>{cliente.customer.document_type}</div>
+                          <div className='text-black'>{cliente.customer.document_id}</div>
                         </div>
                       </div>
                     </td>
-                    <td class='p-3 text-black'>{cliente.customer.phone}</td>
-                    <td class='p-3 text-black'>{cliente.customer.birth_date}</td>
+                    <td className='p-3 text-black'>{cliente.customer.phone}</td>
+                    <td className='p-3 text-black'>{cliente.customer.birth_date}</td>
                     {cliente.customer.encargado ? (
-                      <td class='p-3 text-black'>{cliente.customer.encargado}</td>
-                    ) : (<td class='p-3 text-black'>Nadie</td>)}
+                      <td className='p-3 text-black'>{cliente.customer.encargado}</td>
+                    ) : (<td className='p-3 text-black'>Nadie</td>)}
                     {user.role === 'spectator' ? null : (
                     <>
                     <td className='p-3 flex flex-row'>
