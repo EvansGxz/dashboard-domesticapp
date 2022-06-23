@@ -1,21 +1,20 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { indexEmployee } from "../../services/employee-service";
 import { indexHability } from "../../services/habilities-services";
-import { showHEmployee, updateHEmployee } from "../../services/hability-employee-services";
+import { indexHEmployee, showHEmployee, updateHEmployee } from "../../services/hability-employee-services";
 
 const StyledForm = styled.form`
   flex-direction: column;
   gap: 2rem;
   min-width: 258px;
 `;
-export default function EditarHEabilidad(ide) {
+export default function EditarHEabilidad({onStateChange, onInputChange}) {
   const [form, setForm] = useState(null);
   const [hab, setHab] = useState(null);
   const [employees, setEmployees] = useState(null);
-  const id = ide.id
-  console.log(id)
+  const id = localStorage.getItem("HeID");
+
   useEffect(() => {
     showHEmployee(id).then((hability)=>{
       setForm({
@@ -28,13 +27,13 @@ export default function EditarHEabilidad(ide) {
     indexEmployee().then(setEmployees);
     indexHability().then(setHab);
   }, [id])
-  const navigate = useNavigate();
 
   function handleSubmit(event) {
     event.preventDefault();
     console.log(form);
     updateHEmployee({hability_id: form.hability_id, employee_id: form.employee_id}, id).then(() => {
-      navigate("/habilidades")
+      onInputChange(false);
+      indexHEmployee().then(onStateChange)
     });
   }
 
