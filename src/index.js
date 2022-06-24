@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import './index.css';
 import './input.css';
+import "./styles/normalize.css";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { hydrate, render } from "react-dom";
 import { AuthProvider } from "./context/auth-context";
