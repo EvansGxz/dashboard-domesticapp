@@ -45,9 +45,12 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
   function handleSubmit(event) {
     event.preventDefault();
     const data = new FormData();
+
     data.append("cover", event.target.cover.files[0]);
     
-    updateEmployee(form1, employee.user_id).then(submitAPI(data, employee.user_id))
+    updateEmployee(form1, employee.user_id)
+    .then(indexEmployee().then(onStateChange))
+    .then(submitAPI(data, employee.user_id))
     onInputChange(false);
   }
 
