@@ -116,7 +116,7 @@ export default function CrearOrder({onInputChange, onStateChange}) {
       </Selected>
        <Input
         id="discount"
-        label="Descento"
+        label="Descuento"
         type="number"
         placeholder="10"
         value={form.discount}
