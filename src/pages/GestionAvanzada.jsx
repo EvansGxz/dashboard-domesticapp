@@ -42,7 +42,7 @@ export const GestionAvanzada = () => {
 
   function handleDeleteUser(id) {
     deleteUser(id).then(() => {
-      window.location.reload();
+      indexAdmin().then(setMod);
     });}
 
     const togglePopup = () => {
@@ -53,11 +53,11 @@ export const GestionAvanzada = () => {
       setCreateServce(!createServce);
     }
   
-    function toggleEdit(id){
+    function toggleEdit(){
       setShow(!show);
     }
 
-    function toggleServEdit(id){
+    function toggleServEdit(){
       setEditService(!editService);
     }
     function onServEdit(id){
