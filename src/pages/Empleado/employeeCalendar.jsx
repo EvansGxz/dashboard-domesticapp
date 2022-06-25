@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Navegador } from '../../components/Navegador'
 import { Sidebar } from '../../components/Sidebar'
-import { deleteOrder, indexOrder, showOrderCustomer } from '../../services/order-details-services'
+import { deleteOrder, indexOrder, showOrderEmployee } from '../../services/order-details-services'
 import CrearOrder from '../Order/createOrdr'
 import { Popdiv } from '../pop'
 //Fullcalendar and Realted Plugins
@@ -22,7 +22,7 @@ export const EmployeeCalendario = () => {
 
   const ide = new URLSearchParams(window.location.search).get("id");
   useEffect(() => {
-      showOrderCustomer(ide).then(setCategories)
+    showOrderEmployee(ide).then(setCategories)
     }, [ide])
     const togglePopup = () => {
       setIsOpen(!isOpen);

@@ -38,6 +38,7 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
         price_col_half: category.price_col_half,
         price_spain: category.price_spain,
         image: category.image,
+        body: category.body,
       });
     });
   }, [id]);
@@ -108,6 +109,14 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
             label="Imagen"
             type="file"
           />
+           <Input
+              id="body"
+              label="Descripción"
+              type="text"
+              placeholder="Cuida tus servicios..."
+              value={form.body}
+              onChange={handleFormChange}
+            />
           <button
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit"
