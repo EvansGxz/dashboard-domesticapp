@@ -10,9 +10,10 @@ import { createUser1 } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
-  flex-direction: column;
   gap: 2rem;
   min-width: 258px;
+  display: flex;
+  flex-direction: initial;
 `;
 
 const Container = styled.div`
@@ -134,7 +135,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               onChange={handleFormChange1}
             />
             <Input id="cover" name="cover" label="Imagen" type="file" />
-          </Container>
+            </Container>
           <Container>
             <Selected
               id="country"
@@ -171,8 +172,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form1.document_id}
               onChange={handleFormChange1}
             />
-          </Container>
-          <Container>
+          
             <Input
               id="contrato"
               label="Numero de contrato"
@@ -181,7 +181,8 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form1.contrato}
               onChange={handleFormChange1}
             />
-
+</Container>
+          <Container>
             <Input
               id="biografy"
               label="Conóceme"
@@ -217,8 +218,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form.lada}
               onChange={handleFormChange}
             />
-          </Container>
-          <Container>
+          
             <Input
               id="phone"
               label="Celular (10 digitos)"
@@ -227,7 +227,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form.phone}
               onChange={handleFormChange}
             />
-          </Container>
+          
           <ContainerCheck>
             {categories
               ? categories.map((category) => (
@@ -248,6 +248,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
           >
             Crear Empleado
           </button>
+          </Container>
         </StyledForm>
       ) : (
         <div>Cargando....</div>

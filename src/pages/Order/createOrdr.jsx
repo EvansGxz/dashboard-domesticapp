@@ -8,9 +8,10 @@ import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  flex-direction: column;
   gap: 2rem;
   min-width: 258px;
+  display: flex;
+  flex-direction: initial;
 `;
 
 const Container = styled.div`

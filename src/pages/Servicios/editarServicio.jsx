@@ -10,20 +10,17 @@ import { Input } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
   display: flex;
-  flex-direction: column;
+  flex-direction: initial;
   gap: 2rem;
   min-width: 258px;
 `;
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  background-color: $fff;
-  margin: 5% 15%;
-  border-radius: 30px;
-  justify-content: space-between;
-  align-content: center;
+margin: 5% auto;
+justify-content: space-between;
+align-content: center;
+float: inline-start;
+width: 50%;
 `;
 
 export default function EditarServicio({ onStateChange, onInputChange }) {
@@ -66,9 +63,10 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
   }
 
   return (
-    <Container>
+    <>
       {form ? (
         <StyledForm onSubmit={e=>handleSubmit(e)}>
+          <Container>
           <Input
             id="category_name"
             label="Nombre de servicio"
@@ -114,10 +112,11 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
           >
             Actualizar Servicio
           </button>
+          </Container>
         </StyledForm>
       ) : (
         <div>Cargando....</div>
       )}
-    </Container>
+    </>
   );
 }
