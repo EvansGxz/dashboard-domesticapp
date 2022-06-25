@@ -70,7 +70,7 @@ export default function EditarCliente({onStateChange, onInputChange}) {
   return (
     <ContainerAll>
     
-    {form ? (
+    {form1 ? (
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Container>
       <Input
@@ -197,7 +197,8 @@ const ContainerAll = styled.div`
 `;
 
 const StyledForm = styled.form`
-  flex-direction: column;
+display: flex;
+flex-direction: initial;
   gap: 2rem;
   min-width: 258px;
 `;

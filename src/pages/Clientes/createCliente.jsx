@@ -7,17 +7,18 @@ import { Input, Selected } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  flex-direction: column;
+  display: flex;
+  flex-direction: initial;
   gap: 2rem;
   min-width: 258px;
 `;
 
 
 const Container = styled.div`
-  margin: 0 auto;
-  justify-content: space-between;
-  align-content: center;
-  float: inline-start;
+margin: 0 auto;
+justify-content: space-between;
+align-content: center;
+float: inline-start;
 `;
 
 export default function CrearCliente({onInputChange, onStateChange}) {
@@ -117,15 +118,15 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         value={form1.full_name}
         onChange={handleFormChange1}
       />
-      </Container>
-      <Container>
+      
       <Selected id="country" label="Pais" name="country" onChange={handleFormChange1}>
           <option value="">Seleccione</option>
           <option value="Colombia">Colombia</option>
           <option value="España">España</option>
           <option value="Canada">Canadá</option>
         </Selected>
-
+      </Container>
+            <Container>
       <Input
         id="region"
         label="Dirección"
@@ -150,8 +151,7 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         value={form1.document_id}
         onChange={handleFormChange1}
       />
-      </Container>
-      <Container>
+      
       <Selected id="client_type" name="client_type"
        onChange={handleFormChange1} label="Tipo de cliente">
           <option value="">--tipo de cliente</option>
@@ -166,7 +166,8 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         value={form1.cod_refer}
         onChange={handleFormChange1}
       />
-
+</Container>
+      <Container>
       <Input
         id="encargado"
         label="Encargado del cliente"
@@ -183,8 +184,7 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         value={form1.lada}
         onChange={handleFormChange1}
       />
-      </Container>
-      <Container>
+      
       <Input
         id="phone"
         label="Celular (10 digitos)"
@@ -203,6 +203,7 @@ export default function CrearCliente({onInputChange, onStateChange}) {
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
         Crear Cliente
       </button>
+      
     </Container>  
     </StyledForm>) : (<div>Cargando....</div>)}
     

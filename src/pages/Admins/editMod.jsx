@@ -14,8 +14,8 @@ const StyledForm = styled.form`
   float: inline-start;
 `;
 const ContainerAll = styled.div`
-   display: flex;
-  flex-direction: column;
+  display: flex;
+  flex-direction: initial;
   width: 720px;
   margin: 0 auto;
   border-radius: 30px;
@@ -78,7 +78,7 @@ export default function EditMod({onStateChange, onInputChange}) {
 
   return (
     <ContainerAll>
-    {form ? (
+    {form1 ? (
       <StyledForm onSubmit={e=>handleSubmit(e)}>
       <Input
           id="email"
