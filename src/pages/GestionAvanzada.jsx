@@ -17,6 +17,7 @@ import EditarServicio from "./Servicios/editarServicio";
 
 export const GestionAvanzada = () => {
   const [mods, setMod] = useState(null);
+  const [mErrors, setMErrors] = useState(false);
   const { user } = useAuth();
   const [categories, setCategories] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -30,11 +31,12 @@ export const GestionAvanzada = () => {
     indexCategories().then(setCategories);
   }, [setCategories]);
 
- 
   function handleDelete(id) {
-    deleteCategory(id).then(() => {
-      indexCategories().then(setCategories);
-    });
+    deleteCategory(id)
+      .then(() => {
+        indexCategories().then(setCategories);
+      })
+      .catch(toggleErrors);
   }
   useEffect(() => {
     indexAdmin().then(setMod);
@@ -43,123 +45,185 @@ export const GestionAvanzada = () => {
   function handleDeleteUser(id) {
     deleteUser(id).then(() => {
       indexAdmin().then(setMod);
-    });}
+    });
+  }
 
-    const togglePopup = () => {
-      setIsOpen(!isOpen);
-    }
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  };
 
-    const toggleServi = () => {
-      setCreateServce(!createServce);
-    }
-  
-    function toggleEdit(){
-      setShow(!show);
-    }
+  const toggleServi = () => {
+    setCreateServce(!createServce);
+  };
 
-    function toggleServEdit(){
-      setEditService(!editService);
-    }
-    function onServEdit(id){
-      setservId(id);
-      toggleServEdit();
-    }
-  
-    function onEdit(id){
-      setCusId(id);
-      toggleEdit();
-    }
-  
-    function handleModalCreateUserChange(newValue) {
-      setIsOpen(newValue)
-    }
-  
-    function handleModalEditUserChange(newShow) {
-      setShow(newShow)
-      localStorage.removeItem('AdminID');
-    }
-  
-    function handleFetchUser(newCustomer) {
-      setMod(newCustomer)
-    }
-  
-    if(cusId){
-      localStorage.setItem("AdminID", cusId);
-    }
+  function toggleEdit() {
+    setShow(!show);
+  }
 
-    //Services Handled
+  function toggleServEdit() {
+    setEditService(!editService);
+  }
 
-    function handleModalCreateServiceChange(newValue) {
-      setCreateServce(newValue)
-    }
-  
-    function handleModalEditServiceChange(newShow) {
-      setEditService(newShow)
-      localStorage.removeItem('AdminID');
-    }
-  
-    function handleFetchService(newCustomer) {
-      setCategories(newCustomer)
-    }
-  
-    if(servId){
-      localStorage.setItem("ServID", servId);
-    }
+  function toggleErrors() {
+    setMErrors(!mErrors);
+  }
+
+  function onServEdit(id) {
+    setservId(id);
+    toggleServEdit();
+  }
+
+  function onEdit(id) {
+    setCusId(id);
+    toggleEdit();
+  }
+
+  function handleModalCreateUserChange(newValue) {
+    setIsOpen(newValue);
+  }
+
+  function handleModalEditUserChange(newShow) {
+    setShow(newShow);
+    localStorage.removeItem("AdminID");
+  }
+
+  function handleFetchUser(newCustomer) {
+    setMod(newCustomer);
+  }
+
+  if (cusId) {
+    localStorage.setItem("AdminID", cusId);
+  }
+
+  //Services Handled
+
+  function handleModalCreateServiceChange(newValue) {
+    setCreateServce(newValue);
+  }
+
+  function handleModalEditServiceChange(newShow) {
+    setEditService(newShow);
+    localStorage.removeItem("AdminID");
+  }
+
+  function handleFetchService(newCustomer) {
+    setCategories(newCustomer);
+  }
+
+  if (servId) {
+    localStorage.setItem("ServID", servId);
+  }
   return (
-     <>
-     {
-      isOpen && <Popdiv
-      content={<>
-      <Box>
-      <Title>CREAR ADMINISTRADOR</Title></Box>
-      <CrearMod onInputChange={handleModalCreateUserChange} onStateChange={handleFetchUser}/>
-      </>}
-      handleClose={togglePopup}
-    />
-    }
-    {
-      show && <Popdiv
-      content={<>
-      <Box>
-      <Title>EDITAR ADMINISTRADOR</Title></Box>
-      {
-        cusId ? (<>
-          <EditMod onStateChange={handleFetchUser} onInputChange={handleModalEditUserChange}/>
-        </>) : null
-      }
-      
-      </>}
-      handleClose={toggleEdit}
-    />
-    }
+    <>
+      {isOpen && (
+        <Popdiv
+          content={
+            <>
+              <Box>
+                <Title>CREAR ADMINISTRADOR</Title>
+              </Box>
+              <CrearMod
+                onInputChange={handleModalCreateUserChange}
+                onStateChange={handleFetchUser}
+              />
+            </>
+          }
+          handleClose={togglePopup}
+        />
+      )}
+      {show && (
+        <Popdiv
+          content={
+            <>
+              <Box>
+                <Title>EDITAR ADMINISTRADOR</Title>
+              </Box>
+              {cusId ? (
+                <>
+                  <EditMod
+                    onStateChange={handleFetchUser}
+                    onInputChange={handleModalEditUserChange}
+                  />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleEdit}
+        />
+      )}
 
-    {/*SERVICIOS POPUP*/}
+      {/*SERVICIOS POPUP*/}
 
-     {
-      createServce && <Popdiv
-      content={<>
-      <Box>
-      <Title>CREAR SERVICIO</Title></Box>
-      <CrearServicio onInputChange={handleModalCreateServiceChange} onStateChange={handleFetchService}/>
-      </>}
-      handleClose={toggleServi}
-    />
-    }
-    {
-      editService && <Popdiv
-      content={<>
-      <Box>
-      <Title>EDITAR SERVICIO</Title></Box>
-      {
-        servId ? (<>
-          <EditarServicio onStateChange={handleFetchService} onInputChange={handleModalEditServiceChange}/>
-        </>) : null
-      }
-      
-      </>}
-      handleClose={toggleServEdit}
-    />
-    }
+      {createServce && (
+        <Popdiv
+          content={
+            <>
+              <Box>
+                <Title>CREAR SERVICIO</Title>
+              </Box>
+              <CrearServicio
+                onInputChange={handleModalCreateServiceChange}
+                onStateChange={handleFetchService}
+              />
+            </>
+          }
+          handleClose={toggleServi}
+        />
+      )}
+      {editService && (
+        <Popdiv
+          content={
+            <>
+              <Box>
+                <Title>EDITAR SERVICIO</Title>
+              </Box>
+              {servId ? (
+                <>
+                  <EditarServicio
+                    onStateChange={handleFetchService}
+                    onInputChange={handleModalEditServiceChange}
+                  />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleServEdit}
+        />
+      )}
+      {mErrors && (
+        <Popdiv
+          content={
+            <>
+              <BoxErr>
+                <Title>No se puede ejecutar esta acción</Title>
+              </BoxErr>
+              <Container>
+                <P>
+                  Posibles motivos:
+                  <UL>
+                    <li>Existe un empleado con este servicio.</li>
+                    <li>Existen tareas para este servicio.</li>
+                    <li>Existe un servicio en curso con este servcio.</li>
+                  </UL>
+                </P>
+                <br />
+                <P>
+                  Acciones:
+                  <UL>
+                    <li>Eliminar empleado/s con este servicio.</li>
+                    <li>Modificar el servicio del empleado.</li>
+                    <li>Eliminar las tareas de este servicio.</li>
+                    <li>Modificar a que servicio se brindan las tareas.</li>
+                    <li>Finalizar servicio en curso.</li>
+                    <li>Modificar servicio del servicio en curso.</li>
+                  </UL>
+                </P>
+              </Container>
+            </>
+          }
+          handleClose={toggleErrors}
+        />
+      )}
       <Sidebar></Sidebar>
       <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
         <Navegador titulo="Gestion Avanzada"></Navegador>
@@ -172,8 +236,10 @@ export const GestionAvanzada = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Administradores
                     </h3>
-                    {user.role === 'spectator' ? null : (
-                    <Button onClick={()=>togglePopup()}>Crear Administrador</Button>
+                    {user.role === "spectator" ? null : (
+                      <Button onClick={() => togglePopup()}>
+                        Crear Administrador
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -227,7 +293,7 @@ export const GestionAvanzada = () => {
                             <td className="p-3 flex flex-row ">
                               <div
                                 className="text-gray-600 hover:text-cyan-300"
-                                onClick={()=>onEdit(empleado.admin.user_id)}
+                                onClick={() => onEdit(empleado.admin.user_id)}
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -287,9 +353,12 @@ export const GestionAvanzada = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Servicios
                     </h3>
-                    {user.role === 'spectator' ? null : (
-                    <Button onClick={()=>toggleServi()}>Crear Servicio</Button>
-                    )}</div>
+                    {user.role === "spectator" ? null : (
+                      <Button onClick={() => toggleServi()}>
+                        Crear Servicio
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -331,57 +400,63 @@ export const GestionAvanzada = () => {
                             </div>
                           </div>
                         </td>
-                        
-                          <td class="p-3 text-black">{category.price_col_complete} COP</td>
-                        
-                          <td class="p-3 text-black">{category.price_col_half} COP</td>
-                        
-                          <td class="p-3 text-black">{category.price_spain} €</td>
-                       
+
+                        <td class="p-3 text-black">
+                          {category.price_col_complete} COP
+                        </td>
+
+                        <td class="p-3 text-black">
+                          {category.price_col_half} COP
+                        </td>
+
+                        <td class="p-3 text-black">{category.price_spain} €</td>
 
                         <td class="p-3 text-black">{category.region}</td>
-                        {user.role === 'spectator' ? null : (<>
-                        <td className="p-3 flex flex-row">
-                          <div
-                            className="text-gray-600 hover:text-cyan-300"
-                            onClick={()=>onServEdit(category.id)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                              />
-                            </svg>
-                          </div>
-                          <div
-                            id={category.id}
-                            onClick={() => handleDelete(category.id)}
-                            className="text-gray-600 hover:text-cyan-300 ml-4"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="h-6 w-6"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </div>
-                        </td></>)}
+                        {user.role === "spectator" ? null : (
+                          <>
+                            <td className="p-3 flex flex-row">
+                              <div
+                                className="text-gray-600 hover:text-cyan-300"
+                                onClick={() => onServEdit(category.id)}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                                  />
+                                </svg>
+                              </div>
+                              <div
+                                id={category.id}
+                                onClick={() => handleDelete(category.id)}
+                                className="text-gray-600 hover:text-cyan-300 ml-4"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-6 w-6"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                              </div>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     );
                   })}
@@ -404,22 +479,41 @@ const Button = styled.button`
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem;
-  background-color: #0BBBEF;
+  background-color: #0bbbef;
   border-radius: 10px;
-  color: #FFF;
+  color: #fff;
   border: none;
   margin: 1rem auto;
 `;
 
 const Box = styled.div`
   width: 100%;
-  color: #FFF;
-  background-color: #0BBBEF;
+  color: #fff;
+  background-color: #0bbbef;
+`;
+
+const BoxErr = styled.div`
+  width: 100%;
+  color: #fff;
+  background-color: #ec607e;
 `;
 
 const Title = styled.p`
   text-align: center;
   margin: 1rem 0;
   font-size: 2rem;
-  
+`;
+
+export const P = styled.p`
+  margin: 0.225rem 0;
+  font-size: 1rem;
+`;
+export const Container = styled.div`
+  width: 100%;
+  padding: 20px;
+`;
+
+const UL = styled.ul`
+  list-style: inherit;
+  padding: 0 2rem;
 `;

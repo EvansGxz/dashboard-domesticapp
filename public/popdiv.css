@@ -23,6 +23,10 @@
 	opacity: 0;
 	visibility: hidden;
 }
+
+.burgerHide {
+	display: none;
+}
 #btn-modal:checked ~ .modal{
 	opacity: 1;
 	visibility: visible;

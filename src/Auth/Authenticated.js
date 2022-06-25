@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Routes, Route } from "react-router-dom";
+import { SidebarItems } from "../components/SidebarItems";
 import CrearMod from "../pages/Admins/createMod";
 import EditMod from "../pages/Admins/editMod";
 import { Calendario } from "../pages/Calendario";
@@ -51,6 +52,8 @@ function Authenticated() {
 
         <Route path="/tareas" element={<Tareas/>} />
         <Route path="/tareas/edit" element={<EditarTarea/>} />
+
+        <Route path="/side" element={<SidebarItems/>} />
 
         <Route path="/clientes" element={<Clientes/>} />
         <Route path="/clientes/edit" element={<EditarCliente/>} />

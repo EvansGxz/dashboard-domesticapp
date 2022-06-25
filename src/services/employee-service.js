@@ -7,3 +7,7 @@ export async function showEmployee(UserID) {
 export async function indexEmployee() {
   return await apiFetch(`employee/`);
 }
+
+export async function deleteEmployee(userId) {
+  return await apiFetch(`employees/${userId}`, { method: "DELETE" });
+}
