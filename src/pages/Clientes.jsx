@@ -9,11 +9,13 @@ import { indexCustomer } from '../services/customer-services'
 import { deleteUser } from '../services/users-service'
 import CrearCliente from "./Clientes/createCliente"
 import EditarCliente from './Clientes/editCliente'
+import { Popdiv } from './pop'
 
 const Clientes = () => {
   const {user}= useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [cusId, setCusId] = useState(null);
+  const [mErrors, setMErrors] = useState(false);
   const [show, setShow] = useState(false);
   const [customers, setCustomers] = useState(null);
   useEffect(() => {
@@ -23,7 +25,7 @@ const Clientes = () => {
   function handleDelete(id){
      deleteUser(id).then(() => {
       indexCustomer().then(setCustomers)
-     });
+     }).catch(toggleErrors);
   }
 
   const togglePopup = () => {
@@ -33,7 +35,9 @@ const Clientes = () => {
   function toggleEdit(id){
     setShow(!show);
   }
-
+  function toggleErrors() {
+    setMErrors(!mErrors);
+  }
   function onEdit(id){
     setCusId(id);
     toggleEdit();
@@ -83,6 +87,34 @@ const Clientes = () => {
       handleClose={toggleEdit}
     />
     }
+    {mErrors && (
+        <Popdiv
+          content={
+            <>
+              <BoxErr>
+                <Title>No se puede ejecutar esta acción</Title>
+              </BoxErr>
+              <Container>
+                <P>
+                  Posibles motivos:
+                  <UL>
+                    <li>Este empleado está brindando un servicio.</li>
+                  </UL>
+                </P>
+                <br />
+                <P>
+                  Acciones:
+                  <UL>
+                    <li>Finalizar servicio en curso.</li>
+                    <li>Modificar <b>cliente</b> del servicio en curso.</li>
+                  </UL>
+                </P>
+              </Container>
+            </>
+          }
+          handleClose={toggleErrors}
+        />
+      )}
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Clientes'></Navegador>
@@ -277,5 +309,13 @@ export const ButtonContainer = styled.div`
   margin: 1rem auto;
   padding: 20px;
 `;
-
+const UL = styled.ul`
+  list-style: inherit;
+  padding: 0 2rem;
+`;
+const BoxErr = styled.div`
+  width: 100%;
+  color: #fff;
+  background-color: #ec607e;
+`;
 export default Clientes;

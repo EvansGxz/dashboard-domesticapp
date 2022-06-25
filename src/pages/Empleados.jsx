@@ -9,12 +9,14 @@ import { indexEmployee } from '../services/employee-service'
 import { deleteUser } from '../services/users-service'
 import CrearEmpleado from "./Empleado/createEmployee"
 import EditarEmpleado from './Empleado/editEmloyee'
+import { Popdiv } from './pop'
 
 const Empleados = () => {
   const [employess, setEmployees] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(false);
+  const [mErrors, setMErrors] = useState(false);
   const {user} = useAuth();
   useEffect(() => {
     indexEmployee().then(setEmployees)
@@ -23,11 +25,15 @@ const Empleados = () => {
   function handleDelete(id){
      deleteUser(id).then(() => {
       indexEmployee().then(setEmployees)
-     });
+     }).catch(toggleErrors);
   }
 
     const togglePopup = () => {
     setIsOpen(!isOpen);
+  }
+
+  function toggleErrors() {
+    setMErrors(!mErrors);
   }
 
   function toggleEdit(){
@@ -81,6 +87,34 @@ const Empleados = () => {
       handleClose={toggleEdit}
     />
     }
+    {mErrors && (
+        <Popdiv
+          content={
+            <>
+              <BoxErr>
+                <Title>No se puede ejecutar esta acción</Title>
+              </BoxErr>
+              <Container>
+                <P>
+                  Posibles motivos:
+                  <UL>
+                    <li>Este empleado está brindando un servicio.</li>
+                  </UL>
+                </P>
+                <br />
+                <P>
+                  Acciones:
+                  <UL>
+                    <li>Finalizar servicio en curso.</li>
+                    <li>Modificar <b>empleado</b> del servicio en curso.</li>
+                  </UL>
+                </P>
+              </Container>
+            </>
+          }
+          handleClose={toggleErrors}
+        />
+      )}
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Empleados'></Navegador>
@@ -255,5 +289,15 @@ export const Title = styled.p`
 export const P = styled.p`
   margin: 0.225rem 0;
   font-size: 1rem;
+`;
+
+const UL = styled.ul`
+  list-style: inherit;
+  padding: 0 2rem;
+`;
+const BoxErr = styled.div`
+  width: 100%;
+  color: #fff;
+  background-color: #ec607e;
 `;
 export default Empleados;
