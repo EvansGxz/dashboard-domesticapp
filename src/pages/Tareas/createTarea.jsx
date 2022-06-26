@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { createService, indexServices } from "../../services/services-services";
 import { indexCategories } from "../../services/categories-services";
-import { Input, Selected } from "../../styles/views/Login";
-
+import { Input } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
   flex-direction: column;
@@ -19,62 +18,79 @@ const Container = styled.div`
   width: 80%;
 `;
 
-export default function CrearTarea({onInputChange, onStateChange}) {
+let checkCat = [];
+
+export default function CrearTarea({ onInputChange, onStateChange }) {
   const [categories, setCategories] = useState(null);
   const [form, setForm] = useState({
     service_name: "",
     category_id: "",
   });
-useEffect(() => {
-  indexCategories().then(setCategories)
-}, [])
+  useEffect(() => {
+    indexCategories().then(setCategories);
+  }, []);
 
+  function cheked(event) {
+    if (event.target.checked) {
+      console.log(event.target.name);
+      checkCat.push(event.target.name);
+    }
+  }
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
-    createService(form).then(()=>{
-      onInputChange(false)
-      indexServices().then(onStateChange)
-    })
+    
+    checkCat.forEach((cat) => {
+    createService({service_name: form.service_name, category_id:cat }).then(() => {
+      onInputChange(false);
+      indexServices().then(onStateChange);
+    });})
+    checkCat = [];
   }
 
   function handleFormChange(event) {
-   
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
   }
 
   return (
     <ContainerAll>
-    <Container>
-    {form ? (
-      <StyledForm onSubmit={handleSubmit}>
-      <Input
-        id="service_name"
-        label="Nombre de la tarea"
-        type="text"
-        placeholder="Barrer"
-        value={form.service_name}
-        onChange={handleFormChange}
-      />
+      <Container>
+        {form ? (
+          <StyledForm onSubmit={handleSubmit}>
+            <Input
+              id="service_name"
+              label="Nombre de la tarea"
+              type="text"
+              placeholder="Barrer"
+              value={form.service_name}
+              onChange={handleFormChange}
+            />
 
-      <Selected id="category_id" label="Servicio" name="category_id" onChange={handleFormChange}>
-          <option value="">Seleccione</option>
-          {categories ? (
-            categories.map((category) => (
-              <>
-              {console.log(category)}
-              <option value={category.id}>{category.category_name}</option></>
-            ))
-            
-          ) : null}
-          
-        </Selected>
-      <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
-        Crear Servicio
-      </button>
-    </StyledForm>) : (<div>Cargando....</div>)}
-    </Container>
+            <ContainerCheck>
+            {categories
+              ? categories.map((category) => (
+                <>
+                {console.log(category)}
+                  <Input
+                    id={category.id}
+                    label={ category.region.substring(0, 3)+"|"+category.category_name}
+                    type="checkbox"
+                    onChange={cheked}
+                  /></>
+                ))
+              : null}
+          </ContainerCheck>
+            <button
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              type="submit"
+            >
+              Crear Servicio
+            </button>
+          </StyledForm>
+        ) : (
+          <div>Cargando....</div>
+        )}
+      </Container>
     </ContainerAll>
   );
 }
@@ -91,4 +107,14 @@ export const StyleSelect = styled.select`
 
 const ContainerAll = styled.div`
   margin: 0 24%;
+`;
+
+const ContainerCheck = styled.div`
+  width: fit-content;
+  display: grid;
+  display: grid;
+  gap: 1px;
+  max-height: 140px;
+  overflow-y: scroll;
+  grid-template-columns: repeat(3, 100px);
 `;
