@@ -51,7 +51,6 @@ export default function CrearServicio({onInputChange, onStateChange}) {
       submitAPI(data);
     });
   }
-
   function cheked(event) {
     if (event.target.checked) {
       checkCat.push(event.target.name);
@@ -66,6 +65,7 @@ export default function CrearServicio({onInputChange, onStateChange}) {
       .then(()=>{
         onInputChange(false)
         indexCategories().then(onStateChange)
+        checkCat=[]
       });
   }
 
