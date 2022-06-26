@@ -69,7 +69,7 @@ export default function CrearOrder({onInputChange, onStateChange}) {
           {categories ? (
             categories.map((category) => (
               <>
-              <option value={category.id}>{category.category_name}</option></>
+              <option value={category.id}>{category.region.substring(0, 3)+" | "+ category.category_name}</option></>
             ))) : null}
         </Selected>
 

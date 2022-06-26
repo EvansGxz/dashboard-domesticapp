@@ -5,7 +5,7 @@ import { Form, Input } from "../../styles/views/Login";
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: initial;
   width: 480px;
   background-color: $fff;
   margin: 5% auto;

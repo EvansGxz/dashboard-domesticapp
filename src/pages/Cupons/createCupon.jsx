@@ -6,7 +6,8 @@ import { indexCustomer } from "../../services/customer-services";
 import { Input } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
-  flex-direction: column;
+  display: flex;
+  flex-direction: initial;
   gap: 2rem;
   min-width: 10vw;
 `;
