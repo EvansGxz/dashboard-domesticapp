@@ -13,6 +13,7 @@ import listPlugin from "@fullcalendar/list"; //For List View
 import { PopAll } from "../components/popAll";
 import EditarOrder from "./Order/editOrder";
 import { useAuth } from "../context/auth-context";
+import date from 'date-and-time';
 
 export const Calendario = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,13 +59,23 @@ export const Calendario = () => {
   }
   const [categories, setCategories] = useState(null);
 
-  let details = [];
+  let details = [];  
   if (categories) {
     categories.forEach((category) => {
+      
+      const now = new Date(category.start_date);
+      if(category.service_time){
+        let time = category.service_time.split(":");
+        now.setHours(time[0])
+        now.setMinutes(time[1])
+      }
+     
+      date.format(now, 'YYYY-MM-DD HH:mm');
+
       details.push({
         title: category.address,
         id: category.id,
-        date: category.start_date,
+        date: now,
         start_date: category.start_date,
         workday: category.workday,
         supply_food: category.supply_food,
@@ -73,6 +84,7 @@ export const Calendario = () => {
         employee: category.employee.full_name,
         employee_direction: category.employee.region,
         customer: category.customer.full_name,
+        service_time: category.service_time,
       });
     });
     console.log(details);
@@ -189,6 +201,10 @@ export const Calendario = () => {
                     <P>
                       <b>Fecha del servicio: </b>
                       {cal._def.extendedProps.start_date}
+                    </P>
+                    <P>
+                      <b>Hora: </b>
+                      {cal._def.extendedProps.service_time}
                     </P>
                     <P>
                       <b>Suplir alimentos: </b>
