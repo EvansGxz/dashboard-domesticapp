@@ -87,7 +87,6 @@ export const Calendario = () => {
         service_time: category.service_time,
       });
     });
-    console.log(details);
   }
   function handleModalCreateChange(newValue) {
     setCreateCalendar(newValue);

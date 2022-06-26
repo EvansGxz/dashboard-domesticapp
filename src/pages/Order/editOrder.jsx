@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import TimePicker from "react-time-picker";
 import { indexCategories } from "../../services/categories-services";
 import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
@@ -29,6 +30,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
   const [customer, setCustomers] = useState(null);
+  const [isTime, setIsTime] = useState();
   useEffect(() =>{
     indexCategories().then(setCategories)
     indexEmployee().then(setEmployees)
@@ -47,6 +49,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         workday: m.workday,
         discount: m.discount,
         supply_food: m.supply_food,
+        service_time: m.service_time,
       })
       ))
       
@@ -55,7 +58,9 @@ export default function EditarOrder({onStateChange, onInputChange}) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    updateOrder(form, id).then(()=>{
+    updateOrder({category_id: form.category_id, employee_id: form.employee_id, customer_id: form.customer_id,
+      address: form.address, start_date: event.target.start_date.value, workday: event.target.workday.value, discount: form.discount,
+     supply_food: form.supply_food, service_time: isTime}, id).then(()=>{
       onInputChange(false);
       indexOrder().then(onStateChange)
     })
@@ -118,6 +123,8 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         value={form.start_date}
         onChange={handleFormChange}
       />
+            <TimePicker
+       onChange={setIsTime} value={form.service_time} />
       <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
           <option value="">{form.workday}</option>
           <option value="Completa">Completa | COL</option>
