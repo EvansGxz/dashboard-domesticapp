@@ -233,7 +233,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               ? categories.map((category) => (
                   <Input
                     id={category.id}
-                    label={category.category_name}
+                    label={category.region.substring(0, 3)+" | "+category.category_name}
                     type="checkbox"
                     value={form1.contrato}
                     onChange={cheked}
