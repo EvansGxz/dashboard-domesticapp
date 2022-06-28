@@ -26,6 +26,7 @@ const Container = styled.div`
 let checkCat = [];
 export default function CrearEmpleado({onInputChange, onStateChange}) {
   const [categories, setCategories] = useState();
+  
   const [form, setForm] = useState({
     email: "",
     lada: "",
@@ -249,6 +250,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
             Crear Empleado
           </button>
           </Container>
+          
         </StyledForm>
       ) : (
         <div>Cargando....</div>
