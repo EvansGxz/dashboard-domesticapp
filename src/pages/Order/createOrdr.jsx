@@ -25,7 +25,10 @@ const Container = styled.div`
 export default function CrearOrder({ onInputChange, onStateChange }) {
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
+  const [isCurrent, setIsCurrent] = useState(null);
   const [customer, setCustomers] = useState(null);
+  const [frecuencia, setFecuencia] = useState(null);
+  const [veces, setVeces] = useState(null);
   const [order, setOrder] = useState(null);
   const [isDate, setisDate] = useState(null);
   const [form, setForm] = useState({
@@ -38,6 +41,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     discount: "",
     supply_food: "",
     service_time: "",
+    finish_date: "",
   });
   const [isTime, setIsTime] = useState();
   const [isWorkday, setIsWorkday] = useState();
@@ -50,6 +54,53 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    if (isDate && veces && frecuencia) {
+      const calc = isDate.split("-").join("/");
+      const now = new Date(calc);
+      const last = new Date(now);
+  
+      //console.log(new Date().getDate())
+      //console.log(now.getUTCDay())
+      let mes = 0;
+      if (frecuencia === "4") {
+        for (let j = 0; j < veces; j++) {
+          console.log(new Date(last.setMonth(last.getMonth() + parseInt(mes))));
+          for (let i = 0; i < 7; i++) {
+            if (now.getDay() !== last.getDay()) {
+              if (last.getDay() > now.getDay()) {
+                last.setHours(-24);
+                //console.log("BAJA"+last);
+              }
+              if (last.getDay() < now.getDay()) {
+                last.setHours(+24);
+                //console.log("SUBE:"+last);
+              }
+            } else {
+              i = 7;
+            }
+          }
+          const res =
+            last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+            mes=1;
+            createOrder({
+              category_id: form.category_id,
+              employee_id: form.employee_id,
+              customer_id: form.customer_id,
+              address: form.address,
+              start_date: res,
+              workday: event.target.workday.value,
+              discount: form.discount,
+              supply_food: form.supply_food,
+              service_time: isTime,
+            }).then(() => {
+              onInputChange(false);
+              indexOrder().then(onStateChange);
+            })
+        }
+      }
+    }else{
+
     createOrder({
       category_id: form.category_id,
       employee_id: form.employee_id,
@@ -63,14 +114,14 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     }).then(() => {
       onInputChange(false);
       indexOrder().then(onStateChange);
-    });
+    });}
   }
 
   function handleFormChange(event) {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
-    if(name === 'workday'){
-      setIsWorkday(event.target.value)
+    if (name === "workday") {
+      setIsWorkday(event.target.value);
     }
   }
 
@@ -79,40 +130,58 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
 
     setisDate(event.target.value);
   }
-  let freeEmp=[]
-  if (order && isDate && employess && isTime && isWorkday)
-  {console.log(parseInt(isTime.split(":").join("")))
-    order.forEach((o) =>{
-      if(o.start_date === isDate){
-
+  let freeEmp = [];
+  if (order && isDate && employess && isTime && isWorkday) {
+    console.log(parseInt(isTime.split(":").join("")));
+    order.forEach((o) => {
+      if (o.start_date === isDate) {
         employess.forEach((employee) => {
-          if(employee.employee.id !== o.employee.id){
-            freeEmp.push({employee: employee})
-           
+          if (employee.employee.id !== o.employee.id) {
+            freeEmp.push({ employee: employee });
           }
-          if((employee.employee.id === o.employee.id && o.workday === "Media" && isWorkday === "Media")){
-            if(parseInt(isTime.split(":").join("")) >= parseInt(o.service_time.split(":").join(""))+500){
-            freeEmp.push({employee: employee})
-            
+          if (
+            employee.employee.id === o.employee.id &&
+            o.workday === "Media" &&
+            isWorkday === "Media"
+          ) {
+            if (
+              parseInt(isTime.split(":").join("")) >=
+              parseInt(o.service_time.split(":").join("")) + 500
+            ) {
+              freeEmp.push({ employee: employee });
+            } else if (
+              parseInt(isTime.split(":").join("")) + 500 <=
+              parseInt(o.service_time.split(":").join(""))
+            ) {
+              freeEmp.push({ employee: employee });
+            }
           }
-
-            else if(parseInt(isTime.split(":").join(""))+500 <= parseInt(o.service_time.split(":").join(""))){
-            freeEmp.push({employee: employee})
-            
-            console.log(parseInt(isTime.split(":").join("")))
-          }
-          }
-        })
+        });
       }
-    })     
+    });
   }
-  if(isTime){
-    const d = new Date("July 21, 1983")
-    d.setHours(0)
-    d.setMinutes(0)
-
+  if (veces) {
+    if (frecuencia === "1") {
+      console.log("Diaria");
+    }
+    if (frecuencia === "2") {
+      console.log("Semanal");
+    }
+    if (frecuencia === "3") {
+      console.log("Quincenal");
+    }
+    if (frecuencia === "4") {
+      console.log("Mensual");
+    }
   }
   
+  /*const currentDate = new Date();
+  const  startDate = new Date(currentDate.getFullYear(), 0, 1);
+    var days = Math.floor((currentDate - startDate) /
+        (24 * 60 * 60 * 1000));
+         
+    var weekNumber = Math.ceil(days / 7);
+    console.log(weekNumber)*/
   return (
     <>
       {form ? (
@@ -174,7 +243,6 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
               />
             </Container>
             <Container>
-              
               <Selected
                 id="workday"
                 label="Tipo de jornada"
@@ -211,26 +279,23 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 onChange={handleFormChange}
               >
                 <option value="">--selecciona empleado--</option>
-                {      freeEmp.length !== 0 ? (
-                  freeEmp.map((employee) => (
-                    
-                            <>
-                              <option value={employee.employee.employee.id}>
-                                {employee.employee.employee.full_name}
-                              </option>
-                            </>
-                          ))
-                )
-                        : employess ? (
-                          (employess.map((employee) => (
-                            <>
-                              <option value={employee.employee.id}>
-                                {employee.employee.full_name}
-                              </option>
-                            </>
-                          )))
-                        ) : null
-                }
+                {freeEmp.length !== 0
+                  ? freeEmp.map((employee) => (
+                      <>
+                        <option value={employee.employee.employee.id}>
+                          {employee.employee.employee.full_name}
+                        </option>
+                      </>
+                    ))
+                  : employess
+                  ? employess.map((employee) => (
+                      <>
+                        <option value={employee.employee.id}>
+                          {employee.employee.full_name}
+                        </option>
+                      </>
+                    ))
+                  : null}
               </Selected>
 
               <button
@@ -239,6 +304,54 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
               >
                 Crear Servicio
               </button>
+            </Container>
+            <Container>
+              <Selected
+                id="recurrente"
+                label="Servicio recurrente"
+                onChange={(e) => setIsCurrent(e.target.value)}
+              >
+                <option value="">--Servicio Recurrente--</option>
+                <option value="1">Sí</option>
+                <option value="2">No</option>
+              </Selected>
+
+              {isCurrent === "1" ? (
+                <>
+                  <Selected
+                    id="recurrente"
+                    label="Frecuencia"
+                    onChange={(e) => setFecuencia(e.target.value)}
+                  >
+                    <option value="">Seleccionar frecuencia</option>
+                    <option value="1">Diario(cada x días)</option>
+                    <option value="2">Semanal(cada x a repetir)</option>
+                    <option value="3">Quincenal(cada x a repetir)</option>
+                    <option value="4">Mensual(cada x a repetir)</option>
+                  </Selected>
+                  <Input
+                    id="frecuencia"
+                    label="Cantidad de veces"
+                    type="number"
+                    placeholder="4"
+                    onChange={(e) => setVeces(e.target.value)}
+                  />
+                </>
+              ) : null}
+
+              {
+                isWorkday==="Hora" ? (
+                  <>
+                <Input
+                id="hours"
+                label="Cantidad de Horas"
+                type="number"
+                placeholder="3"
+                value={form.finish_date}
+                onChange={handleFormChange}
+              />
+                </>) : null
+              }
             </Container>
           </StyledForm>
         </>
