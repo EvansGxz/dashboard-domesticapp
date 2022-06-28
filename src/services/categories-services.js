@@ -22,6 +22,9 @@ export async function createCategory(data) {
 export async function createECategory(data) {
   return await apiFetch('employee_categories/', { body: data });
 }
+export async function showHECategory(CategoryID) {
+  return await apiFetch(`employee_category/${CategoryID}`);
+}
 
 export async function updateCategory(data, catId) {
   return await apiFetch(`categories/${catId}`, {
