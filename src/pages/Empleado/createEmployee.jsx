@@ -70,7 +70,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
     if (event.target.checked) {
       checkCat.push(event.target.name);
     }
-    console.log(checkCat);
+    
   }
 
   function handleFormChange(event) {
@@ -181,7 +181,7 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form1.contrato}
               onChange={handleFormChange1}
             />
-</Container>
+          </Container>
           <Container>
             <Input
               id="biografy"
