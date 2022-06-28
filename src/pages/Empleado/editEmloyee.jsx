@@ -35,7 +35,7 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
         country: user.country,
         region: user.region,
         document_id: user.document_id,
-        contact: user.contact,
+        contrato: user.contrato,
         experience: user.experience,
         biografy: user.biografy,
         birth_date: user.birth_date,
@@ -48,7 +48,8 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
     const data = new FormData();
 
     data.append("cover", event.target.cover.files[0]);
-    
+    data.append("contrato", event.target.contrato.files[0]);
+
     updateEmployee(form1, employee.user_id)
     .then(indexEmployee().then(onStateChange))
     .then(submitAPI(data, employee.user_id))
@@ -150,6 +151,14 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
             <option value="9">9</option>
             <option value="10">10</option>
           </Selected>
+          <Input
+              id="contrato"
+              name="contrato"
+              label="Numero de contrato"
+              type="file"
+              placeholder="xxxxxxxxxx"
+              value={form1.contrato.files}
+            />
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type="submit"
