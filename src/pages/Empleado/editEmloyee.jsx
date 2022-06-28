@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { BASE_URI } from "../../Config";
+import { createECategory, indexCategories, showHECategory } from "../../services/categories-services";
 import { indexEmployee, showEmployee } from "../../services/employee-service";
 import { updateEmployee } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
@@ -20,15 +21,19 @@ const Container = styled.div`
   float: inline-start;
   width: 30%
 `;
-
+let checkCat = [];
 export default function EditarEmpleado({onStateChange, onInputChange}) {
 
   const [form1, setForm1] = useState(null);
+  const [categories, setCategories] = useState();
   const [employee, setEmployee] = useState(null);
+  const [hEmployee, setHEmployee] = useState(null);
   useEffect(() => {
     const id = localStorage.getItem("EID");
-
+    indexCategories().then(setCategories);
     showEmployee(id).then((user) => {
+
+      showHECategory(user.id).then(setHEmployee)
       setEmployee(user);
       setForm1({
         full_name: user.full_name,
@@ -42,6 +47,7 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
         cover: user.cover,
       });
     });
+    
   }, []);
   function handleSubmit(event) {
     event.preventDefault();
@@ -52,23 +58,47 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
 
     updateEmployee(form1, employee.user_id)
     .then(indexEmployee().then(onStateChange))
-    .then(submitAPI(data, employee.user_id))
+    .then(submitAPI(data, employee))
     onInputChange(false);
   }
+  function cheked(event) {
+    if (event.target.checked) {
+      checkCat.push(event.target.name);
+    }
 
+  }
   function submitAPI(data, id) {
-    fetch(BASE_URI + `employees/${id}`, {
+    fetch(BASE_URI + `employees/${id.user_id}`, {
       method: "PATCH",
       body: data,
     })
       .then((response) => response.json())
       .then(indexEmployee().then(onStateChange))
       .catch((error) => console.log(error.message));
+      if(checkCat){
+      checkCat.forEach((cat) => {
+        createECategory({ employee_id: id.id, category_id: cat });
+    });
+    checkCat=[];
+  }
   }
 
   function handleFormChange1(event) {
     const { name, value } = event.target;
     setForm1({ ...form1, [name]: value });
+  }
+
+  if(categories && hEmployee){
+    categories.forEach((category)=>{
+      hEmployee.forEach((he)=>{
+          if(category.id === he.category_id){
+            category.checked = true
+          }
+        })
+       
+    })
+    
+   
   }
 
   return (
@@ -113,6 +143,7 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
             placeholder="Calle 53, Bogotá, Colombia"
             value={form1.region}
             onChange={handleFormChange1}
+            
           />
           <Input
             id="birth_date"
@@ -159,6 +190,22 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
               placeholder="xxxxxxxxxx"
               value={form1.contrato.files}
             />
+            <ContainerCheck>
+            {categories
+              ? categories.map((category) => (
+                
+                <>
+                  <Input
+                    id={category.id}
+                    label={category.region.substring(0, 3)+" | "+category.category_name}
+                    type="checkbox"
+                    value={form1.contrato}
+                    onChange={cheked}
+                    defaultChecked={category.checked}
+                  />
+                </>))
+              : null}
+          </ContainerCheck>
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type="submit"
@@ -188,4 +235,14 @@ export const StyleSelect = styled.select`
   border-radius: 0.5rem;
   color: black;
   margin: 1rem 0;
+`;
+
+const ContainerCheck = styled.div`
+  width: fit-content;
+  display: grid;
+  display: grid;
+  gap: 1px;
+  max-height: 140px;
+  overflow-y: scroll;
+  grid-template-columns: repeat(3, 100px);
 `;
