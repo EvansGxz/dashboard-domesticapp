@@ -40,6 +40,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     service_time: "",
   });
   const [isTime, setIsTime] = useState();
+  const [isWorkday, setIsWorkday] = useState();
   useEffect(() => {
     indexCategories().then(setCategories);
     indexEmployee().then(setEmployees);
@@ -68,6 +69,9 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   function handleFormChange(event) {
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+    if(name === 'workday'){
+      setIsWorkday(event.target.value)
+    }
   }
 
   function handleCalendarChange(event) {
@@ -76,21 +80,39 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     setisDate(event.target.value);
   }
   let freeEmp=[]
-  if (order && isDate && employess)
-  { 
+  if (order && isDate && employess && isTime && isWorkday)
+  {console.log(parseInt(isTime.split(":").join("")))
     order.forEach((o) =>{
       if(o.start_date === isDate){
 
         employess.forEach((employee) => {
           if(employee.employee.id !== o.employee.id){
-
             freeEmp.push({employee: employee})
+           
+          }
+          if((employee.employee.id === o.employee.id && o.workday === "Media" && isWorkday === "Media")){
+            if(parseInt(isTime.split(":").join("")) >= parseInt(o.service_time.split(":").join(""))+500){
+            freeEmp.push({employee: employee})
+            
+          }
+
+            else if(parseInt(isTime.split(":").join(""))+500 <= parseInt(o.service_time.split(":").join(""))){
+            freeEmp.push({employee: employee})
+            
+            console.log(parseInt(isTime.split(":").join("")))
+          }
           }
         })
       }
     })     
   }
-  console.log(freeEmp)
+  if(isTime){
+    const d = new Date("July 21, 1983")
+    d.setHours(0)
+    d.setMinutes(0)
+
+  }
+  
   return (
     <>
       {form ? (
