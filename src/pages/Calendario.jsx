@@ -62,8 +62,9 @@ export const Calendario = () => {
   let details = [];  
   if (categories) {
     categories.forEach((category) => {
+      const calc = category.start_date.split('-').join('/');
+      const now = new Date(calc);
       
-      const now = new Date(category.start_date);
       if(category.service_time){
         let time = category.service_time.split(":");
         now.setHours(time[0])
@@ -71,6 +72,7 @@ export const Calendario = () => {
       }
      
       date.format(now, 'YYYY-MM-DD HH:mm');
+   
 
       details.push({
         title: category.address,
