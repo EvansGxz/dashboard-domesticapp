@@ -7,7 +7,6 @@ import {
   indexOrder,
   showOrderEmployee,
 } from "../../services/order-details-services";
-import CrearOrder from "../Order/createOrdr";
 import { Popdiv } from "../pop";
 //Fullcalendar and Realted Plugins
 import FullCalendar from "@fullcalendar/react";
@@ -23,23 +22,19 @@ export const EmployeeCalendario = () => {
   const [show, setShow] = useState(true);
   const [cusId, setCusId] = useState(null);
   const [cal, setCal] = useState({});
-  const [createCalendar, setCreateCalendar] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const { user } = useAuth();
 
   const ide = new URLSearchParams(window.location.search).get("id");
   useEffect(() => {
-    showOrderEmployee(ide).then(setCategories)
-    }, [ide])
-    const togglePopup = () => {
-      setIsOpen(!isOpen);
-      setShow(!show);
-    }
-
-  const togglePopCreate = () => {
-    setCreateCalendar(!createCalendar);
+    showOrderEmployee(ide).then(setCategories);
+  }, [ide]);
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
     setShow(!show);
   };
+
+ 
   function toggleEdit() {
     setIsEdit(!isEdit);
     setShow(!show);
@@ -79,10 +74,7 @@ export const EmployeeCalendario = () => {
     });
     console.log(details);
   }
-  function handleModalCreateChange(newValue) {
-    setCreateCalendar(newValue);
-    setShow(true);
-  }
+
 
   function handleModalEditChange(newShow) {
     setIsEdit(newShow);
@@ -100,22 +92,7 @@ export const EmployeeCalendario = () => {
   }
   return (
     <>
-      {createCalendar && (
-        <PopAll
-          content={
-            <>
-              <Box>
-                <Title>CREAR SERVICIO</Title>
-              </Box>
-              <CrearOrder
-                onInputChange={handleModalCreateChange}
-                onStateChange={handleEmployeesEditChange}
-              />
-            </>
-          }
-          handleClose={togglePopCreate}
-        />
-      )}
+      
       {isEdit && (
         <PopAll
           content={
@@ -148,9 +125,6 @@ export const EmployeeCalendario = () => {
                     <h3 className="text-3xl font-bold text-gray-700">
                       Servicios
                     </h3>
-                    <Button onClick={() => togglePopCreate()}>
-                      Crear Servicio
-                    </Button>
                   </div>
                 </div>
               </div>
