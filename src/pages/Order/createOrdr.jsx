@@ -62,6 +62,107 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   
       //console.log(new Date().getDate())
       //console.log(now.getUTCDay())
+      let dia = 0;
+    if (frecuencia === "1") {
+      for (let j = 0; j < veces; j++) {
+        last.setDate(last.getDate() + dia);
+       
+        dia= 1;
+        const res =
+          last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+          createOrder({
+            category_id: form.category_id,
+            employee_id: form.employee_id,
+            customer_id: form.customer_id,
+            address: form.address,
+            start_date: res,
+            workday: event.target.workday.value,
+            discount: form.discount,
+            supply_food: form.supply_food,
+            service_time: isTime,
+          }).then(() => {
+            onInputChange(false);
+            indexOrder().then(onStateChange);
+          })
+         
+      }
+    }
+    let semana = 0;
+    if (frecuencia === "2") {
+      for (let j = 0; j < veces; j++) {
+        last.setDate(last.getDate() + semana);
+        for (let i = 0; i < 7; i++) {
+          if (now.getDay() !== last.getDay()) {
+            if (last.getDay() > now.getDay()) {
+              last.setHours(-24);
+              //console.log("BAJA"+last);
+            }
+            if (last.getDay() < now.getDay()) {
+              last.setHours(+24);
+              //console.log("SUBE:"+last);
+            }
+          } else {
+            i = 7;
+          }
+        }
+        semana= 7;
+        const res =
+          last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+          createOrder({
+            category_id: form.category_id,
+            employee_id: form.employee_id,
+            customer_id: form.customer_id,
+            address: form.address,
+            start_date: res,
+            workday: event.target.workday.value,
+            discount: form.discount,
+            supply_food: form.supply_food,
+            service_time: isTime,
+          }).then(() => {
+            onInputChange(false);
+            indexOrder().then(onStateChange);
+          })
+         
+      }
+    }
+    let quincena = 0;
+    if (frecuencia === "3") {
+      for (let j = 0; j < veces; j++) {
+        last.setDate(last.getDate() + quincena);
+        for (let i = 0; i < 7; i++) {
+          if (now.getDay() !== last.getDay()) {
+            if (last.getDay() > now.getDay()) {
+              last.setHours(-24);
+              //console.log("BAJA"+last);
+            }
+            if (last.getDay() < now.getDay()) {
+              last.setHours(+24);
+              //console.log("SUBE:"+last);
+            }
+          } else {
+            i = 7;
+          }
+        }
+        quincena= 15;
+        const res =
+          last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+          createOrder({
+            category_id: form.category_id,
+            employee_id: form.employee_id,
+            customer_id: form.customer_id,
+            address: form.address,
+            start_date: res,
+            workday: event.target.workday.value,
+            discount: form.discount,
+            supply_food: form.supply_food,
+            service_time: isTime,
+          }).then(() => {
+            onInputChange(false);
+            indexOrder().then(onStateChange);
+          })
+         
+      }
+    }
       let mes = 0;
       if (frecuencia === "4") {
         for (let j = 0; j < veces; j++) {
@@ -160,28 +261,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       }
     });
   }
-  if (veces) {
-    if (frecuencia === "1") {
-      console.log("Diaria");
-    }
-    if (frecuencia === "2") {
-      console.log("Semanal");
-    }
-    if (frecuencia === "3") {
-      console.log("Quincenal");
-    }
-    if (frecuencia === "4") {
-      console.log("Mensual");
-    }
-  }
-  
-  /*const currentDate = new Date();
-  const  startDate = new Date(currentDate.getFullYear(), 0, 1);
-    var days = Math.floor((currentDate - startDate) /
-        (24 * 60 * 60 * 1000));
-         
-    var weekNumber = Math.ceil(days / 7);
-    console.log(weekNumber)*/
+
   return (
     <>
       {form ? (
