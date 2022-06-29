@@ -68,8 +68,65 @@ export default function CrearMod({onInputChange, onStateChange}) {
   return (
     <ContainerAll>
     {form ? (
-      <StyledForm onSubmit={e=>handleSubmit(e)}>
-      <Container>
+    <StyledForm onSubmit={e=>handleSubmit(e)}>
+      {window.screen.width < 810 ? (
+        <>
+        <Container>
+      <Input
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="example@mail.com"
+          value={form.email}
+          onChange={handleFormChange}
+        />
+        <Selected id="role" label="Rol" name="role" onChange={handleFormChange1}>
+          <option value="">--seleccionar rol--</option>
+          <option value="admin">Admnistrador</option>
+          <option value="mod">Miembro del Equipo</option>
+          <option value="spectator">Espectador</option>
+        </Selected>
+      <Input
+        id="password"
+        label="Contraseña"
+        type="password"
+        placeholder="******"
+        value={form.password}
+        onChange={handleFormChange}
+      />
+ 
+        
+      <Input
+        id="password_confirmation"
+        label="Confirmar Contraseña"
+        type="password"
+        placeholder="******"
+        value={form.password_confirmation}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="nickname"
+        label="Nombre"
+        type="text"
+        placeholder="Mike Perez"
+        value={form1.nickname}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
+      />
+
+      <button className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Administrador
+      </button>
+     </Container> 
+        </>
+      ):(
+        <>
+        <Container>
       <Input
           id="email"
           label="Email"
@@ -122,6 +179,9 @@ export default function CrearMod({onInputChange, onStateChange}) {
         Crear Administrador
       </button>
      </Container> 
+        </>
+      )}
+      
     </StyledForm>) : (<div>Cargando....</div>)}
     
     </ContainerAll>

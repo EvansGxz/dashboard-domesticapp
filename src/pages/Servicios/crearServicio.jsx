@@ -78,6 +78,99 @@ export default function CrearServicio({onInputChange, onStateChange}) {
     <ContainerAll>
       {form ? (
         <StyledForm onSubmit={(e) => handleSubmit(e)}>
+        {window.screen.width < 810 ? (
+          <>
+          <Container>
+            <Input
+              id="category_name"
+              label="Nombre de servicio"
+              type="text"
+              placeholder="Limpieza de hogar"
+              value={form.category_name}
+              onChange={handleFormChange}
+            />
+            <ContainerCheck label="Algo">
+              <Input
+                name="Colombia"
+                label="Colombia"
+                type="checkbox"
+                value="Colombia"
+                onChange={cheked}
+              />
+              <Input
+                name="España"
+                label="España"
+                type="checkbox"
+                value="España"
+                onChange={cheked}
+              />
+              <Input
+                name="Canada"
+                label="Canada"
+                type="checkbox"
+                value="Canada"
+                onChange={cheked}
+              />
+            </ContainerCheck>
+            <Input
+              id="body"
+              label="Descripción"
+              type="text"
+              placeholder="Cuida tus servicios..."
+              value={form.body}
+              onChange={handleFormChange}
+            />
+            <Selected
+              id="sector_id"
+              name="sector_id"
+              label="Categoria"
+              onChange={handleFormChange}
+            >
+              <option value="">Seleccione</option>
+              {sectores
+                ? sectores.map((sector) => (
+                    <option value={sector.id}>{sector.name}</option>
+                  ))
+                : null}
+            </Selected>
+            
+                <Input
+                  id="price_col_complete"
+
+                  label="Precio Jornada Completa"
+                  type="text"
+                  placeholder="3000"
+                  value={form.price_col_complete}
+                  onChange={handleFormChange}
+                />
+                <Input
+                  id="price_col_half"
+                  label="Precio Jornada Media"
+                  type="text"
+                  placeholder="3000"
+                  value={form.price_col_half}
+                  onChange={handleFormChange}
+                />
+              
+                <Input
+                  id="price_spain"
+                  label="Precio Jornada por Hora"
+                  type="text"
+                  placeholder="3000"
+                  value={form.price_spain}
+                  onChange={handleFormChange}
+                />
+            <Input id="image" name="image" label="Imagen" type="file" />
+            <button
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              type="submit"
+            >
+              Crear Servicio
+            </button>
+          </Container>
+          </>
+        ):(
+          <>
           <Container>
             <Input
               id="category_name"
@@ -169,6 +262,9 @@ export default function CrearServicio({onInputChange, onStateChange}) {
               Crear Servicio
             </button>
           </Container>
+          </>
+        )}
+          
         </StyledForm>
       ) : (
         <div>Cargando....</div>

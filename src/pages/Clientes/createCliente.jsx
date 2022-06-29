@@ -83,9 +83,131 @@ export default function CrearCliente({onInputChange, onStateChange}) {
   return (
     <ContainerAll>
     
-    {form ? (
-      <StyledForm onSubmit={e=>handleSubmit(e)}>
-      <Container>
+    {form ? (<StyledForm onSubmit={e=>handleSubmit(e)}>
+      {window.screen.width < 810 ? (
+        <>
+        <Container>
+      <Input
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="example@mail.com"
+          value={form.email}
+          onChange={handleFormChange}
+        />
+      <Input
+        id="password"
+        label="Contraseña"
+        type="password"
+        placeholder="******"
+        value={form.password}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="password_confirmation"
+        label="Confirmar Contraseña"
+        type="password"
+        placeholder="******"
+        value={form.password_confirmation}
+        onChange={handleFormChange}
+      />
+      <Input
+        id="full_name"
+        label="Nombre Completo/Empresa"
+        type="text"
+        placeholder="John Doe"
+        value={form1.full_name}
+        onChange={handleFormChange1}
+      />
+      
+      <Selected id="country" label="Pais" name="country" onChange={handleFormChange1}>
+          <option value="">Seleccione</option>
+          <option value="Colombia">Colombia</option>
+          <option value="España">España</option>
+          <option value="Canada">Canadá</option>
+        </Selected>
+
+      <Input
+        id="region"
+        label="Dirección"
+        type="text"
+        placeholder="Calle 53, Bogotá, Colombia"
+        value={form1.region}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="birth_date"
+        label="Fecha de nacimiento"
+        type="date"
+        placeholder="dd-mm-yyyy"
+        value={form1.birth_date}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="document_id"
+        label="Numero de documento"
+        type="text"
+        placeholder="xxxxxxxxxx"
+        value={form1.document_id}
+        onChange={handleFormChange1}
+      />
+      
+      <Selected id="client_type" name="client_type"
+       onChange={handleFormChange1} label="Tipo de cliente">
+          <option value="">--tipo de cliente</option>
+          <option value="Colombia">Persona</option>
+          <option value="España">Empresa</option>
+      </Selected>  
+      <Input
+        id="cod_refer"
+        label="Codigo de referido"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form1.cod_refer}
+        onChange={handleFormChange1}
+      />
+
+      <Input
+        id="encargado"
+        label="Encargado del cliente"
+        type="text"
+        placeholder="John"
+        value={form1.encargado}
+        onChange={handleFormChange1}
+      />
+      <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form1.lada}
+        onChange={handleFormChange1}
+      />
+      
+      <Input
+        id="phone"
+        label="Celular (10 digitos)"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form.phone}
+        onChange={handleFormChange}
+      />
+
+      <Input
+        id="cover"
+        name="cover"
+        label="Imagen"
+        type="file"
+      />
+      <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center' type="submit">
+        Crear Cliente
+      </button>
+      
+    </Container>  
+        </>
+      ) : (
+        <>
+        <Container>
       <Input
           id="email"
           label="Email"
@@ -205,6 +327,10 @@ export default function CrearCliente({onInputChange, onStateChange}) {
       </button>
       
     </Container>  
+        </>
+      )}
+      
+      
     </StyledForm>) : (<div>Cargando....</div>)}
     
     </ContainerAll>

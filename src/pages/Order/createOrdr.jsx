@@ -266,6 +266,175 @@ if(isTime){console.log(isTime)}
       {form ? (
         <>
           <StyledForm onSubmit={(e) => handleSubmit(e)}>
+          {window.screen.width < 810 ? (
+            <>
+            <Container>
+              <Selected
+                id="category_id"
+                label="Servicios"
+                name="category_id"
+                onChange={handleFormChange}
+              >
+                <option value="">--selecciona servicio--</option>
+                {categories
+                  ? categories.map((category) => (
+                      <>
+                        <option value={category.id}>
+                          {category.region.substring(0, 3) +
+                            " | " +
+                            category.category_name}
+                        </option>
+                      </>
+                    ))
+                  : null}
+              </Selected>
+              <Input
+                id="start_date"
+                label="Fecha de inicio"
+                type="date"
+                placeholder="03-04-2022"
+                onChange={handleCalendarChange}
+              />
+              <Timer label="Hora" onChange={setIsTime} value={form.service_time} />
+
+              <Selected
+                id="customer_id"
+                label="Clientes"
+                name="customer_id"
+                onChange={handleFormChange}
+              >
+                <option value="">--selecciona cliente--</option>
+                {customer
+                  ? customer.map((category) => (
+                      <>
+                        <option value={category.customer.id}>
+                          {category.customer.full_name}
+                        </option>
+                      </>
+                    ))
+                  : null}
+              </Selected>
+              <Input
+                id="address"
+                label="Dirección"
+                type="text"
+                placeholder="1"
+                value={form.address}
+                onChange={handleFormChange}
+              />
+           
+              <Selected
+                id="workday"
+                label="Tipo de jornada"
+                name="workday"
+                onChange={handleFormChange}
+              >
+                <option value="">--tipo de jornada--</option>
+                <option value="Completa">Completa | COL</option>
+                <option value="Media">Media | COL</option>
+                <option value="Hora">Hora | EU</option>
+              </Selected>
+              <Input
+                id="discount"
+                label="Descuento"
+                type="number"
+                placeholder="10"
+                value={form.discount}
+                onChange={handleFormChange}
+              />
+              <Selected
+                id="supply_food"
+                label="Suministrar Alimentos"
+                name="supply_food"
+                onChange={handleFormChange}
+              >
+                <option value="">--suministrar alimento--</option>
+                <option value="Si">Si</option>
+                <option value="No">No</option>
+              </Selected>
+              <Selected
+                id="employee_id"
+                label="Empleados"
+                name="employee_id"
+                onChange={handleFormChange}
+              >
+                <option value="">--selecciona empleado--</option>
+                {freeEmp.length !== 0
+                  ? freeEmp.map((employee) => (
+                      <>
+                        <option value={employee.employee.employee.id}>
+                          {employee.employee.employee.full_name}
+                        </option>
+                      </>
+                    ))
+                  : employess
+                  ? employess.map((employee) => (
+                      <>
+                        <option value={employee.employee.id}>
+                          {employee.employee.full_name}
+                        </option>
+                      </>
+                    ))
+                  : null}
+              </Selected>
+
+              <button
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center"
+                type="submit"
+              >
+                Crear Servicio
+              </button>
+           
+              <Selected
+                id="recurrente"
+                label="Servicio recurrente"
+                onChange={(e) => setIsCurrent(e.target.value)}
+              >
+                <option value="">--Servicio Recurrente--</option>
+                <option value="1">Sí</option>
+                <option value="2">No</option>
+              </Selected>
+
+              {isCurrent === "1" ? (
+                <>
+                  <Selected
+                    id="recurrente"
+                    label="Frecuencia"
+                    onChange={(e) => setFecuencia(e.target.value)}
+                  >
+                    <option value="">Seleccionar frecuencia</option>
+                    <option value="1">Diario(cada x días)</option>
+                    <option value="2">Semanal(cada x a repetir)</option>
+                    <option value="3">Quincenal(cada x a repetir)</option>
+                    <option value="4">Mensual(cada x a repetir)</option>
+                  </Selected>
+                  <Input
+                    id="frecuencia"
+                    label="Cantidad de veces"
+                    type="number"
+                    placeholder="4"
+                    onChange={(e) => setVeces(e.target.value)}
+                  />
+                </>
+              ) : null}
+
+              {
+                isWorkday==="Hora" ? (
+                  <>
+                <Input
+                id="hours"
+                label="Cantidad de Horas"
+                type="number"
+                placeholder="3"
+                value={form.finish_date}
+                onChange={handleFormChange}
+              />
+                </>) : null
+              }
+            </Container>
+            </>
+          ):(
+            <>
             <Container>
               <Selected
                 id="category_id"
@@ -432,6 +601,9 @@ if(isTime){console.log(isTime)}
                 </>) : null
               }
             </Container>
+            </>
+          )}
+           
           </StyledForm>
         </>
       ) : (
