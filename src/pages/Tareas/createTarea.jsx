@@ -110,11 +110,10 @@ const ContainerAll = styled.div`
 `;
 
 const ContainerCheck = styled.div`
-  width: fit-content;
-  display: grid;
   display: grid;
   gap: 1px;
   max-height: 140px;
   overflow-y: scroll;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(1, 100px);
+  margin: 1rem auto;
 `;

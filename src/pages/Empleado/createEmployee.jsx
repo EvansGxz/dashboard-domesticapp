@@ -260,17 +260,16 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
 }
 
 const ContainerAll = styled.div`
-  margin: 0 6%;
+  margin: 1% 6%;
 `;
 
 const ContainerCheck = styled.div`
-  width: fit-content;
-  display: grid;
   display: grid;
   gap: 1px;
   max-height: 140px;
   overflow-y: scroll;
-  grid-template-columns: repeat(3, 100px);
+  grid-template-columns: repeat(1, 100px);
+  margin: 1rem auto;
 `;
 
 export const StyleSelect = styled.select`
