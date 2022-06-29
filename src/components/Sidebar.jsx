@@ -2,14 +2,14 @@ import { SidebarItems } from './SidebarItems'
 import Logo2 from '../img/Logo2.png'
 import { useAuth } from '../context/auth-context'
 import styled from '@emotion/styled';
-import { logout } from '../services/session-service';
+
 
 export const Sidebar = () => {
+
   let atts = ""
-  const {user} = useAuth();
+  const {user, logout} = useAuth();
   function out(){
     logout();
-    window.location.reload(true);
   }
   if(window.screen.width < 810){
     atts='lg:hidden burgerHide'
