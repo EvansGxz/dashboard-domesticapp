@@ -5,6 +5,8 @@ import { indexEmployee } from "../../services/employee-service";
 import { indexCustomer } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
+import { createNotify } from "../../services/notiications-services";
+import { indexAdmin } from "../../services/admin-services";
 
 const ContainerAll = styled.div`
   
@@ -34,6 +36,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   const [veces, setVeces] = useState(null);
   const [order, setOrder] = useState(null);
   const [isDate, setisDate] = useState(null);
+  const [admins, setAdmins] = useState(null);
   const [form, setForm] = useState({
     category_id: "",
     employee_id: "",
@@ -53,6 +56,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     indexEmployee().then(setEmployees);
     indexCustomer().then(setCustomers);
     indexOrder().then(setOrder);
+    indexAdmin().then(setAdmins)
   }, []);
 
   function handleSubmit(event) {
@@ -83,9 +87,13 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
-          }).then(() => {
-            onInputChange(false);
+          }).then((cat) => {
+            admins.forEach((admin) =>{
+              
+              createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+            })
             indexOrder().then(onStateChange);
+            onInputChange(false);
           })
          
       }
@@ -121,7 +129,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
-          }).then(() => {
+          }).then((cat) => {
+            admins.forEach((admin) =>{
+              
+              createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+            })
             onInputChange(false);
             indexOrder().then(onStateChange);
           })
@@ -159,7 +171,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
-          }).then(() => {
+          }).then((cat) => {
+            admins.forEach((admin) =>{
+              
+              createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+            })
             onInputChange(false);
             indexOrder().then(onStateChange);
           })
@@ -180,6 +196,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 last.setHours(+24);
                 //console.log("SUBE:"+last);
               }
+
             } else {
               i = 7;
             }
@@ -197,7 +214,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
               discount: form.discount,
               supply_food: form.supply_food,
               service_time: isTime,
-            }).then(() => {
+            }).then((cat) => {
+      admins.forEach((admin) =>{
+        
+        createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+      })
               onInputChange(false);
               indexOrder().then(onStateChange);
             })
@@ -215,7 +236,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       discount: form.discount,
       supply_food: form.supply_food,
       service_time: isTime,
-    }).then(() => {
+    }).then((cat) => {
+      admins.forEach((admin) =>{
+        
+        createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+      })
       onInputChange(false);
       indexOrder().then(onStateChange);
     });}

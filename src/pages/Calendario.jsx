@@ -15,18 +15,22 @@ import EditarOrder from "./Order/editOrder";
 import { useAuth } from "../context/auth-context";
 import date from 'date-and-time';
 import { Modal } from "../components/ModalMobile";
+import { createNotify } from "../services/notiications-services";
+import { indexAdmin } from "../services/admin-services";
 
 export const Calendario = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [cusId, setCusId] = useState(null);
   const [show, setShow] = useState(true);
+  const [admins, setAdmins] = useState(null);
   const { user } = useAuth();
   const [createCalendar, setCreateCalendar] = useState(false);
   const [cal, setCal] = useState({});
 
   useEffect(() => {
     indexOrder().then(setCategories);
+    indexAdmin().then(setAdmins)
   }, []);
   const togglePopup = () => {
     setIsOpen(!isOpen);
@@ -52,9 +56,12 @@ export const Calendario = () => {
   function handleDelete(id) {
     setIsOpen(!isOpen);
     setShow(!show);
-    deleteOrder(id).then(() => {
+    deleteOrder(id).then((cat) => {
       indexOrder().then(setCategories);
-          togglePopup();
+      togglePopup();
+      admins.forEach((admin) =>{
+        createNotify({name: "Servicio Cancelado", body: `servicio del día ${cat.start_date}. Servicio de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+      })
     });
 
   }

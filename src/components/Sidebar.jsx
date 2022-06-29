@@ -3,9 +3,8 @@ import Logo2 from '../img/Logo2.png'
 import { useAuth } from '../context/auth-context'
 import styled from '@emotion/styled';
 
-
 export const Sidebar = () => {
-
+  
   let atts = ""
   const {user, logout} = useAuth();
   function out(){
@@ -16,6 +15,7 @@ export const Sidebar = () => {
   }else{
     atts= 'h-100 fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-gradient-to-b from-blue-100 to-rose-100 transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]'
   }
+ 
   return (
     <>
       <aside 

@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import TimePicker from "react-time-picker";
+import { indexAdmin } from "../../services/admin-services";
 import { indexCategories } from "../../services/categories-services";
 import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
+import { createNotify } from "../../services/notiications-services";
 import { indexOrder, showOrderDetail, updateOrder } from "../../services/order-details-services";
 import { Input, Selected } from "../../styles/views/Login";
 
@@ -30,11 +32,13 @@ export default function EditarOrder({onStateChange, onInputChange}) {
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
   const [customer, setCustomers] = useState(null);
+  const [admins, setAdmins] = useState(null);
   const [isTime, setIsTime] = useState();
   useEffect(() =>{
     indexCategories().then(setCategories)
     indexEmployee().then(setEmployees)
     indexCustomer().then(setCustomers)
+    indexAdmin().then(setAdmins)
     showOrderDetail(id).then((category) =>{
       category.map((m)=>(
         setForm({
@@ -60,9 +64,14 @@ export default function EditarOrder({onStateChange, onInputChange}) {
     event.preventDefault();
     updateOrder({category_id: form.category_id, employee_id: form.employee_id, customer_id: form.customer_id,
       address: form.address, start_date: event.target.start_date.value, workday: event.target.workday.value, discount: form.discount,
-     supply_food: form.supply_food, service_time: isTime}, id).then(()=>{
+     supply_food: form.supply_food, service_time: isTime}, id)
+    .then((cat) => {
+      admins.forEach((admin) =>{
+      createNotify({name: "Servicio Reprogramado", body: `para el día ${cat.start_date}`, user_id: admin.admin.user_id})
+      })
       onInputChange(false);
       indexOrder().then(onStateChange)
+     
     })
   }
 

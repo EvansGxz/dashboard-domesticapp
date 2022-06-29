@@ -1,16 +1,42 @@
+import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Popdiv } from "../pages/pop";
+import { Modal } from "./ModalMobile";
+import { Notify } from "./Notifications";
 
 export const Navegador = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
 const [isBurger, setIsBurger] = useState('w-12 h-16 -mr-2 border-r lg:hidden');
   function burger(){
     setIsBurger("burgerHide")
     navigate("/side");
   }
   const navigate = useNavigate();
-
+  const togglePopup = () => {
+    setIsOpen(!isOpen);
+  }
   return (
     <>
+    {
+      isOpen && (
+        window.screen.width < 810 ? (<Modal
+      content={<>
+      <Box>
+      <Title>NOTIFICACIONES</Title></Box>
+      <Notify/>
+      </>}
+      handleClose={togglePopup}
+    />):(<Popdiv
+      content={<>
+      <Box>
+      <Title>NOTIFICACIONES</Title></Box>
+      <Notify/>
+      </>}
+      handleClose={togglePopup}
+    />)
+        
+    )}
       <div className="sticky z-10 top-0 h-16 border-b bg-white lg:py-2.5">
         <div className="px-6 flex items-center justify-between space-x-4 2xl:container">
           <h5 hidden className="text-2xl text-gray-600 font-medium lg:block">
@@ -38,6 +64,7 @@ const [isBurger, setIsBurger] = useState('w-12 h-16 -mr-2 border-r lg:hidden');
             <button
               aria-label="notification"
               className="w-10 h-10 rounded-xl border bg-gray-100 focus:bg-gray-100 active:bg-gray-200"
+              onClick={() =>togglePopup()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -54,3 +81,15 @@ const [isBurger, setIsBurger] = useState('w-12 h-16 -mr-2 border-r lg:hidden');
     </>
   );
 };
+const Box = styled.div`
+  width: 100%;
+  color: #FFF;
+  background-color: #0BBBEF;
+`;
+
+const Title = styled.p`
+  text-align: center;
+  margin: 1rem 0;
+  font-size: 2rem;
+  
+`;
