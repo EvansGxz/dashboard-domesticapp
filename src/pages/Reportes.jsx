@@ -1,14 +1,20 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navegador } from "../components/Navegador";
 import { Sidebar } from "../components/Sidebar";
-import { reportes } from "../data/ReportesData";
+import { indexReport } from "../services/report-services";
 import { Popdiv } from "./pop";
 
 export const Reportes = () => {
+  useEffect(() => {
+    indexReport().then(setReports)
+  },[])
   const [isOpen, setIsOpen] = useState(false);
-  const togglePopup = () => {
+  const [image, setImage] = useState(null);
+  const [reports, setReports] = useState(null);
+  const togglePopup = (img) => {
     setIsOpen(!isOpen);
+    setImage(img);
   }
   return (
     <>
@@ -18,7 +24,8 @@ export const Reportes = () => {
       content={<>
       <Box>
       <Title>Evidencia Adjunta</Title></Box>
-      <P>No hay archivos adjuntos</P>
+      {image ? (<img alt="reporte" src={image}/>) : <P>No hay archivos adjuntos</P>}
+      
       </>}
       handleClose={togglePopup}
     />
@@ -28,34 +35,41 @@ export const Reportes = () => {
         <Navegador titulo="Reportes"></Navegador>
         <div class="px-6 pt-6 2xl:container">
           <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {reportes.map((reporte, index) => {
-              return (
-                <div key={index}>
+          
+            {
+              reports ? (
+                <>
+                  {
+                    reports.map((reporte, index)=>(
+                      <div key={index}>
                   <div class="lg:h-full px-6 text-gray-600 rounded-xl border border-gray-200 bg-white">
                     <div class="mt-4">
                       <div class="mt-2 flex justify-center gap-4">
                         <h3 class="text-3xl font-bold text-gray-700">
-                          {reporte.nombre}
+                          {reporte.customer_name}
                         </h3>
                       </div>
                       <h5 class="text-base text-gray-700 text-center">
-                        {reporte.desc}
+                        {reporte.body}
                       </h5>
                       <div class="mt-2 mb-4 flex justify-center gap-4">
                         <span class="block text-center text-gray-500">
-                          {reporte.fecha}
+                          {reporte.created_at.substr(0, 10)}
                         </span>
                         <br />
                         <span class="block text-center text-gray-500">
-                          {reporte.telefono}
+                          {reporte.employee_name}
                         </span>
                       </div>
-                      <Button onClick={()=>togglePopup()}>Multimedia</Button>
+                      <Button onClick={()=>togglePopup(reporte.image_url)}>Multimedia</Button>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+                    ))
+                  }
+                </>
+              ) : <p>No hay reportes</p>
+            }
           </div>
         </div>
       </div>
