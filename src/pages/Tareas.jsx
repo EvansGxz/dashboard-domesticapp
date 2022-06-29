@@ -1,5 +1,6 @@
 import styled from '@emotion/styled'
 import { useEffect, useState } from 'react'
+import { Modal } from '../components/ModalMobile'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
 import { useAuth } from '../context/auth-context'
@@ -55,7 +56,8 @@ const Tareas = () => {
   return (
     <>
      {
-      isOpen && <Popdiv
+      isOpen && (window.screen.width < 810 ? (
+        <Modal
       content={<>
       <Box>
       <Title>CREAR TAREAS</Title></Box>
@@ -63,9 +65,20 @@ const Tareas = () => {
       </>}
       handleClose={togglePopup}
     />
+      ):(<Popdiv
+      content={<>
+      <Box>
+      <Title>CREAR TAREAS</Title></Box>
+      <CrearTarea onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
+      </>}
+      handleClose={togglePopup}
+    />))
+        
     }
     {
-      show && <Popdiv
+      show && (
+      window.screen.width < 810 ? (
+        <Modal
       content={<>
       <Box>
       <Title>EDITAR TAREAS</Title></Box>
@@ -78,6 +91,22 @@ const Tareas = () => {
       </>}
       handleClose={toggleEdit}
     />
+      ):(
+         <Popdiv
+      content={<>
+      <Box>
+      <Title>EDITAR TAREAS</Title></Box>
+      {
+        cusId ? (<>
+          <EditarTarea onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />)
+      )
+       
     }
       <Sidebar></Sidebar>
       <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>

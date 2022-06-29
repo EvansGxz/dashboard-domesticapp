@@ -18,7 +18,8 @@ const Container = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 50%;
+  {window.screen.width < 810 ? (width: 100%):(width: 50%;)}
+  
 `;
 
 export default function CrearMod({onInputChange, onStateChange}) {

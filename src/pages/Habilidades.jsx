@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import { Modal } from "../components/ModalMobile";
 import { Navegador } from "../components/Navegador";
 import { Sidebar } from "../components/Sidebar";
 import { useAuth } from "../context/auth-context";
@@ -103,17 +104,27 @@ const Habilidades = () => {
   return (
     <>
      {
-      isOpen && <Popdiv
+      isOpen && (
+        window.screen.width < 810 ? (<Modal
       content={<>
       <Box>
       <Title>Crear Habilidades de Empleado</Title></Box>
       <CrearHEabilidad onInputChange={handleModalCreateUserChange} onStateChange={handleFetchUser}/>
       </>}
       handleClose={togglePopup}
-    />
-    }
+    />):(<Popdiv
+      content={<>
+      <Box>
+      <Title>Crear Habilidades de Empleado</Title></Box>
+      <CrearHEabilidad onInputChange={handleModalCreateUserChange} onStateChange={handleFetchUser}/>
+      </>}
+      handleClose={togglePopup}
+    />)
+        
+    )}
     {
-      show && <Popdiv
+      show && (
+        window.screen.width < 810 ? (<Modal
       content={<>
       <Box>
       <Title>Editar Habilidades de Empleado</Title></Box>
@@ -125,26 +136,49 @@ const Habilidades = () => {
       
       </>}
       handleClose={toggleEdit}
-    />
-    }
+    />):(<Popdiv
+      content={<>
+      <Box>
+      <Title>Editar Habilidades de Empleado</Title></Box>
+      {
+        cusId ? (<>
+          <EditarHEabilidad onStateChange={handleFetchUser} onInputChange={handleModalEditUserChange}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />)
+        
+    )}
 
     {/*SERVICIOS POPUP*/}
 
     {
-      createServce && <Popdiv
+      createServce && (
+        window.screen.width < 810 ? (<Modal
       content={<>
       <Box>
-      <Title>CREAR SERVICIO</Title></Box>
+      <Title>CREAR HABILIDAD</Title></Box>
       <CrearHabilidad onInputChange={handleModalCreateServiceChange} onStateChange={handleFetchService}/>
       </>}
       handleClose={toggleServi}
-    />
-    }
-    {
-      editService && <Popdiv
+    />):(<Popdiv
       content={<>
       <Box>
-      <Title>EDITAR SERVICIO</Title></Box>
+      <Title>CREAR HABILIDAD</Title></Box>
+      <CrearHabilidad onInputChange={handleModalCreateServiceChange} onStateChange={handleFetchService}/>
+      </>}
+      handleClose={toggleServi}
+    />)
+        
+    )}
+    {
+      editService && (
+        window.screen.width < 810 ? (<Modal
+      content={<>
+      <Box>
+      <Title>EDITAR HABILIDAD</Title></Box>
       {
         servId ? (<>
           <EditarHabilidad onStateChange={handleFetchService} onInputChange={handleModalEditServiceChange}/>
@@ -153,8 +187,21 @@ const Habilidades = () => {
       
       </>}
       handleClose={toggleServEdit}
-    />
-    }
+    />):(<Popdiv
+      content={<>
+      <Box>
+      <Title>EDITAR HABILIDAD</Title></Box>
+      {
+        servId ? (<>
+          <EditarHabilidad onStateChange={handleFetchService} onInputChange={handleModalEditServiceChange}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleServEdit}
+    />)
+        
+    )}
       <Sidebar></Sidebar>
       <div className="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">
         <Navegador titulo="Habilidades"></Navegador>
@@ -370,6 +417,7 @@ const Box = styled.div`
   width: 100%;
   color: #FFF;
   background-color: #0BBBEF;
+  
 `;
 
 const Title = styled.p`

@@ -71,7 +71,7 @@ export default function CrearHEabilidad({ onInputChange, onStateChange }) {
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               type="submit"
             >
-              Crear Habilidad
+              Crear Habilidad de Empleado
             </button>
           </StyledForm>
         ) : (
@@ -86,7 +86,7 @@ const ContainerAll = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 100%;
+  width: 90%;
 `;
 
 export const StyleSelect = styled.select`

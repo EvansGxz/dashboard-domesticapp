@@ -19,7 +19,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 30%
+  {window.screen.width < 810 ? (width: 100%):(width: 30%)}
 `;
 let checkCat = [];
 export default function EditarEmpleado({onStateChange, onInputChange}) {

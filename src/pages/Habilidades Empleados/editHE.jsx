@@ -80,7 +80,7 @@ const ContainerAll = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 100%;
+  width: 90%;
 `;
 
 export const StyleSelect = styled.select`

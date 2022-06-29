@@ -7,13 +7,14 @@ import { Input } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
-  width: 50%;
+ {window.screen.width < 810 ? (width: 100%):(width: 50%;)}
   margin: 0 20%;
   justify-content: space-between;
   align-content: center;
   float: inline-start;
 `;
 const ContainerAll = styled.div`
+{window.screen.width < 810 ? (margin: 0 6%;):(
   display: flex;
   flex-direction: initial;
   width: 720px;
@@ -22,6 +23,16 @@ const ContainerAll = styled.div`
   justify-content: space-between;
   align-content: center;
   height: 100vh;
+)}
+  
+`;
+const Container = styled.div`
+  margin: 5% auto;
+  justify-content: space-between;
+  align-content: center;
+  float: inline-start;
+  {window.screen.width < 810 ? (width: 100%):(width: 50%;)}
+  
 `;
 export default function EditMod({onStateChange, onInputChange}) {
   const [seeadmin, setAdmin] = useState(null);
@@ -80,6 +91,7 @@ export default function EditMod({onStateChange, onInputChange}) {
     <ContainerAll>
     {form1 ? (
       <StyledForm onSubmit={e=>handleSubmit(e)}>
+      <Container>
       <Input
           id="email"
           label="Email"
@@ -106,6 +118,7 @@ export default function EditMod({onStateChange, onInputChange}) {
       <button class='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center' type="submit">
         Actualizar
       </button>
+      </Container>
     </StyledForm>) : (<div>Cargando....</div>)}
     </ContainerAll>
   );

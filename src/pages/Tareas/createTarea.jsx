@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 80%;
+  {window.screen.width < 810 ? (width: 100%):(width: 80%)}
 `;
 
 let checkCat = [];
@@ -106,7 +106,8 @@ export const StyleSelect = styled.select`
 `;
 
 const ContainerAll = styled.div`
-  margin: 0 24%;
+  
+  {window.screen.width < 810 ? (margin: 1% 6%;):(margin: 0 24%;)}
 `;
 
 const ContainerCheck = styled.div`

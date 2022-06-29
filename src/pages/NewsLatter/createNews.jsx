@@ -15,7 +15,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 80%;
+  width: 90%;
 `;
 
 export default function CrearNew({onInputChange, onStateChange}) {

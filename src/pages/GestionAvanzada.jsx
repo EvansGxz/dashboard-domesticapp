@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
+import { Modal } from "../components/ModalMobile";
 import { Navegador } from "../components/Navegador";
 import { Sidebar } from "../components/Sidebar";
 import { useAuth } from "../context/auth-context";
@@ -117,7 +118,7 @@ export const GestionAvanzada = () => {
   return (
     <>
       {isOpen && (
-        <Popdiv
+        window.screen.width < 810 ? (<Modal
           content={
             <>
               <Box>
@@ -130,10 +131,24 @@ export const GestionAvanzada = () => {
             </>
           }
           handleClose={togglePopup}
-        />
+        />):(<Popdiv
+          content={
+            <>
+              <Box>
+                <Title>CREAR ADMINISTRADOR</Title>
+              </Box>
+              <CrearMod
+                onInputChange={handleModalCreateUserChange}
+                onStateChange={handleFetchUser}
+              />
+            </>
+          }
+          handleClose={togglePopup}
+        />)
+        
       )}
       {show && (
-        <Popdiv
+        window.screen.width < 810 ? (<Modal
           content={
             <>
               <Box>
@@ -150,13 +165,31 @@ export const GestionAvanzada = () => {
             </>
           }
           handleClose={toggleEdit}
-        />
+        />):(<Popdiv
+          content={
+            <>
+              <Box>
+                <Title>EDITAR ADMINISTRADOR</Title>
+              </Box>
+              {cusId ? (
+                <>
+                  <EditMod
+                    onStateChange={handleFetchUser}
+                    onInputChange={handleModalEditUserChange}
+                  />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleEdit}
+        />)
+        
       )}
 
       {/*SERVICIOS POPUP*/}
 
       {createServce && (
-        <Popdiv
+        window.screen.width < 810 ? ( <Modal
           content={
             <>
               <Box>
@@ -169,10 +202,24 @@ export const GestionAvanzada = () => {
             </>
           }
           handleClose={toggleServi}
-        />
+        />):( <Popdiv
+          content={
+            <>
+              <Box>
+                <Title>CREAR SERVICIO</Title>
+              </Box>
+              <CrearServicio
+                onInputChange={handleModalCreateServiceChange}
+                onStateChange={handleFetchService}
+              />
+            </>
+          }
+          handleClose={toggleServi}
+        />)
+       
       )}
       {editService && (
-        <Popdiv
+        window.screen.width < 810 ? (<Modal
           content={
             <>
               <Box>
@@ -189,10 +236,28 @@ export const GestionAvanzada = () => {
             </>
           }
           handleClose={toggleServEdit}
-        />
+        />):(<Popdiv
+          content={
+            <>
+              <Box>
+                <Title>EDITAR SERVICIO</Title>
+              </Box>
+              {servId ? (
+                <>
+                  <EditarServicio
+                    onStateChange={handleFetchService}
+                    onInputChange={handleModalEditServiceChange}
+                  />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleServEdit}
+        />)
+        
       )}
       {mErrors && (
-        <Popdiv
+        window.screen.width < 810 ? ( <Modal
           content={
             <>
               <BoxErr>
@@ -223,7 +288,39 @@ export const GestionAvanzada = () => {
             </>
           }
           handleClose={toggleErrors}
-        />
+        />):( <Popdiv
+          content={
+            <>
+              <BoxErr>
+                <Title>No se puede ejecutar esta acción</Title>
+              </BoxErr>
+              <Container>
+                <P>
+                  Posibles motivos:
+                  <UL>
+                    <li>Existe un empleado con este servicio.</li>
+                    <li>Existen tareas para este servicio.</li>
+                    <li>Existe un servicio en curso con este servcio.</li>
+                  </UL>
+                </P>
+                <br />
+                <P>
+                  Acciones:
+                  <UL>
+                    <li>Eliminar empleado/s con este servicio.</li>
+                    <li>Modificar el servicio del empleado.</li>
+                    <li>Eliminar las tareas de este servicio.</li>
+                    <li>Modificar a que servicio se brindan las tareas.</li>
+                    <li>Finalizar servicio en curso.</li>
+                    <li>Modificar servicio del servicio en curso.</li>
+                  </UL>
+                </P>
+              </Container>
+            </>
+          }
+          handleClose={toggleErrors}
+        />)
+       
       )}
       <Sidebar></Sidebar>
       <div class="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">

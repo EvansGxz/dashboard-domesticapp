@@ -14,6 +14,7 @@ import { PopAll } from "../components/popAll";
 import EditarOrder from "./Order/editOrder";
 import { useAuth } from "../context/auth-context";
 import date from 'date-and-time';
+import { Modal } from "../components/ModalMobile";
 
 export const Calendario = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +113,8 @@ export const Calendario = () => {
   return (
     <>
       {createCalendar && (
-        <PopAll
+        window.screen.width < 810 ? (
+          <Modal
           content={
             <>
               <Box>
@@ -126,9 +128,27 @@ export const Calendario = () => {
           }
           handleClose={togglePopCreate}
         />
+        ):(
+          <PopAll
+          content={
+            <>
+              <Box>
+                <Title>CREAR SERVICIO</Title>
+              </Box>
+              <CrearOrder
+                onInputChange={handleModalCreateChange}
+                onStateChange={handleEmployeesEditChange}
+              />
+            </>
+          }
+          handleClose={togglePopCreate}
+        />
+        )
+       
       )}
       {isEdit && (
-        <PopAll
+        window.screen.width < 810 ? (
+          <Modal
           content={
             <>
               <Box>
@@ -146,6 +166,27 @@ export const Calendario = () => {
           }
           handleClose={toggleEdit}
         />
+        ):(
+          <PopAll
+          content={
+            <>
+              <Box>
+                <Title>EDITAR SERVICIO</Title>
+              </Box>
+              {cusId ? (
+                <>
+                  <EditarOrder
+                    onStateChange={handleEmployeesEditChange}
+                    onInputChange={handleModalEditChange}
+                  />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleEdit}
+        />
+        )
+        
       )}
       <Sidebar></Sidebar>
       <div className="ml-auto mb-6 lg:w-[65%] xl:w-[70%] 2xl:w-[85%]">
@@ -160,7 +201,7 @@ export const Calendario = () => {
 
         <>
           {isOpen && (
-            <Popdiv
+            window.screen.width < 810 ? (<Modal
               content={
                 <>
                   <Box>
@@ -216,7 +257,64 @@ export const Calendario = () => {
                 </>
               }
               handleClose={togglePopup}
-            />
+            />):(<Popdiv
+              content={
+                <>
+                  <Box>
+                    <Title>Detalles de servicio</Title>
+                  </Box>
+                  <Container>
+                    <P>
+                      <b>Dirección del servicio:</b> {cal.title}
+                    </P>
+                    <P>
+                      <b>Cliente: </b>
+                      {cal._def.extendedProps.customer}
+                    </P>
+                    <P>
+                      <b>Empleado: </b>
+                      {cal._def.extendedProps.employee}
+                    </P>
+                    <P>
+                      <b>País: </b>
+                      {cal._def.extendedProps.region}
+                    </P>
+                    <P>
+                      <b>Servicio: </b>
+                      {cal._def.extendedProps.service}
+                    </P>
+                    <P>
+                      <b>Fecha del servicio: </b>
+                      {cal._def.extendedProps.start_date}
+                    </P>
+                    <P>
+                      <b>Hora: </b>
+                      {cal._def.extendedProps.service_time}
+                    </P>
+                    <P>
+                      <b>Suplir alimentos: </b>
+                      {cal._def.extendedProps.supply_food}
+                    </P>
+                    <P>
+                      <b>Tipo de jornada: </b>
+                      {cal._def.extendedProps.workday}
+                    </P>
+                    {user.role === "spectator" ? null : (
+                      <ButtonContainer>
+                        <Button onClick={() => other(cal._def.publicId)}>
+                          Editar Servicio
+                        </Button>
+                        <Button onClick={() => handleDelete(cal._def.publicId)}>
+                          Cancelar Servicio
+                        </Button>
+                      </ButtonContainer>
+                    )}
+                  </Container>
+                </>
+              }
+              handleClose={togglePopup}
+            />)
+            
           )}
           {categories ? (
             <>

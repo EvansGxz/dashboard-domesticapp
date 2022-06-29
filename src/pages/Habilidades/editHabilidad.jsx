@@ -74,15 +74,11 @@ const ContainerAll = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 100%;
+  width: 90%;
 `;
 
 export const StyleSelect = styled.select`
-  width: 80%;
-  border: 1px solid #787b82;
-  padding: 1.225rem 2rem;
-  background-color: transparent;
-  border-radius: 0.5rem;
-  color: black;
-  margin: 1rem 0;
+  flex-direction: column;
+  gap: 2rem;
+  min-width: 258px;
 `;

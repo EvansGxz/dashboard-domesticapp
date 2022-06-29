@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
+import { Modal } from "../components/ModalMobile";
 import { Navegador } from "../components/Navegador";
 import { PopAll } from "../components/popAll";
 import { Sidebar } from "../components/Sidebar";
@@ -53,7 +54,7 @@ const Cupones = () => {
   return (
     <>
       {isOpen && (
-        <PopAll
+        window.screen.width < 810 ? ( <Modal
           content={
             <>
               <Box>
@@ -63,10 +64,21 @@ const Cupones = () => {
             </>
           }
           handleClose={togglePopup}
-        />
+        />):( <PopAll
+          content={
+            <>
+              <Box>
+                <Title>CREAR CUPON</Title>
+              </Box>
+              <CreateCupon onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
+            </>
+          }
+          handleClose={togglePopup}
+        />)
+       
       )}
-      {show && (
-        <PopAll
+      { show && (
+        window.screen.width < 810 ? (<Modal
           content={
             <>
               <Box>
@@ -80,7 +92,22 @@ const Cupones = () => {
             </>
           }
           handleClose={toggleEdit}
-        />
+        />):(<PopAll
+          content={
+            <>
+              <Box>
+                <Title>EDITAR CUPON</Title>
+              </Box>
+              {cusId ? (
+                <>
+                  <ModifyCupon onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange} />
+                </>
+              ) : null}
+            </>
+          }
+          handleClose={toggleEdit}
+        />)
+        
       )}
       <Sidebar></Sidebar>
       <div className="ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]">

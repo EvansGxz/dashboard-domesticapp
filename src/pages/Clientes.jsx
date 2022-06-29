@@ -1,6 +1,7 @@
 import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Modal } from '../components/ModalMobile'
 import { Navegador } from '../components/Navegador'
 import { PopAll } from '../components/popAll'
 import { Sidebar } from '../components/Sidebar'
@@ -64,17 +65,28 @@ const Clientes = () => {
   return (
     <>
     {
-      isOpen && <PopAll
+      isOpen && (
+        window.screen.width < 810 ? (<Modal
       content={<>
       <Box>
       <Title>CREAR CLIENTE</Title></Box>
       <CrearCliente onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
       </>}
       handleClose={togglePopup}
-    />
-    }
+    />):(<PopAll
+      content={<>
+      <Box>
+      <Title>CREAR CLIENTE</Title></Box>
+      <CrearCliente onInputChange={handleModalCreateChange} onStateChange={handleEmployeesEditChange}/>
+      </>}
+      handleClose={togglePopup}
+    />)
+        
+    )}
     {
-      show && <PopAll
+      show && (
+        window.screen.width < 810 ? (
+          <Modal
       content={<>
       <Box>
       <Title>EDITAR CLIENTE</Title></Box>
@@ -87,7 +99,23 @@ const Clientes = () => {
       </>}
       handleClose={toggleEdit}
     />
-    }
+        ):(
+          <PopAll
+      content={<>
+      <Box>
+      <Title>EDITAR CLIENTE</Title></Box>
+      {
+        cusId ? (<>
+          <EditarCliente onStateChange={handleEmployeesEditChange} onInputChange={handleModalEditChange}/>
+        </>) : null
+      }
+      
+      </>}
+      handleClose={toggleEdit}
+    />
+        )
+       
+    )}
     {mErrors && (
         <Popdiv
           content={

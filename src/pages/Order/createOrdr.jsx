@@ -6,6 +6,10 @@ import { indexCustomer } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
 
+const ContainerAll = styled.div`
+  
+  {window.screen.width < 810 ? (margin: 1% 6%;):()}
+`;
 const StyledForm = styled.form`
   gap: 2rem;
   min-width: 258px;
@@ -18,7 +22,7 @@ const Container = styled.div`
   justify-content: space-between;
   align-content: center;
   float: inline-start;
-  width: 30%;
+  {window.screen.width < 810 ? (width: 100%):(width: 30%)}
 `;
 
 export default function CrearOrder({ onInputChange, onStateChange }) {
@@ -262,7 +266,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   }
 if(isTime){console.log(isTime)}
   return (
-    <>
+    <ContainerAll>
       {form ? (
         <>
           <StyledForm onSubmit={(e) => handleSubmit(e)}>
@@ -378,12 +382,7 @@ if(isTime){console.log(isTime)}
                   : null}
               </Selected>
 
-              <button
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center"
-                type="submit"
-              >
-                Crear Servicio
-              </button>
+              
            
               <Selected
                 id="recurrente"
@@ -431,6 +430,12 @@ if(isTime){console.log(isTime)}
               />
                 </>) : null
               }
+              <button
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full md:w-auto px-5 py-2.5 text-center"
+                type="submit"
+              >
+                Crear Servicio
+              </button>
             </Container>
             </>
           ):(
@@ -609,7 +614,7 @@ if(isTime){console.log(isTime)}
       ) : (
         <div>Cargando....</div>
       )}
-    </>
+    </ContainerAll>
   );
 }
 
