@@ -4,8 +4,7 @@ import { indexCategories } from "../../services/categories-services";
 import { indexEmployee } from "../../services/employee-service";
 import { indexCustomer } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
-import { Input, Selected } from "../../styles/views/Login";
-import TimePicker from "react-time-picker";
+import { Input, Selected, Timer } from "../../styles/views/Login";
 
 const StyledForm = styled.form`
   gap: 2rem;
@@ -261,7 +260,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       }
     });
   }
-
+if(isTime){console.log(isTime)}
   return (
     <>
       {form ? (
@@ -294,7 +293,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 placeholder="03-04-2022"
                 onChange={handleCalendarChange}
               />
-              <TimePicker onChange={setIsTime} value={form.service_time} />
+              <Timer label="Hora" onChange={setIsTime} value={form.service_time} />
 
               <Selected
                 id="customer_id"
@@ -315,7 +314,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
               </Selected>
               <Input
                 id="address"
-                label="Dircción"
+                label="Dirección"
                 type="text"
                 placeholder="1"
                 value={form.address}

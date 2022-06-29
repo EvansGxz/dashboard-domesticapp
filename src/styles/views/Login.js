@@ -1,5 +1,6 @@
 
 import styled from "@emotion/styled";
+import TimePicker from "react-time-picker";
 import { azul, gris } from "../colors";
 
 export const Title = styled.p`
@@ -54,6 +55,33 @@ export const Input = ({
     <ContainerInput>
       {label && <Label htmlFor={id}>{label}</Label>}
       <StyledInput
+        id={id}
+        name={name}
+        type={type}
+        ref={innerRef}
+        placeholder={placeholder}
+        {...rest}
+      />
+      {error && <Error size="sm">{error}</Error>}
+    </ContainerInput>
+  );
+};
+
+export const Timer = ({
+  id,
+  name,
+  type = "text",
+  placeholder,
+  label,
+  error,
+  innerRef,
+  ...rest
+}) => {
+  name ||= id;
+  return (
+    <ContainerInput>
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <TimePicker
         id={id}
         name={name}
         type={type}
