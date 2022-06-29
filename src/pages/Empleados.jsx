@@ -123,10 +123,10 @@ const Empleados = () => {
             <div className='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
               <div className=''>
                 <div className=''>
-                  <div className='ml-60 flex justify-center gap-4'>
-                    <h3 className='text-3xl font-bold text-gray-700'>Empleados</h3> 
+                  <div className=''>
+                    
                     {user.role === 'spectator' ? null : (                   
-                    <Button onClick={()=>togglePopup()}>Crear</Button>
+                    <Button onClick={()=>togglePopup()}>Crear Empleado</Button>
                     )}
                   </div>
                 </div>
@@ -138,6 +138,7 @@ const Empleados = () => {
           {
             employess ? (
               <>
+              <ContainerTable>
                 <table className='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
             <thead className='text-black'>
               <tr>
@@ -237,6 +238,7 @@ const Empleados = () => {
               })}
             </tbody>
           </table>
+          </ContainerTable>
               </>
             ) : (
               <h2>No se encontraron empleados</h2>
@@ -272,6 +274,11 @@ export const Box = styled.div`
 export const Container = styled.div`
   width: 100%;
   padding: 20px;
+`;
+export const ContainerTable = styled.div`
+  overflow-x: scroll;
+  overflow-y: scroll;
+  max-height: 70vh;
 `;
 export const ButtonContainer = styled.div`
   display: flex;

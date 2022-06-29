@@ -87,8 +87,8 @@ const Tareas = () => {
             <div className='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
               <div className=''>
                 <div className=''>
-                  <div className='ml-60 flex justify-center gap-4'>
-                    <h3 className='text-3xl font-bold text-gray-700'>Tareas</h3>                    
+                  <div className=''>
+                                       
                     {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear Tareas</Button>
                     )}</div>

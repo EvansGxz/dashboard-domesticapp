@@ -11,6 +11,7 @@ import {
 import { deleteUser } from "../services/users-service";
 import CrearMod from "./Admins/createMod";
 import EditMod from "./Admins/editMod";
+import { ContainerTableDoble } from "./Habilidades";
 import { Popdiv } from "./pop";
 import CrearServicio from "./Servicios/crearServicio";
 import EditarServicio from "./Servicios/editarServicio";
@@ -232,10 +233,8 @@ export const GestionAvanzada = () => {
             <div className="max-w-2xl mx-auto bg-white p-8 lg:w-[100%]">
               <div className="">
                 <div className="">
-                  <div className="ml-60 flex justify-center gap-4">
-                    <h3 className="text-3xl font-bold text-gray-700">
-                      Administradores
-                    </h3>
+                  <div className="">
+                   
                     {user.role === "spectator" ? null : (
                       <Button onClick={() => togglePopup()}>
                         Crear Administrador
@@ -248,7 +247,7 @@ export const GestionAvanzada = () => {
           </div>
           {/* Tabla Servicios */}
           {mods ? (
-            <>
+            <ContainerTableDoble>
               <table className="table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse">
                 <thead className="text-black">
                   <tr>
@@ -340,7 +339,7 @@ export const GestionAvanzada = () => {
                   })}
                 </tbody>
               </table>
-            </>
+            </ContainerTableDoble>
           ) : (
             <h2>No se encontraron empleados</h2>
           )}
@@ -349,10 +348,8 @@ export const GestionAvanzada = () => {
             <div className="max-w-2xl mx-auto bg-white p-8 lg:w-[100%]">
               <div className="">
                 <div className="">
-                  <div className="ml-60 flex justify-center gap-4">
-                    <h3 className="text-3xl font-bold text-gray-700">
-                      Servicios
-                    </h3>
+                  <div className="">
+                    
                     {user.role === "spectator" ? null : (
                       <Button onClick={() => toggleServi()}>
                         Crear Servicio
@@ -365,7 +362,7 @@ export const GestionAvanzada = () => {
           </div>
           {/* Tabla Servicios */}
           {categories ? (
-            <>
+            <ContainerTableDoble>
               <table class="table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse">
                 <thead class="text-black">
                   <tr>
@@ -462,7 +459,7 @@ export const GestionAvanzada = () => {
                   })}
                 </tbody>
               </table>
-            </>
+            </ContainerTableDoble>
           ) : (
             <h2>No se encontraron Clientes</h2>
           )}

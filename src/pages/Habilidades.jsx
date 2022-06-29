@@ -164,10 +164,8 @@ const Habilidades = () => {
             <div className="max-w-2xl mx-auto bg-white p-8 lg:w-[100%]">
               <div className="">
                 <div className="">
-                  <div className="ml-60 flex justify-center gap-4">
-                    <h3 className="text-3xl font-bold text-gray-700">
-                      Habilidades de Empleados
-                    </h3>
+                  <div className="">
+                    
                     {user.role === 'spectator' ? null : (
                     <Button onClick={()=>togglePopup()}>Crear Habilidad de empleado</Button>
                     )}</div>
@@ -178,7 +176,7 @@ const Habilidades = () => {
 
           {/* tabla */}
           {he ? (
-            <>
+            <ContainerTableDoble>
               <table className="table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse">
                 <thead className="text-black">
                   <tr>
@@ -254,7 +252,7 @@ const Habilidades = () => {
                   })}
                 </tbody>
               </table>
-            </>
+            </ContainerTableDoble>
           ) : (
             <h2>No se encontraron Habilidades</h2>
           )}
@@ -263,10 +261,8 @@ const Habilidades = () => {
             <div className="max-w-2xl mx-auto bg-white p-8 lg:w-[100%]">
               <div className="">
                 <div className="">
-                  <div className="ml-60 flex justify-center gap-4">
-                    <h3 className="text-3xl font-bold text-gray-700">
-                      Habilidades
-                    </h3>
+                  <div className="">
+                    
                     {user.role === 'spectator' ? null : (
                     <Button onClick={()=>toggleServi()}>Crear Habilidad</Button>
                     )}</div>
@@ -277,7 +273,7 @@ const Habilidades = () => {
 
           {/* tabla */}
           {habilidades ? (
-            <>
+            <ContainerTableDoble>
               <table className="table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse">
                 <thead className="text-black">
                   <tr>
@@ -347,7 +343,7 @@ const Habilidades = () => {
                   })}
                 </tbody>
               </table>
-            </>
+            </ContainerTableDoble>
           ) : (
             <h2>No se encontraron Habilidades</h2>
           )}
@@ -381,6 +377,13 @@ const Title = styled.p`
   margin: 1rem 0;
   font-size: 2rem;
   
+`;
+
+export const ContainerTableDoble = styled.div`
+  overflow-x: scroll;
+  overflow-y: scroll;
+  max-height: 35vh;
+  scrollbar-width: none;
 `;
 
 export default Habilidades;

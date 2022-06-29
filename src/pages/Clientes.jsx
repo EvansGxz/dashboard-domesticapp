@@ -9,6 +9,7 @@ import { indexCustomer } from '../services/customer-services'
 import { deleteUser } from '../services/users-service'
 import CrearCliente from "./Clientes/createCliente"
 import EditarCliente from './Clientes/editCliente'
+import { ContainerTable } from './Empleados'
 import { Popdiv } from './pop'
 
 const Clientes = () => {
@@ -123,9 +124,9 @@ const Clientes = () => {
             <div className='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
               <div className=''>
                 <div className=''>
-                  <div className='ml-60 flex justify-center gap-4'>
-                    <h3 className='text-3xl font-bold text-gray-700'>Clientes</h3>                    
-                    <Button onClick={()=>togglePopup()}>Crear</Button>
+                  <div className=''>
+                                     
+                    <Button onClick={()=>togglePopup()}>Crear Cliente</Button>
                   </div>
                 </div>
               </div>
@@ -135,7 +136,7 @@ const Clientes = () => {
           {/* tabla */}
           {
             customers ? (
-              <>
+              <ContainerTable>
               <table className='table-auto table text-white border-separate space-y-6 text-sm w-full border-collapse'>
             <thead className='text-black'>
               <tr>
@@ -253,7 +254,7 @@ const Clientes = () => {
               })}
               </tbody>
           </table>
-              </>
+              </ContainerTable>
             ) : (
               <h2>No se encontraron Clientes</h2>
             )
