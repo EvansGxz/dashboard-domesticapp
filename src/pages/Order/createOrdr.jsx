@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { indexCategories } from "../../services/categories-services";
-import { indexEmployee } from "../../services/employee-service";
 import { indexCustomer } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
 import { createNotify } from "../../services/notiications-services";
 import { indexAdmin } from "../../services/admin-services";
+import { showEmployeecat } from "../../services/employe-categories-services";
 
 const ContainerAll = styled.div`
   
@@ -53,7 +53,6 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   const [isWorkday, setIsWorkday] = useState();
   useEffect(() => {
     indexCategories().then(setCategories);
-    indexEmployee().then(setEmployees);
     indexCustomer().then(setCustomers);
     indexOrder().then(setOrder);
     indexAdmin().then(setAdmins)
@@ -249,6 +248,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     if (name === "workday") {
       setIsWorkday(event.target.value);
     }
+
+    if (name === "category_id") {
+      showEmployeecat(event.target.value).then(setEmployees)
+      
+    }
   }
 
   function handleCalendarChange(event) {
@@ -262,11 +266,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     order.forEach((o) => {
       if (o.start_date === isDate) {
         employess.forEach((employee) => {
-          if (employee.employee.id !== o.employee.id) {
+          if (employee.employee_id !== o.employee.id) {
             freeEmp.push({ employee: employee });
           }
           if (
-            employee.employee.id === o.employee.id &&
+            employee.employee_id === o.employee.id &&
             o.workday === "Media" &&
             isWorkday === "Media"
           ) {
@@ -286,7 +290,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       }
     });
   }
-
+console.log(employess)
   return (
     <ContainerAll>
       {form ? (
@@ -396,8 +400,8 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                   : employess
                   ? employess.map((employee) => (
                       <>
-                        <option value={employee.employee.id}>
-                          {employee.employee.full_name}
+                        <option value={employee.employee_id}>
+                          {employee.full_name}
                         </option>
                       </>
                     ))
@@ -557,16 +561,16 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 {freeEmp.length !== 0
                   ? freeEmp.map((employee) => (
                       <>
-                        <option value={employee.employee.employee.id}>
-                          {employee.employee.employee.full_name}
+                        <option value={employee.employee_id}>
+                          {employee.full_name}
                         </option>
                       </>
                     ))
                   : employess
                   ? employess.map((employee) => (
                       <>
-                        <option value={employee.employee.id}>
-                          {employee.employee.full_name}
+                        <option value={employee.employee_id}>
+                          {employee.full_name}
                         </option>
                       </>
                     ))
