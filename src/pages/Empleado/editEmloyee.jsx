@@ -74,7 +74,6 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
     })
       .then((response) => response.json())
       .then(indexEmployee().then(onStateChange))
-      .catch((error) => console.log(error.message));
       if(checkCat){
       checkCat.forEach((cat) => {
         createECategory({ employee_id: id.id, category_id: cat });

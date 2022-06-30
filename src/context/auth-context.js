@@ -15,7 +15,6 @@ function AuthProvider({ children }) {
     if(sessionStorage.getItem(tokenKey)!==null){
       getUser()
       .then(setUser)
-      .catch((error) => console.log(error));
     }
 
   }, []);

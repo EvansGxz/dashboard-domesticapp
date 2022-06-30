@@ -36,7 +36,7 @@ useEffect(() => {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
+ 
     updateService({service_name: form.service_name, category_id: form.category_id}, id).then(() =>{
       onInputChange(false);
       indexServices().then(onStateChange)
@@ -68,7 +68,7 @@ useEffect(() => {
           {categories ? (
             categories.map((category) => (
               <>
-              {console.log(category)}
+           
               <option value={category.id}>{category.category_name}</option></>
             ))
             

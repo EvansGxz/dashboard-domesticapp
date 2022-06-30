@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import React, { useEffect, useState } from 'react'
 import { Navegador } from '../components/Navegador'
 import { Sidebar } from '../components/Sidebar'
@@ -23,12 +24,15 @@ export const Estadisticas = () => {
       <Sidebar></Sidebar>
       <div class='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Estadisticas'></Navegador>
-        <div class='px-6 pt-6 2xl:container'>
-          <div class='grid gap-6 md:grid-cols-2 lg:grid-cols-3 mt-12'>
+        <Container>
             <Grafic/>
-          </div>
-        </div>
+</Container>
       </div>
     </>
   )
 }
+export const Container = styled.div`
+  height: 90vh;
+width: 85vw;
+margin-top: 3rem;
+`;

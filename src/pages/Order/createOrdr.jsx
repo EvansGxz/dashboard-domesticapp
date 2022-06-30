@@ -67,8 +67,6 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       const now = new Date(calc);
       const last = new Date(now);
   
-      //console.log(new Date().getDate())
-      //console.log(now.getUTCDay())
       let dia = 0;
     if (frecuencia === "1") {
       for (let j = 0; j < veces; j++) {
@@ -106,11 +104,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
           if (now.getDay() !== last.getDay()) {
             if (last.getDay() > now.getDay()) {
               last.setHours(-24);
-              //console.log("BAJA"+last);
+
             }
             if (last.getDay() < now.getDay()) {
               last.setHours(+24);
-              //console.log("SUBE:"+last);
+
             }
           } else {
             i = 7;
@@ -148,11 +146,10 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
           if (now.getDay() !== last.getDay()) {
             if (last.getDay() > now.getDay()) {
               last.setHours(-24);
-              //console.log("BAJA"+last);
             }
             if (last.getDay() < now.getDay()) {
               last.setHours(+24);
-              //console.log("SUBE:"+last);
+
             }
           } else {
             i = 7;
@@ -190,11 +187,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
             if (now.getDay() !== last.getDay()) {
               if (last.getDay() > now.getDay()) {
                 last.setHours(-24);
-                //console.log("BAJA"+last);
+
               }
               if (last.getDay() < now.getDay()) {
                 last.setHours(+24);
-                //console.log("SUBE:"+last);
+
               }
 
             } else {
@@ -289,7 +286,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       }
     });
   }
-if(isTime){console.log(isTime)}
+
   return (
     <ContainerAll>
       {form ? (

@@ -91,7 +91,6 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
     })
       .then((response) => {response.json()})
       .then(indexEmployee().then(onStateChange))
-      .catch((error) => console.log(error.message));
 
     checkCat.forEach((cat) => {
         createECategory({ employee_id: user.id, category_id: cat });

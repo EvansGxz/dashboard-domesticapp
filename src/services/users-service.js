@@ -4,7 +4,7 @@ import apiFetch from "./api-fetch";
 export async function getUser() {
   
   const { _token, ...user } = await apiFetch("profile");
-  console.log(user);
+ 
   return user;
 }
 
@@ -31,7 +31,7 @@ export async function deleteUser(userId) {
 }
 
 export async function updateEmployee(data, userId) {
-  console.log(data);
+
   return await apiFetch(`employees/${userId}`, {
     body: data,
     method: "PATCH",

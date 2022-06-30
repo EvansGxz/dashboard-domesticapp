@@ -54,7 +54,6 @@ export default function EditarCliente({onStateChange, onInputChange}) {
   })
     .then((response) => response.json())
     .then(indexCustomer().then(onStateChange))
-    .catch((error)=>console.log(error.message));
 }
 
   function handleFormChange(event) {

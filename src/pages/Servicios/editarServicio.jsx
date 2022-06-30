@@ -56,7 +56,7 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
       body: data,
     }).then(indexCategories().then(onStateChange))
       .then((response) => response.json())
-      .catch((error) => console.log(error.message));
+
   }
   function handleFormChange(event) {
     const { name, value } = event.target;

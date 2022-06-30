@@ -32,7 +32,6 @@ export default function CrearTarea({ onInputChange, onStateChange }) {
 
   function cheked(event) {
     if (event.target.checked) {
-      console.log(event.target.name);
       checkCat.push(event.target.name);
     }
   }
@@ -70,7 +69,7 @@ export default function CrearTarea({ onInputChange, onStateChange }) {
             {categories
               ? categories.map((category) => (
                 <>
-                {console.log(category)}
+               
                   <Input
                     id={category.id}
                     label={ category.region.substring(0, 3)+"|"+category.category_name}

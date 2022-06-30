@@ -30,7 +30,6 @@ export default function EditarHEabilidad({onStateChange, onInputChange}) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(form);
     updateHEmployee({hability_id: form.hability_id, employee_id: form.employee_id}, id).then(() => {
       onInputChange(false);
       indexHEmployee().then(onStateChange)

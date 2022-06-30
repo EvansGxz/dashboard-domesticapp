@@ -56,7 +56,6 @@ export const EmployeeCalendario = () => {
 
   let details = [];
   if (categories) {
-    console.log(categories);
     categories.forEach((category) => {
       details.push({
         title: category.address,
@@ -72,7 +71,6 @@ export const EmployeeCalendario = () => {
         customer: category.customer.full_name,
       });
     });
-    console.log(details);
   }
 
 

@@ -39,7 +39,7 @@ export const ClientCalendario = () => {
 
   let details = [];
   if (categories) {
-    console.log(categories);
+  
     categories.forEach((category) => {
       details.push({
         title: category.address,
@@ -55,7 +55,7 @@ export const ClientCalendario = () => {
         customer: category.customer.full_name,
       });
     });
-    console.log(details);
+   
   }
 
   return (

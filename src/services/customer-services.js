@@ -9,7 +9,7 @@ export async function indexCustomer() {
 }
 
 export async function updateCustomer(data, userId) {
-  console.log(data);
+
   return await apiFetch(`customers/${userId}`, {
     body: data,
     method: "PATCH",

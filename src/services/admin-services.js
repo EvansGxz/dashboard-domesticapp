@@ -9,7 +9,7 @@ export async function indexAdmin() {
 }
 
 export async function updateAdmin(data, userId) {
-  console.log(data);
+  
   return await apiFetch(`admin/${userId}`, {
     body: data,
     method: "PATCH",

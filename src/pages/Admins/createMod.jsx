@@ -53,7 +53,6 @@ export default function CrearMod({onInputChange, onStateChange}) {
     body: data
   }).then(response => response.json())
     .then(indexAdmin().then(onStateChange))
-    .catch((error)=>console.log(error.message));
 }
 
   function handleFormChange(event) {

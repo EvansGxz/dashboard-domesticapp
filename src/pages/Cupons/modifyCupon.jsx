@@ -44,7 +44,7 @@ function ModifyCupon({onStateChange, onInputChange}){
       onInputChange(false);
       indexCupon().then(onStateChange)
     }).catch((error) => {
-      console.log(error);
+      
       const newErrors = JSON.parse(error.message);
       setErrors({ ...errors, ...newErrors });
     });
