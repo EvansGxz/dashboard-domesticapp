@@ -40,7 +40,8 @@ function delNot(id){
 
 const ContainerNoti = styled.div`
  
-  
+  max-height: 50vh;
+  overflow-y: scroll;
   padding: 1rem;
   flex-direction: column;
 `;
