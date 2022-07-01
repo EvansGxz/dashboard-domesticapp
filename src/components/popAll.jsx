@@ -13,8 +13,8 @@ export const PopAll = props => {
  
 export const Box = styled.div`
   position: relative;
-  width: 80%;
-  margin: 0 18%;
+  width: 75%;
+  margin: 0 22%;
   height: auto;
   max-height: 70vh;
   margin-top: calc(100vh - 85vh - 20px);
