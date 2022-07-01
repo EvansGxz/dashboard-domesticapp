@@ -4,6 +4,10 @@ export async function showCustomer(UserID) {
   return await apiFetch(`customer/${UserID}`);
 }
 
+export async function showCustomerID(UserID) {
+  return await apiFetch(`user_id/${UserID}`);
+}
+
 export async function indexCustomer() {
   return await apiFetch(`customer/`);
 }

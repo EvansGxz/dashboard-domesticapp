@@ -258,6 +258,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       showCustomerID(event.target.value).then(setAddress)
       
     }
+
+    if (name === "address") {
+      setAddress(event.target.value)
+      
+    }
     
   }
 
