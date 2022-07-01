@@ -12,3 +12,6 @@ export async function showEmployeecat(EmployeecategoryID) {
   return await apiFetch(`employee_cat/${EmployeecategoryID}`);
 }
 
+export async function deleteEmployeecategory(EmployeecategoryID) {
+  return await apiFetch(`employee_categories/${EmployeecategoryID}`);
+}

@@ -11,6 +11,10 @@ export async function showCategory(CategoryID) {
   return await apiFetch(`categories/${CategoryID}`);
 }
 
+export async function showCategoryCountry(CategoryID) {
+  return await apiFetch(`show_country/${CategoryID}`);
+}
+
 export async function deleteCategory(CategoryID) {
   return await apiFetch(`categories/${CategoryID}`, { method: "DELETE" });
 }

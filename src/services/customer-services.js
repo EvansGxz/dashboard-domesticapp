@@ -8,6 +8,10 @@ export async function showCustomerID(UserID) {
   return await apiFetch(`user_id/${UserID}`);
 }
 
+export async function showCustomerCountry(UserID) {
+  return await apiFetch(`customer_country/${UserID}`);
+}
+
 export async function indexCustomer() {
   return await apiFetch(`customer/`);
 }
