@@ -48,7 +48,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
     discount: "",
     supply_food: "",
     service_time: "",
-    finish_date: "",
+    hours: "",
   });
   const [isTime, setIsTime] = useState();
   const [isWorkday, setIsWorkday] = useState();
@@ -83,6 +83,7 @@ const calc = isDate.split("-").join("/");
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
+            hours: form.hours,
           }).then((cat) => {
             admins.forEach((admin) =>{
               
@@ -125,6 +126,7 @@ const calc = isDate.split("-").join("/");
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
+            hours: form.hours,
           }).then((cat) => {
             admins.forEach((admin) =>{
               
@@ -166,6 +168,7 @@ const calc = isDate.split("-").join("/");
             discount: form.discount,
             supply_food: form.supply_food,
             service_time: isTime,
+            hours: form.hours,
           }).then((cat) => {
             admins.forEach((admin) =>{
               
@@ -212,6 +215,7 @@ const calc = isDate.split("-").join("/");
         discount: form.discount,
         supply_food: form.supply_food,
         service_time: isTime,
+        hours: form.hours,
     }).then((cat) => {
       admins.forEach((admin) =>{
         
@@ -643,7 +647,7 @@ const calc = isDate.split("-").join("/");
                 label="Cantidad de Horas"
                 type="number"
                 placeholder="3"
-                value={form.finish_date}
+                value={form.hours}
                 onChange={handleFormChange}
               />
                 </>) : null
