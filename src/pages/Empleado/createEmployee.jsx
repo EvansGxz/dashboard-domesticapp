@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import ReactSelect from "react-select";
 import { BASE_URI } from "../../Config";
 import {
   createECategory,
@@ -8,6 +9,7 @@ import {
 import { indexEmployee } from "../../services/employee-service";
 import { createUser1 } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
+import { components } from "react-select";
 
 const StyledForm = styled.form`
   gap: 2rem;
@@ -24,10 +26,24 @@ const Container = styled.div`
   {window.screen.width < 810 ? (width: 100%):(width: 30%)}
   
 `;
-let checkCat = [];
+
+export const Options = (props) => {
+  return (
+    <div>
+      <components.Option {...props}>
+        <input
+          type="checkbox"
+          checked={props.isSelected}
+          onChange={() => null}
+        />{" "}
+        <label>{props.label}</label>
+      </components.Option>
+    </div>
+  );
+};
 export default function CrearEmpleado({onInputChange, onStateChange}) {
   const [categories, setCategories] = useState();
-  
+  const [options, setOptions]=useState(null)
   const [form, setForm] = useState({
     email: "",
     lada: "",
@@ -68,12 +84,6 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
 
   }
 
-  function cheked(event) {
-    if (event.target.checked) {
-      checkCat.push(event.target.name);
-    }
-    
-  }
 
   function handleFormChange(event) {
     const { name, value } = event.target;
@@ -92,11 +102,16 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
       .then((response) => {response.json()})
       .then(indexEmployee().then(onStateChange))
 
-    checkCat.forEach((cat) => {
-        createECategory({ employee_id: user.id, category_id: cat });
+      options.forEach((cat) => {
+        createECategory({ employee_id: user.id, category_id: cat.value });
     });
   }
-
+  let categorias = []
+  if(categories){
+     categories.forEach(employee =>{
+      categorias.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
+    })
+  }
   return (
     <ContainerAll>
       {form ? (
@@ -228,21 +243,30 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               value={form.phone}
               onChange={handleFormChange}
             />
-          
-          <ContainerCheck>
-            {categories
-              ? categories.map((category) => (
-                  <Input
-                    id={category.id}
-                    label={category.region.substring(0, 3)+" | "+category.category_name}
-                    type="checkbox"
-                    value={form1.contrato}
-                    onChange={cheked}
-                  />
-                ))
-              : null}
-          </ContainerCheck>
-
+      
+          <span
+        class="d-inline-block"
+        data-toggle="popover"
+        data-trigger="focus"
+        data-content="Selecciona un servicio"
+      >
+      {
+       <ReactSelect
+        
+          options={categorias}
+          isMulti
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          components={{
+            Options
+          }}
+          onChange={setOptions}
+          allowSelectAll={true}
+          value={options}
+        />
+      }
+        
+      </span>
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             type="submit"
@@ -381,19 +405,29 @@ export default function CrearEmpleado({onInputChange, onStateChange}) {
               onChange={handleFormChange}
             />
           
-          <ContainerCheck>
-            {categories
-              ? categories.map((category) => (
-                  <Input
-                    id={category.id}
-                    label={category.region.substring(0, 3)+" | "+category.category_name}
-                    type="checkbox"
-                    value={form1.contrato}
-                    onChange={cheked}
-                  />
-                ))
-              : null}
-          </ContainerCheck>
+          <span
+        class="d-inline-block"
+        data-toggle="popover"
+        data-trigger="focus"
+        data-content="Selecciona un servicio"
+      >
+      {
+       <Checkbox
+          label="Servicios"
+          options={categorias}
+          isMulti
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          components={{
+            Options
+          }}
+          onChange={setOptions}
+          allowSelectAll={true}
+          value={options}
+        />
+      }
+        
+      </span>
 
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
@@ -418,14 +452,6 @@ const ContainerAll = styled.div`
   margin: 1% 6%;
 `;
 
-const ContainerCheck = styled.div`
-  display: grid;
-  gap: 1px;
-  max-height: 140px;
-  overflow-y: scroll;
-  grid-template-columns: repeat(1, 100px);
-  margin: 1rem auto;
-`;
 
 export const StyleSelect = styled.select`
   width: 80%;
@@ -435,4 +461,40 @@ export const StyleSelect = styled.select`
   border-radius: 0.5rem;
   color: black;
   margin: 1rem 0;
+`;
+
+export const Checkbox = ({
+  id,
+  name,
+  placeholder,
+  label,
+  error,
+  innerRef,
+  ...rest
+}) => {
+  name ||= id;
+  return (
+    <ContainerInput>
+      {label && <Label htmlFor={id}>{label}</Label>}
+      <ReactSelect
+        id={id}
+        name={name}
+        ref={innerRef}
+        placeholder={placeholder}
+        {...rest}
+      />
+     
+    </ContainerInput>
+  );
+};
+
+export const ContainerInput = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1rem 0;
+  width: 100%;
+`;
+export const Label = styled.label`
+  color: #787b82;
 `;
