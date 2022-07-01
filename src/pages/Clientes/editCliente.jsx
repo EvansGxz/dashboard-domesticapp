@@ -196,7 +196,7 @@ export default function EditarCliente({onStateChange, onInputChange}) {
       />
       
       <Selected id="country" label="Pais" name="country" onChange={handleFormChange1}>
-          <option value="">Seleccione</option>
+          <option value={form1.country}>{form1.country}</option>
           <option value="Colombia">Colombia</option>
           <option value="España">España</option>
           <option value="Canada">Canadá</option>
@@ -231,7 +231,7 @@ export default function EditarCliente({onStateChange, onInputChange}) {
       <Container>
       <Selected id="client_type" name="client_type"
        onChange={handleFormChange1} label="Tipo de cliente">
-          <option value="">--tipo de cliente</option>
+          <option value={form1.client_type}>{form1.client_type}</option>
           <option value="Persona">Persona</option>
           <option value="Empresa">Empresa</option>
       </Selected>  
@@ -258,7 +258,7 @@ export default function EditarCliente({onStateChange, onInputChange}) {
         label="Lada"
         type="text"
         placeholder="+51"
-        value={form1.lada}
+        value={form.lada}
         onChange={handleFormChange1}
       />
       
