@@ -77,7 +77,7 @@ const calc = isDate.split("-").join("/");
             category_id: form.category_id,
             employee_id: form.employee_id,
             customer_id: form.customer_id,
-            address: form.address,
+            address: event.target.address.value,
             start_date: res,
             workday: event.target.workday.value,
             discount: form.discount,
@@ -119,7 +119,7 @@ const calc = isDate.split("-").join("/");
             category_id: form.category_id,
             employee_id: form.employee_id,
             customer_id: form.customer_id,
-            address: form.address,
+            address: event.target.address.value,
             start_date: res,
             workday: event.target.workday.value,
             discount: form.discount,
@@ -160,7 +160,7 @@ const calc = isDate.split("-").join("/");
             category_id: form.category_id,
             employee_id: form.employee_id,
             customer_id: form.customer_id,
-            address: form.address,
+            address: event.target.address.value,
             start_date: res,
             workday: event.target.workday.value,
             discount: form.discount,
@@ -180,56 +180,38 @@ const calc = isDate.split("-").join("/");
       let mes = 0;
       if (frecuencia === "4") {
         for (let j = 0; j < veces; j++) {
-          console.log(new Date(last.setMonth(last.getMonth() + parseInt(mes))));
-          for (let i = 0; i < 7; i++) {
-            if (now.getDay() !== last.getDay()) {
-              if (last.getDay() > now.getDay()) {
-                last.setHours(-24);
+          const date_order = (new Date(last.setMonth(last.getMonth() + parseInt(mes))));
 
-              }
+          order.forEach((o) => {
+            if(date_order !== o.start_date){
+              console.log("Orden:"+o.start_date+" | Actual"+date_order)
+             for (let i = 0; i < 7; i++) {
+              if (now.getDay() !== last.getDay()) {
+                if (last.getDay() > now.getDay()) {
+                  last.setHours(-24);
+                }
               if (last.getDay() < now.getDay()) {
                 last.setHours(+24);
-
               }
-
             } else {
               i = 7;
             }
           }
-          const res =
-            last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
-            mes=1;
-            createOrder({
-              category_id: form.category_id,
-              employee_id: form.employee_id,
-              customer_id: form.customer_id,
-              address: form.address,
-              start_date: res,
-              workday: event.target.workday.value,
-              discount: form.discount,
-              supply_food: form.supply_food,
-              service_time: isTime,
-            }).then((cat) => {
-      admins.forEach((admin) =>{
-        
-        createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
-      })
-              onInputChange(false);
-              indexOrder().then(onStateChange);
-            })
+          }else{alert(date_order+"Está ocupado")}
+          });
         }
       }
     }else{
-    createOrder({
-      category_id: form.category_id,
-      employee_id: form.employee_id,
-      customer_id: form.customer_id,
-      address: form.address,
-      start_date: isDate,
-      workday: event.target.workday.value,
-      discount: form.discount,
-      supply_food: form.supply_food,
-      service_time: isTime,
+      createOrder({
+        category_id: form.category_id,
+        employee_id: form.employee_id,
+        customer_id: form.customer_id,
+        address: event.target.address.value,
+        start_date: isDate,
+        workday: event.target.workday.value,
+        discount: form.discount,
+        supply_food: form.supply_food,
+        service_time: isTime,
     }).then((cat) => {
       admins.forEach((admin) =>{
         
@@ -271,7 +253,7 @@ const calc = isDate.split("-").join("/");
   }
   let freeEmp = [];
   if (order && isDate && employess && isTime && isWorkday) {
-    console.log(parseInt(isTime.split(":").join("")));
+   
     order.forEach((o) => {
       if (o.start_date === isDate) {
         employess.forEach((employee) => {

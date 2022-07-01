@@ -2,9 +2,11 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { BASE_URI } from "../../Config";
 import { createECategory, indexCategories, showHECategory } from "../../services/categories-services";
+import { deleteEmployeecategory } from "../../services/employe-categories-services";
 import { indexEmployee, showEmployee } from "../../services/employee-service";
 import { updateEmployee } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
+import {Checkbox, Options} from "./createEmployee"
 
 
 const StyledForm = styled.form`
@@ -25,7 +27,9 @@ let checkCat = [];
 export default function EditarEmpleado({onStateChange, onInputChange}) {
 
   const [form1, setForm1] = useState(null);
+  
   const [categories, setCategories] = useState();
+  const [options, setOptions]=useState(null)
   const [employee, setEmployee] = useState(null);
   const [hEmployee, setHEmployee] = useState(null);
   useEffect(() => {
@@ -78,6 +82,24 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
       checkCat.forEach((cat) => {
         createECategory({ employee_id: id.id, category_id: cat });
     });
+    categorias.forEach((cat)=>{
+      
+      catOld.forEach((old)=>{
+        if(catOld.length>categorias.length){
+        if(old.value !== cat.value){
+          //deleteEmployeecategory(cat.value)
+          console.log(cat.value)
+        }
+        }
+        if(catOld.length<categorias.length){
+          if(old.value !== cat.value){
+           //createECategory({ employee_id: id.id, category_id: cat.value });
+          console.log(cat.value)
+          }
+          
+        }
+      })
+    })
     checkCat=[];
   }
   }
@@ -98,6 +120,38 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
     })
     
    
+  }
+  let categorias = []
+  
+  let categoriasAll = []
+  if(categories && hEmployee && !options){
+     categories.forEach(employee =>{
+      categoriasAll.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})
+      hEmployee.forEach((he)=>{
+        if(employee.id === he.category_id){
+          categorias.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
+          //catOld.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
+  
+        }
+      })
+    })
+  }
+let catOld = []
+  if(options){
+    
+    options.forEach(employee =>{
+      categorias.push({value: employee.value, label: employee.label})   
+    })
+    categories.forEach(employee =>{
+      categoriasAll.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})
+      hEmployee.forEach((he)=>{
+        if(employee.id === he.category_id){
+          //categorias.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
+          catOld.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})
+        }
+      })
+    })
+    
   }
 
   return (
@@ -202,6 +256,7 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
                 </>))
               : null}
           </ContainerCheck>
+     
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type="submit"
@@ -313,6 +368,29 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
                 </>))
               : null}
           </ContainerCheck>
+          <span
+        class="d-inline-block"
+        data-toggle="popover"
+        data-trigger="focus"
+        data-content="Selecciona un servicio"
+      >
+      {
+       <Checkbox
+          label="Servicios"
+          options={categoriasAll}
+          isMulti
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          components={{
+            Options
+          }}
+          onChange={setOptions}
+          allowSelectAll={true}
+          value={categorias}
+        />
+      }
+        
+      </span>
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
           type="submit"
