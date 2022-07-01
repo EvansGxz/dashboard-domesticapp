@@ -7,7 +7,7 @@ import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
 import { createNotify } from "../../services/notiications-services";
 import { indexOrder, showOrderDetail, updateOrder } from "../../services/order-details-services";
-import { Input, Selected } from "../../styles/views/Login";
+import { Input, Selected, Timer } from "../../styles/views/Login";
 
 
 const StyledForm = styled.form`
@@ -117,7 +117,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         </Selected>
         <Input
         id="address"
-        label="Dircción"
+        label="Dirección"
         type="text"
         placeholder="1"
         value={form.address}
@@ -143,7 +143,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
       </Selected>
        <Input
         id="discount"
-        label="Descento"
+        label="Descuento"
         type="number"
         placeholder="10"
         value={form.discount}
@@ -191,7 +191,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         </Selected>
         <Input
         id="address"
-        label="Dircción"
+        label="Dirección"
         type="text"
         placeholder="1"
         value={form.address}
@@ -208,7 +208,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         value={form.start_date}
         onChange={handleFormChange}
       />
-            <TimePicker
+            <Timer label="Hora"
        onChange={setIsTime} value={form.service_time} />
       <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
           <option value="">{form.workday}</option>
