@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { BASE_URI } from "../../Config";
 import { createECategory, indexCategories, showHECategory } from "../../services/categories-services";
-import { deleteEmployeecategory } from "../../services/employe-categories-services";
+//import { deleteEmployeecategory } from "../../services/employe-categories-services";
 import { indexEmployee, showEmployee } from "../../services/employee-service";
 import { updateEmployee } from "../../services/users-service";
 import { Input, Selected } from "../../styles/views/Login";
