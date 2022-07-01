@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
-import { indexCategories } from "../../services/categories-services";
-import { indexCustomer, showCustomerID } from "../../services/customer-services";
+import { showCategoryCountry } from "../../services/categories-services";
+import { showCustomerCountry, showCustomerID } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
 import { createNotify } from "../../services/notiications-services";
@@ -53,8 +53,6 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   const [isTime, setIsTime] = useState();
   const [isWorkday, setIsWorkday] = useState();
   useEffect(() => {
-    indexCategories().then(setCategories);
-    indexCustomer().then(setCustomers);
     indexOrder().then(setOrder);
     indexAdmin().then(setAdmins)
   }, []);
@@ -252,11 +250,9 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
 
     if (name === "category_id") {
       showEmployeecat(event.target.value).then(setEmployees)
-      
     }
     if (name === "customer_id") {
       showCustomerID(event.target.value).then(setAddress)
-      
     }
 
     if (name === "address") {
@@ -264,6 +260,10 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       
     }
     
+    if(name === "pais_order"){
+      showCustomerCountry(event.target.value).then(setCustomers)
+      showCategoryCountry(event.target.value).then(setCategories)
+    }   
   }
 
   function handleCalendarChange(event) {
@@ -348,8 +348,8 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 {customer
                   ? customer.map((category) => (
                       <>
-                        <option value={category.customer.id}>
-                          {category.customer.full_name}
+                        <option value={category.id}>
+                          {category.full_name}
                         </option>
                       </>
                     ))
@@ -478,6 +478,17 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
           ):(
             <>
             <Container>
+            <Selected
+                id="pais_order"
+                name="pais_order"
+                label="pais"
+                onChange={handleFormChange}
+              >
+                <option value="">--pais--</option>
+                <option value="Colombia">Colombia</option>
+                <option value="España">España</option>
+              </Selected>
+
               <Selected
                 id="category_id"
                 label="Servicios"
@@ -515,9 +526,10 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
                 <option value="">--selecciona cliente--</option>
                 {customer
                   ? customer.map((category) => (
+                    
                       <>
-                        <option value={category.customer.id}>
-                          {category.customer.full_name}
+                        <option value={category.id}>
+                          {category.full_name}
                         </option>
                       </>
                     ))
