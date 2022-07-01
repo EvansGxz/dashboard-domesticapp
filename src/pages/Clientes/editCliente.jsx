@@ -126,8 +126,8 @@ export default function EditarCliente({onStateChange, onInputChange}) {
       <Selected id="client_type" name="client_type"
        onChange={handleFormChange1} label="Tipo de cliente">
           <option value="">--tipo de cliente</option>
-          <option value="Colombia">Persona</option>
-          <option value="España">Empresa</option>
+          <option value="Persona">Persona</option>
+          <option value="Empresa">Empresa</option>
       </Selected>  
       <Input
         id="cod_refer"
@@ -232,8 +232,8 @@ export default function EditarCliente({onStateChange, onInputChange}) {
       <Selected id="client_type" name="client_type"
        onChange={handleFormChange1} label="Tipo de cliente">
           <option value="">--tipo de cliente</option>
-          <option value="Colombia">Persona</option>
-          <option value="España">Empresa</option>
+          <option value="Persona">Persona</option>
+          <option value="Empresa">Empresa</option>
       </Selected>  
       <Input
         id="cod_refer"
