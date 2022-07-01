@@ -196,16 +196,18 @@ export const Calendario = () => {
         
       )}
       <Sidebar></Sidebar>
-      <div className="ml-auto mb-6 lg:w-[65%] xl:w-[70%] 2xl:w-[85%]">
+      <div className='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo="Servicios dados"></Navegador>
-                  <div className="ml-20">
+        <div className='px-6 2xl:container'>
+          <div className='grid gap-6'>
+            <div className='max-w-2xl mx-auto bg-white p-8 lg:w-[100%]'>
                     {user.role === "spectator" ? null : (
                       <Button onClick={() => togglePopCreate()}>
                         Crear Servicio
                       </Button>
                     )}
         </div>
-
+</div></div>
         <>
           {isOpen && (
             window.screen.width < 810 ? (<Modal
@@ -326,8 +328,8 @@ export const Calendario = () => {
           {categories ? (
             <>
               {show ? (
-                <>
-                  <div className="maincontainer">
+                <CalendarContainer>
+                  
                     <FullCalendar
                       plugins={[dayGridPlugin, interactionPlugin, listPlugin]}
                       initialView="dayGridMonth"
@@ -342,8 +344,8 @@ export const Calendario = () => {
                       }}
                       events={details}
                     />
-                  </div>
-                </>
+                  
+                </CalendarContainer>
               ) : null}
             </>
           ) : null}
@@ -398,6 +400,13 @@ export const Box = styled.div`
 export const Container = styled.div`
   width: 100%;
   padding: 20px;
+`;
+export const CalendarContainer = styled.div`
+  width: 75vw;
+  height: 90vh;
+  padding: 3rem;
+  overflow-x: scroll;
+ 
 `;
 export const ButtonContainer = styled.div`
   display: flex;
