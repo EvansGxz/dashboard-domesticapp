@@ -46,7 +46,6 @@ export default function EditarOrder({onStateChange, onInputChange}) {
     indexOrder().then(setOrder);
     indexAdmin().then(setAdmins)
     showOrderDetail(id).then((category) =>{
-      console.log(category)
       category.forEach((m)=>{
         setisDate(m.start_date)
         setForm({
@@ -62,6 +61,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         discount: m.discount,
         supply_food: m.supply_food,
         service_time: m.service_time,
+        hours: m.hours,
       })
     })
       
@@ -89,8 +89,8 @@ export default function EditarOrder({onStateChange, onInputChange}) {
     setForm({ ...form, [name]: value });
   }
 
-  
-  if (order && form.start_date) {
+  if(form){
+  if (order && form.start_date ) {
     
     order.forEach((o) => {
       if (o.start_date === form.start_date && o.employee.id === form.employee) {
@@ -105,7 +105,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         })
       }
     })
-  }
+  }}
 
   return (
     <>
@@ -223,6 +223,20 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         value={form.address}
         onChange={handleFormChange}
       />
+      {
+        form.workday === "Hora" ? (
+          <>
+                <Input
+                id="hours"
+                label="Cantidad de Horas"
+                type="number"
+                placeholder="3"
+                value={form.hours}
+                onChange={handleFormChange}
+              />
+                </>
+        ) : null
+      }
       </Container>
       <Container>
       
