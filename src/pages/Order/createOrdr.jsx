@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { indexCategories } from "../../services/categories-services";
-import { indexCustomer } from "../../services/customer-services";
+import { indexCustomer, showCustomerID } from "../../services/customer-services";
 import { createOrder, indexOrder } from "../../services/order-details-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
 import { createNotify } from "../../services/notiications-services";
@@ -30,6 +30,7 @@ const Container = styled.div`
 export default function CrearOrder({ onInputChange, onStateChange }) {
   const [categories, setCategories] = useState(null);
   const [employess, setEmployees] = useState(null);
+  const [address, setAddress] = useState(null);
   const [isCurrent, setIsCurrent] = useState(null);
   const [customer, setCustomers] = useState(null);
   const [frecuencia, setFecuencia] = useState(null);
@@ -253,6 +254,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       showEmployeecat(event.target.value).then(setEmployees)
       
     }
+    if (name === "customer_id") {
+      showCustomerID(event.target.value).then(setAddress)
+      
+    }
+    
   }
 
   function handleCalendarChange(event) {
@@ -290,7 +296,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
       }
     });
   }
-console.log(employess)
+
   return (
     <ContainerAll>
       {form ? (
@@ -512,14 +518,28 @@ console.log(employess)
                     ))
                   : null}
               </Selected>
-              <Input
+              {
+                address ? (
+                  <Input
+                id="address"
+                label="Dirección"
+                type="text"
+                placeholder="1"
+                value={address.region}
+                onChange={handleFormChange}
+              /> 
+                ):(
+                 <Input
                 id="address"
                 label="Dirección"
                 type="text"
                 placeholder="1"
                 value={form.address}
                 onChange={handleFormChange}
-              />
+              /> 
+                )
+              }
+              
             </Container>
             <Container>
               <Selected
