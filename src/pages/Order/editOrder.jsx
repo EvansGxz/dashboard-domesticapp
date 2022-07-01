@@ -10,6 +10,7 @@ import { indexOrder, showOrderDetail, updateOrder } from "../../services/order-d
 import { Input, Selected, Timer } from "../../styles/views/Login";
 
 
+
 const StyledForm = styled.form`
   display: flex;
   flex-direction: initial;
@@ -33,14 +34,21 @@ export default function EditarOrder({onStateChange, onInputChange}) {
   const [employess, setEmployees] = useState(null);
   const [customer, setCustomers] = useState(null);
   const [admins, setAdmins] = useState(null);
+  const [order, setOrder] = useState(null);
+  const [isDate, setisDate] = useState(null);
+
   const [isTime, setIsTime] = useState();
   useEffect(() =>{
     indexCategories().then(setCategories)
     indexEmployee().then(setEmployees)
     indexCustomer().then(setCustomers)
+    
+    indexOrder().then(setOrder);
     indexAdmin().then(setAdmins)
     showOrderDetail(id).then((category) =>{
-      category.map((m)=>(
+      console.log(category)
+      category.forEach((m)=>{
+        setisDate(m.start_date)
         setForm({
         category: m.category.id,
         employee: m.employee.id,
@@ -55,7 +63,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         supply_food: m.supply_food,
         service_time: m.service_time,
       })
-      ))
+    })
       
     })
   }, [id])
@@ -79,6 +87,24 @@ export default function EditarOrder({onStateChange, onInputChange}) {
    
     const { name, value } = event.target;
     setForm({ ...form, [name]: value });
+  }
+
+  
+  if (order && form.start_date) {
+    
+    order.forEach((o) => {
+      if (o.start_date === form.start_date && o.employee.id === form.employee) {
+        employess.forEach((employee) => {
+          if(employee.employee.id === form.employee)
+            
+            if(isDate !== form.start_date){
+              alert("Este empleado ya tiene este dia ocupado");
+              setForm({...form, start_date: isDate})
+            }
+            
+        })
+      }
+    })
   }
 
   return (
@@ -173,7 +199,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
         </Selected>
 
         <Selected id="employee_id" label="Empleados" name="employee_id" onChange={handleFormChange}>
-          <option value="">{form.employee_name}</option>
+          <option value={form.employee}>{form.employee_name}</option>
           {employess ? (
             employess.map((category) => (
               <>

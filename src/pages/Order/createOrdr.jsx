@@ -59,11 +59,11 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    if (isDate && veces && frecuencia) {
-      const calc = isDate.split("-").join("/");
+const calc = isDate.split("-").join("/");
       const now = new Date(calc);
       const last = new Date(now);
+    if (isDate && veces && frecuencia) {
+      
   
       let dia = 0;
     if (frecuencia === "1") {
@@ -220,13 +220,12 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
         }
       }
     }else{
-
     createOrder({
       category_id: form.category_id,
       employee_id: form.employee_id,
       customer_id: form.customer_id,
       address: form.address,
-      start_date: event.target.start_date.value,
+      start_date: isDate,
       workday: event.target.workday.value,
       discount: form.discount,
       supply_food: form.supply_food,
@@ -268,7 +267,6 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
 
   function handleCalendarChange(event) {
     event.preventDefault();
-
     setisDate(event.target.value);
   }
   let freeEmp = [];
