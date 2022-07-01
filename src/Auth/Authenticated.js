@@ -17,7 +17,6 @@ import { EmployeeCalendario } from "../pages/Empleado/employeeCalendar";
 import Empleados from "../pages/Empleados";
 import { Estadisticas } from "../pages/Estadisticas";
 import { GestionAvanzada } from "../pages/GestionAvanzada";
-import Grafic from "../pages/Grafica";
 import Habilidades from "../pages/Habilidades";
 import EditarHEabilidad from "../pages/Habilidades Empleados/editHE";
 import EditarHabilidad from "../pages/Habilidades/editHabilidad";
@@ -43,7 +42,7 @@ function Authenticated() {
         <Route path="/calendar" element={<Calendario/>} />
         <Route path="/calendar/edit" element={<EditarOrder/>} />
         <Route path="/calendar/create" element={<CrearOrder/>} />
-        <Route path="/grafic" element={<Grafic/>} />
+    
 
         <Route path="/habilidades" element={<Habilidades/>} />
         <Route path="/habilidades/edit" element={<EditarHabilidad/>} />
