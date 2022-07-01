@@ -92,6 +92,7 @@ export const Calendario = () => {
         employee_direction: category.employee.region,
         customer: category.customer.full_name,
         service_time: category.service_time,
+        hours: category.hours
       });
     });
   }
@@ -249,6 +250,15 @@ export const Calendario = () => {
                       <b>Tipo de jornada: </b>
                       {cal._def.extendedProps.workday}
                     </P>
+                    
+                      {cal._def.extendedProps.workday === "Hora" ? (
+                      <>
+                      <P>
+                      <b>Horas: </b>
+                      {cal._def.extendedProps.hours}
+                      </P></>
+                      ) : null}
+                  
                     {user.role === "spectator" ? null : (
                       <ButtonContainer>
                         <Button onClick={() => other(cal._def.publicId)}>
@@ -305,6 +315,13 @@ export const Calendario = () => {
                       <b>Tipo de jornada: </b>
                       {cal._def.extendedProps.workday}
                     </P>
+                    {cal._def.extendedProps.workday === "Hora" ? (
+                      <>
+                      <P>
+                      <b>Horas: </b>
+                      {cal._def.extendedProps.hours}
+                      </P></>
+                      ) : null}
                     {user.role === "spectator" ? null : (
                       <ButtonContainer>
                         <Button onClick={() => other(cal._def.publicId)}>
