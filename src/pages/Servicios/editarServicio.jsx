@@ -103,7 +103,6 @@ export default function EditarServicio({ onStateChange, onInputChange }) {
           />
           <Input
             id="image" name="image"
-            value={form.image.files}
             label="Imagen"
             type="file"
           />
