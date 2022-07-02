@@ -13,5 +13,5 @@ export async function showEmployeecat(EmployeecategoryID) {
 }
 
 export async function deleteEmployeecategory(EmployeecategoryID) {
-  return await apiFetch(`employee_categories/${EmployeecategoryID}`);
+  return await apiFetch(`employee_categories/${EmployeecategoryID}`, { method: "DELETE" });
 }

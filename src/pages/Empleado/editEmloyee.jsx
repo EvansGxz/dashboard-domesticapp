@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { BASE_URI } from "../../Config";
 import { createECategory, indexCategories, showHECategory } from "../../services/categories-services";
+import { deleteEmployeecategory } from "../../services/employe-categories-services";
 //import { deleteEmployeecategory } from "../../services/employe-categories-services";
 import { indexEmployee, showEmployee } from "../../services/employee-service";
 import { updateEmployee } from "../../services/users-service";
@@ -23,7 +24,6 @@ const Container = styled.div`
   float: inline-start;
   {window.screen.width < 810 ? (width: 100%):(width: 30%)}
 `;
-let checkCat = [];
 export default function EditarEmpleado({onStateChange, onInputChange}) {
 
   const [form1, setForm1] = useState(null);
@@ -65,12 +65,7 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
     .then(submitAPI(data, employee))
     onInputChange(false);
   }
-  function cheked(event) {
-    if (event.target.checked) {
-      checkCat.push(event.target.name);
-    }
-
-  }
+  
   function submitAPI(data, id) {
     fetch(BASE_URI + `employees/${id.user_id}`, {
       method: "PATCH",
@@ -78,30 +73,22 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
     })
       .then((response) => response.json())
       .then(indexEmployee().then(onStateChange))
-      if(checkCat){
-      checkCat.forEach((cat) => {
-        createECategory({ employee_id: id.id, category_id: cat });
-    });
-    categorias.forEach((cat)=>{
-      
-      catOld.forEach((old)=>{
-        if(catOld.length>categorias.length){
-        if(old.value !== cat.value){
-          //deleteEmployeecategory(cat.value)
-          console.log(cat.value)
-        }
-        }
-        if(catOld.length<categorias.length){
-          if(old.value !== cat.value){
-           //createECategory({ employee_id: id.id, category_id: cat.value });
-          console.log(cat.value)
-          }
+
+    if(options){
+    if(catOld.length < categorias.length){
+          const results = categorias.filter(({ value: id1 }) => !catOld.some(({ value: id2 }) => id2 === id1));
+          results.forEach((r)=>{
+            createECategory({ employee_id: id.id, category_id: r.value })
+          })
           
-        }
-      })
-    })
-    checkCat=[];
-  }
+    }
+    if(catOld.length > categorias.length){
+          const results = catOld.filter(({ value: id1 }) => !categorias.some(({ value: id2 }) => id2 === id1));
+          results.forEach((r)=>{
+            deleteEmployeecategory(r.value)
+          })
+          
+    }}
   }
 
   function handleFormChange1(event) {
@@ -130,8 +117,6 @@ export default function EditarEmpleado({onStateChange, onInputChange}) {
       hEmployee.forEach((he)=>{
         if(employee.id === he.category_id){
           categorias.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
-          //catOld.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})   
-  
         }
       })
     })
@@ -142,6 +127,7 @@ let catOld = []
     options.forEach(employee =>{
       categorias.push({value: employee.value, label: employee.label})   
     })
+   
     categories.forEach(employee =>{
       categoriasAll.push({value: employee.id, label: employee.region.substring(0, 3) +" "+employee.category_name})
       hEmployee.forEach((he)=>{
@@ -151,8 +137,17 @@ let catOld = []
         }
       })
     })
-    
+
+    if(catOld.length < categorias.length){
+          const results = categorias.filter(({ value: id1 }) => !catOld.some(({ value: id2 }) => id2 === id1));
+            console.log(results);
+    }
+    if(catOld.length > categorias.length){
+          const results = catOld.filter(({ value: id1 }) => !categorias.some(({ value: id2 }) => id2 === id1));
+            console.log(results);
+    }
   }
+
 
   return (
     <ContainerAll>
@@ -240,22 +235,29 @@ let catOld = []
               placeholder="xxxxxxxxxx"
               value={form1.contrato.files}
             />
-            <ContainerCheck>
-            {categories
-              ? categories.map((category) => (
-                
-                <>
-                  <Input
-                    id={category.id}
-                    label={category.region.substring(0, 3)+" | "+category.category_name}
-                    type="checkbox"
-                    value={form1.contrato}
-                    onChange={cheked}
-                    defaultChecked={category.checked}
-                  />
-                </>))
-              : null}
-          </ContainerCheck>
+           <span
+        class="d-inline-block"
+        data-toggle="popover"
+        data-trigger="focus"
+        data-content="Selecciona un servicio"
+      >
+      {
+       <Checkbox
+          label="Servicios"
+          options={categoriasAll}
+          isMulti
+          closeMenuOnSelect={false}
+          hideSelectedOptions={false}
+          components={{
+            Options
+          }}
+          onChange={setOptions}
+          allowSelectAll={true}
+          value={categorias}
+        />
+      }
+        
+      </span>
      
           <button
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
@@ -352,22 +354,7 @@ let catOld = []
               placeholder="xxxxxxxxxx"
               value={form1.contrato.files}
             />
-            <ContainerCheck>
-            {categories
-              ? categories.map((category) => (
-                
-                <>
-                  <Input
-                    id={category.id}
-                    label={category.region.substring(0, 3)+" | "+category.category_name}
-                    type="checkbox"
-                    value={form1.contrato}
-                    onChange={cheked}
-                    defaultChecked={category.checked}
-                  />
-                </>))
-              : null}
-          </ContainerCheck>
+        
           <span
         class="d-inline-block"
         data-toggle="popover"
@@ -423,14 +410,4 @@ export const StyleSelect = styled.select`
   border-radius: 0.5rem;
   color: black;
   margin: 1rem 0;
-`;
-
-const ContainerCheck = styled.div`
-
-  display: grid;
-  gap: 1px;
-  max-height: 140px;
-  overflow-y: scroll;
-  grid-template-columns: repeat(1, 100px);
-  margin: 1rem auto;
 `;
