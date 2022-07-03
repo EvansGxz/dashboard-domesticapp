@@ -24,15 +24,43 @@ export const Estadisticas = () => {
       <Sidebar></Sidebar>
       <div class='ml-auto mb-6 lg:w-[75%] xl:w-[80%] 2xl:w-[85%]'>
         <Navegador titulo='Estadisticas'></Navegador>
-        <Container>
-            <Grafic/>
-</Container>
+        
+            {window.screen.width < 810 ? (
+              <ContainerAll>
+              <Container>
+              <Grafic/>
+              </Container></ContainerAll>
+            ):(
+              
+              <ContainerWeb>
+              <Grafic/>
+              </ContainerWeb>
+            )}
+
       </div>
     </>
   )
 }
 export const Container = styled.div`
-  height: 90vh;
+  width: 50rem;
+{window.screen.width < 810 ? (
+width: 50rem;
+margin-top: 3rem;
+overflow-x: scroll;
+):(
+height: 90vh;
+width: 85vw;
+margin-top: 3rem;
+)}`;
+
+export const ContainerWeb = styled.div`
+
+height: 90vh;
 width: 85vw;
 margin-top: 3rem;
 `;
+
+export const ContainerAll = styled.div`
+  width: 30rem;
+  overflow-x: scroll;
+`

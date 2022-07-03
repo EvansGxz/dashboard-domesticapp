@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { BASE_URI } from "../../Config";
 import { indexAdmin, showAdmin, updateAdmin } from "../../services/admin-services";
+import { updateUserID } from "../../services/users-service";
 import { Input } from "../../styles/views/Login";
 
 
@@ -45,6 +46,8 @@ export default function EditMod({onStateChange, onInputChange}) {
       setForm({
         email: user.email,
         user_type: "admin",
+        phone: user.phone,
+        lada: user.lada
         });
       setForm1({
         nickname: user.nickname,
@@ -63,7 +66,7 @@ export default function EditMod({onStateChange, onInputChange}) {
     updateAdmin(form1, seeadmin.user_id)
       .then(submitAPI(data, seeadmin.user_id))
       .then(indexAdmin().then(onStateChange))
-    
+    updateUserID(form, seeadmin.user_id)
     onInputChange(false);
   }
 
@@ -107,6 +110,23 @@ export default function EditMod({onStateChange, onInputChange}) {
         placeholder="Mike Perez"
         value={form1.nickname}
         onChange={handleFormChange1}
+      />
+       <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form.lada}
+        onChange={handleFormChange}
+      />
+
+      <Input
+        id="phone"
+        label="Celular (10 digitos)"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form.phone}
+        onChange={handleFormChange}
       />
       <Input id="cover" name="cover" value={form1.cover.files} label="Imagen" type="file" />
       <StyleSelect id="role" name="role">

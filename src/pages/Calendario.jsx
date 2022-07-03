@@ -439,11 +439,19 @@ export const Container = styled.div`
   padding: 20px;
 `;
 export const CalendarContainer = styled.div`
-  width: 75vw;
-  height: 90vh;
-  padding: 3rem;
-  overflow-x: scroll;
+  
+  
  
+  
+  {window.screen.width < 810 ? (
+    width: 90vw;
+    height: 100vh;
+    ) : (
+    width: 75vw;
+    height: 90vh;
+    overflow-x: scroll; 
+    padding: 3rem;
+  )
 `;
 export const ButtonContainer = styled.div`
   display: flex;

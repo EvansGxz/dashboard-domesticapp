@@ -175,6 +175,15 @@ const calc = isDate.split("-").join("/");
             admins.forEach((admin) =>{
               
               createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+              TwilioNotify({phone: admin.admin.phone,
+                lada: admin.admin.lada,
+                service: cat.category.category_name,
+                day: event.target.address.value,
+                service_time: isTime, 
+                finish_hour: finishTime,
+                customer: cat.customer.full_name,
+                address: event.target.address.value,
+                employee: cat.employee.full_name})
             })
             onInputChange(false);
             indexOrder().then(onStateChange);
@@ -204,6 +213,38 @@ const calc = isDate.split("-").join("/");
           }
           }else{alert(date_order+"Está ocupado")}
           });
+
+          mes= 1;
+        const res =
+          last.getFullYear() + "-" + (last.getMonth()+1) + "-" + last.getDate();
+          createOrder({
+            category_id: form.category_id,
+            employee_id: form.employee_id,
+            customer_id: form.customer_id,
+            address: event.target.address.value,
+            start_date: res,
+            workday: event.target.workday.value,
+            discount: form.discount,
+            supply_food: form.supply_food,
+            service_time: isTime,
+            hours: form.hours,
+          }).then((cat) => {
+            admins.forEach((admin) =>{
+              
+              createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+              TwilioNotify({phone: admin.admin.phone,
+                lada: admin.admin.lada,
+                service: cat.category.category_name,
+                day: event.target.address.value,
+                service_time: isTime, 
+                finish_hour: finishTime,
+                customer: cat.customer.full_name,
+                address: event.target.address.value,
+                employee: cat.employee.full_name})
+            })
+            onInputChange(false);
+            indexOrder().then(onStateChange);
+          })
         }
       }
     }else{
@@ -317,6 +358,44 @@ const calc = isDate.split("-").join("/");
               parseInt(o.service_time.split(":").join(""))
             ) {
               freeEmp.push({ employee: employee });
+            }
+          }
+          if (
+            employee.employee_id === o.employee.id &&
+            o.workday === "Completa" &&
+            isWorkday === "Completa"
+          ) {
+            if (
+              parseInt(isTime.split(":").join("")) >=
+              parseInt(o.service_time.split(":").join("")) + 900
+            ) {
+              freeEmp.push({ employee: employee });
+              console.log(freeEmp)
+            } else if (
+              parseInt(isTime.split(":").join("")) + 900 <=
+              parseInt(o.service_time.split(":").join(""))
+            ) {
+              freeEmp.push({ employee: employee });
+              console.log(freeEmp)
+            }
+          }
+          if (
+            employee.employee_id === o.employee.id &&
+            o.workday === "Hora" &&
+            isWorkday === "Hora" && form.hours
+          ) {
+            if (
+              parseInt(isTime.split(":").join("")) >=
+              parseInt(o.service_time.split(":").join("")) + (parseInt(form.hours)*100)
+            ) {
+              freeEmp.push({ employee: employee });
+              
+            } else if (
+              parseInt(isTime.split(":").join("")) + (parseInt(form.hours)*100) <=
+              parseInt(o.service_time.split(":").join(""))
+            ) {
+              freeEmp.push({ employee: employee });
+              
             }
           }
         });
@@ -619,9 +698,9 @@ const calc = isDate.split("-").join("/");
                 <option value="">--selecciona empleado--</option>
                 {freeEmp.length !== 0
                   ? freeEmp.map((employee) => (
-                      <>
-                        <option value={employee.employee_id}>
-                          {employee.full_name}
+                      <>{console.log(employee)}
+                        <option value={employee.employee.employee_id}>
+                          {employee.employee.full_name}
                         </option>
                       </>
                     ))

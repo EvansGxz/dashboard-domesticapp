@@ -37,3 +37,10 @@ export async function updateEmployee(data, userId) {
     method: "PATCH",
   });
 }
+
+export async function updateUserID(data, ServiceID) {
+  return await apiFetch(`user_update/${ServiceID}`, {
+    body: data,
+    method: "PATCH",
+  });
+}
