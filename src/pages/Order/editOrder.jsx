@@ -7,6 +7,7 @@ import { indexCustomer } from "../../services/customer-services";
 import { indexEmployee } from "../../services/employee-service";
 import { createNotify } from "../../services/notiications-services";
 import { indexOrder, showOrderDetail, updateOrder } from "../../services/order-details-services";
+import { EditServiceNotify } from "../../services/twilio-services";
 import { Input, Selected, Timer } from "../../styles/views/Login";
 
 
@@ -74,9 +75,31 @@ export default function EditarOrder({onStateChange, onInputChange}) {
       address: form.address, start_date: event.target.start_date.value, workday: event.target.workday.value, discount: form.discount,
      supply_food: form.supply_food, service_time: isTime}, id)
     .then((cat) => {
+      let lastTime
+      if(cat.workday === "Hora"){
+        const time = (parseInt(cat.service_time.split(":")[0])+parseInt(cat.hours));
+        lastTime = time+":"+cat.service_time.split(":")[1];
+      }
+      if(cat.workday === "Media"){
+        let time = (parseInt(cat.service_time.split(":")[0])+4)+":"+parseInt(cat.service_time.split(":")[1]);
+        lastTime = (parseInt(time.split(":")[0]))+":"+parseInt(time.split(":")[1]+30);
+       }
+       if(cat.workday === "Completa"){
+        let time = (parseInt(cat.service_time.split(":")[0])+9)+":"+parseInt(cat.service_time.split(":")[1]);
+        lastTime = time.split(":")[0]+":"+cat.service_time.split(":")[1];
+       }
       admins.forEach((admin) =>{
       createNotify({name: "Servicio Reprogramado", body: `para el día ${cat.start_date}`, user_id: admin.admin.user_id})
       })
+      EditServiceNotify({phone: "8994466683",
+	                    lada: "+52",
+                    	service: cat.category.category_name,
+                      day: event.target.address.value,
+                      service_time: cat.service_time, 
+                      finish_hour: lastTime,
+                      customer: cat.customer.full_name,
+                      address: event.target.address.value,
+                      employee: cat.employee.full_name})
       onInputChange(false);
       indexOrder().then(onStateChange)
      
@@ -90,7 +113,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
   }
 
   if(form){
-  if (order && form.start_date ) {
+  if (order && form.start_date && employess) {
     
     order.forEach((o) => {
       if (o.start_date === form.start_date && o.employee.id === form.employee) {
@@ -251,7 +274,7 @@ export default function EditarOrder({onStateChange, onInputChange}) {
             <Timer label="Hora"
        onChange={setIsTime} value={form.service_time} />
       <Selected id="workday" label="Tipo de jornada" name="workday" onChange={handleFormChange}>
-          <option value="">{form.workday}</option>
+          <option value={form.workday}>{form.workday}</option>
           <option value="Completa">Completa | COL</option>
           <option value="Media">Media | COL</option>
           <option value="Hora">Hora | EU</option>

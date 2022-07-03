@@ -7,6 +7,7 @@ import { Input, Selected, Timer } from "../../styles/views/Login";
 import { createNotify } from "../../services/notiications-services";
 import { indexAdmin } from "../../services/admin-services";
 import { showEmployeecat } from "../../services/employe-categories-services";
+import { TwilioNotify } from "../../services/twilio-services";
 
 const ContainerAll = styled.div`
   
@@ -32,6 +33,7 @@ export default function CrearOrder({ onInputChange, onStateChange }) {
   const [employess, setEmployees] = useState(null);
   const [address, setAddress] = useState(null);
   const [isCurrent, setIsCurrent] = useState(null);
+  const [finishTime, setFinishTime] = useState(null);
   const [customer, setCustomers] = useState(null);
   const [frecuencia, setFecuencia] = useState(null);
   const [veces, setVeces] = useState(null);
@@ -220,6 +222,15 @@ const calc = isDate.split("-").join("/");
       admins.forEach((admin) =>{
         
         createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+        TwilioNotify({phone: "8994466683",
+	                    lada: "+52",
+                    	service: cat.category.category_name,
+                      day: event.target.address.value,
+                      service_time: isTime, 
+                      finish_hour: finishTime,
+                      customer: cat.customer.full_name,
+                      address: event.target.address.value,
+                      employee: cat.employee.full_name})
       })
       onInputChange(false);
       indexOrder().then(onStateChange);
@@ -248,7 +259,9 @@ const calc = isDate.split("-").join("/");
     if(name === "pais_order"){
       showCustomerCountry(event.target.value).then(setCustomers)
       showCategoryCountry(event.target.value).then(setCategories)
-    }   
+    }
+
+    
   }
 
   function handleCalendarChange(event) {
@@ -257,7 +270,32 @@ const calc = isDate.split("-").join("/");
   }
   let freeEmp = [];
   if (order && isDate && employess && isTime && isWorkday) {
-   
+
+   if(isWorkday === "Media"){
+    let time = isTime
+    time  = (parseInt(time.split(":")[0])+4)+":"+time.split(":")[1]; 
+    time  = time.split(":")[0]+":"+(parseInt(time.split(":")[1])+30);
+ 
+    if(!finishTime){
+      setFinishTime(time)
+    }
+   }
+   if(isWorkday === "Completa"){
+    let time = isTime
+    time  = (parseInt(time.split(":")[0])+9)+":"+time.split(":")[1];
+    time = time.split(":")[0]+":"+parseInt(isTime.split(":")[1])
+    if(!finishTime){
+      setFinishTime(time)
+    }
+   }
+   if(isWorkday === "Hora" && form.hours){
+    const time = (parseInt(isTime.split(":")[0])+parseInt(form.hours));
+    const lastTime = time+":"+isTime.split(":")[1];
+    if(!finishTime){
+      setFinishTime(lastTime)
+    }
+    
+   }
     order.forEach((o) => {
       if (o.start_date === isDate) {
         employess.forEach((employee) => {

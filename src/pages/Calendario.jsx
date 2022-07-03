@@ -17,6 +17,7 @@ import date from 'date-and-time';
 import { Modal } from "../components/ModalMobile";
 import { createNotify } from "../services/notiications-services";
 import { indexAdmin } from "../services/admin-services";
+import { DeleteServiceNotify } from "../services/twilio-services";
 
 export const Calendario = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,8 +60,30 @@ export const Calendario = () => {
     deleteOrder(id).then((cat) => {
       indexOrder().then(setCategories);
       togglePopup();
+      let lastTime
+      if(cat.workday === "Hora"){
+        const time = (parseInt(cat.service_time.split(":")[0])+parseInt(cat.hours));
+        lastTime = time+":"+cat.service_time.split(":")[1];
+      }
+      if(cat.workday === "Media"){
+        let time = (parseInt(cat.service_time.split(":")[0])+4)+":"+parseInt(cat.service_time.split(":")[1]);
+        lastTime = (parseInt(time.split(":")[0]))+":"+parseInt(time.split(":")[1]+30);
+       }
+       if(cat.workday === "Completa"){
+        let time = (parseInt(cat.service_time.split(":")[0])+9)+":"+parseInt(cat.service_time.split(":")[1]);
+        lastTime = time.split(":")[0]+":"+cat.service_time.split(":")[1];
+       }
       admins.forEach((admin) =>{
         createNotify({name: "Servicio Cancelado", body: `servicio del día ${cat.start_date}. Servicio de ${cat.category.category_name}`, user_id: admin.admin.user_id})
+        DeleteServiceNotify({phone: "8994466683",
+        lada: "+52",
+        service: cat.category.category_name,
+        day: cat.start_date,
+        service_time: cat.service_time, 
+        finish_hour: lastTime,
+        customer: cat.customer.full_name,
+        address: cat.address,
+        employee: cat.employee.full_name})
       })
     });
 
@@ -72,7 +95,7 @@ export const Calendario = () => {
     categories.forEach((category) => {
       const calc = category.start_date.split('-').join('/');
       const now = new Date(calc);
-      now.setDate(now.getDate() + 1);
+      now.setDate(now.getDate());
       if(category.service_time){
         let time = category.service_time.split(":");
         now.setHours(time[0])
