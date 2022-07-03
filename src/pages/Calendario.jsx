@@ -75,15 +75,15 @@ export const Calendario = () => {
        }
       admins.forEach((admin) =>{
         createNotify({name: "Servicio Cancelado", body: `servicio del día ${cat.start_date}. Servicio de ${cat.category.category_name}`, user_id: admin.admin.user_id})
-        DeleteServiceNotify({phone: "8994466683",
-        lada: "+52",
-        service: cat.category.category_name,
-        day: cat.start_date,
-        service_time: cat.service_time, 
-        finish_hour: lastTime,
-        customer: cat.customer.full_name,
-        address: cat.address,
-        employee: cat.employee.full_name})
+        DeleteServiceNotify({phone: admin.admin.phone,
+          lada: admin.admin.lada,
+          service: cat.category.category_name,
+          day: cat.start_date,
+          service_time: cat.service_time, 
+          finish_hour: lastTime,
+          customer: cat.customer.full_name,
+          address: cat.address,
+          employee: cat.employee.full_name})
       })
     });
 

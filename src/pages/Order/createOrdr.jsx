@@ -220,10 +220,10 @@ const calc = isDate.split("-").join("/");
         hours: form.hours,
     }).then((cat) => {
       admins.forEach((admin) =>{
-        
+        console.log(admin.admin.phone)
         createNotify({name: "Servicio Programado", body: `Nuevo Servicio Programado de ${cat.category.category_name}`, user_id: admin.admin.user_id})
-        TwilioNotify({phone: "8994466683",
-	                    lada: "+52",
+        TwilioNotify({phone: admin.admin.phone,
+	                    lada: admin.admin.lada,
                     	service: cat.category.category_name,
                       day: event.target.address.value,
                       service_time: isTime, 
@@ -283,7 +283,7 @@ const calc = isDate.split("-").join("/");
    if(isWorkday === "Completa"){
     let time = isTime
     time  = (parseInt(time.split(":")[0])+9)+":"+time.split(":")[1];
-    time = time.split(":")[0]+":"+parseInt(isTime.split(":")[1])
+    time = time.split(":")[0]+":"+isTime.split(":")[1]
     if(!finishTime){
       setFinishTime(time)
     }

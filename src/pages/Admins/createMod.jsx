@@ -25,9 +25,11 @@ const Container = styled.div`
 export default function CrearMod({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     email: "",
+    phone: "",
     user_type: "admin",
     password: "",
     password_confirmation: "",
+    lada: "",
   });
   const [form1, setForm1] = useState({
     nickname: "",
@@ -86,6 +88,22 @@ export default function CrearMod({onInputChange, onStateChange}) {
           <option value="mod">Miembro del Equipo</option>
           <option value="spectator">Espectador</option>
         </Selected>
+        <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form.lada}
+        onChange={handleFormChange1}
+      />
+        <Input
+        id="phone"
+        label="Celular (10 digitos)"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form.phone}
+        onChange={handleFormChange}
+      />
       <Input
         id="password"
         label="Contraseña"
@@ -149,9 +167,25 @@ export default function CrearMod({onInputChange, onStateChange}) {
         value={form.password}
         onChange={handleFormChange}
       />
+      <Input
+        id="lada"
+        label="Lada"
+        type="text"
+        placeholder="+51"
+        value={form.lada}
+        onChange={handleFormChange}
+      />
+       
       </Container>
       <Container>
-        
+      <Input
+        id="phone"
+        label="Celular (10 digitos)"
+        type="text"
+        placeholder="xxxxxxx"
+        value={form.phone}
+        onChange={handleFormChange}
+      />
       <Input
         id="password_confirmation"
         label="Confirmar Contraseña"
@@ -168,6 +202,7 @@ export default function CrearMod({onInputChange, onStateChange}) {
         value={form1.nickname}
         onChange={handleFormChange1}
       />
+     
       <Input
         id="cover"
         name="cover"

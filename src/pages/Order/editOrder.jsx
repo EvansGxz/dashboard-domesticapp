@@ -90,9 +90,9 @@ export default function EditarOrder({onStateChange, onInputChange}) {
        }
       admins.forEach((admin) =>{
       createNotify({name: "Servicio Reprogramado", body: `para el día ${cat.start_date}`, user_id: admin.admin.user_id})
-      })
-      EditServiceNotify({phone: "8994466683",
-	                    lada: "+52",
+      
+    EditServiceNotify({phone: admin.admin.phone,
+                      lada: admin.admin.lada,
                     	service: cat.category.category_name,
                       day: event.target.address.value,
                       service_time: cat.service_time, 
@@ -100,6 +100,8 @@ export default function EditarOrder({onStateChange, onInputChange}) {
                       customer: cat.customer.full_name,
                       address: event.target.address.value,
                       employee: cat.employee.full_name})
+    })
+      
       onInputChange(false);
       indexOrder().then(onStateChange)
      

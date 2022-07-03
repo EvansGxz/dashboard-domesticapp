@@ -24,6 +24,7 @@ float: inline-start;
 export default function CrearCliente({onInputChange, onStateChange}) {
   const [form, setForm] = useState({
     email: "",
+    lada: "",
     phone: "",
     user_type: "customer",
     password: "",
@@ -32,7 +33,6 @@ export default function CrearCliente({onInputChange, onStateChange}) {
   const [form1, setForm1] = useState({
     full_name: "",
     country: "",
-    lada: "",
     region: "",
     document_id: "",
     client_type: "",
@@ -180,8 +180,8 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         label="Lada"
         type="text"
         placeholder="+51"
-        value={form1.lada}
-        onChange={handleFormChange1}
+        value={form.lada}
+        onChange={handleFormChange}
       />
       
       <Input
@@ -303,8 +303,8 @@ export default function CrearCliente({onInputChange, onStateChange}) {
         label="Lada"
         type="text"
         placeholder="+51"
-        value={form1.lada}
-        onChange={handleFormChange1}
+        value={form.lada}
+        onChange={handleFormChange}
       />
       
       <Input
